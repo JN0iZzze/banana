@@ -1,0 +1,4 @@
+interface:
+  display_name: "Russian Slide Typography"
+  short_description: "Russian typography for slide text"
+  default_prompt: "Use $russian-slide-typography to polish Russian slide text and fix typographic rules."
