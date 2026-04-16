@@ -6,6 +6,11 @@ export type RevealPreset = 'hero' | 'soft' | 'enter-up' | 'enter-left' | 'enter-
 
 export type SlideTransition = RevealPreset;
 
+export type SlideExternalLink = {
+  href: string;
+  label: string;
+};
+
 export interface SlideRenderProps {
   slide: SlideDefinition;
   index: number;
@@ -21,6 +26,12 @@ export interface SlideDefinition {
   hidden?: boolean;
   notes?: string;
   preloadAssets?: string[];
+  /** Внешняя ссылка (например шаблон Floux); рендерится компонентом слайда, если поддерживается. */
+  link?: string;
+  /** Подпись к ссылке; если не задана при наличии `link`, показывается сам URL. */
+  linkLabel?: string;
+  /** Несколько ссылок под заголовком (компоненты вроде MinimalTitleMultiLinkSlide). */
+  links?: SlideExternalLink[];
 }
 
 export interface DeckDefinition {

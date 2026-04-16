@@ -43,6 +43,7 @@ import { JsonImagesSlide } from '../slides/JsonImagesSlide';
 import { PromptOrderFlexSlide } from '../slides/PromptOrderFlexSlide';
 import { PromptOrderPairImagesSlide } from '../slides/PromptOrderPairImagesSlide';
 import { MinimalTitleSlide } from '../slides/MinimalTitleSlide';
+import { MinimalTitleMultiLinkSlide } from '../slides/MinimalTitleMultiLinkSlide';
 import { MidjorneyBentoSlide } from '../slides/MidjorneyBentoSlide';
 import { EditingPromptStructureSlide } from '../slides/EditingPromptStructureSlide';
 import { NodeBasedSlide } from '../slides/NodeBasedSlide';
@@ -55,18 +56,18 @@ import { ThankYouSlide } from '../slides/ThankYouSlide';
 
 export const mainDeck: DeckDefinition = {
   id: 'main',
-  title: 'NewGen Presentation Base',
+  title: 'GEN AI 2026',
   slides: [
     {
       id: 'about-me',
-      title: 'Обо мне',
+      title: 'Евсеичев Антон',
       theme: 'editorial',
       component: AboutMeSlide,
       notes: 'Из 20Feb AboutMe: имя, роли, Floux.pro founder; без изображений.',
     },
     {
       id: 'foundation-demo',
-      title: 'Foundation Demo',
+      title: 'Система для будущих слайдов, а не одноразовый макет',
       theme: 'editorial',
       component: DemoFoundationSlide,
       hidden: true,
@@ -74,7 +75,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'triptych-demo',
-      title: 'Triptych 4+4+4',
+      title: 'Три колонки — один ритм',
       theme: 'signal',
       component: DemoTriptychSlide,
       hidden: true,
@@ -82,7 +83,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'spotlight-stack-demo',
-      title: 'Spotlight stack',
+      title: 'Вертикальный протокол',
       theme: 'cinema',
       component: DemoSpotlightStackSlide,
       hidden: true,
@@ -97,14 +98,14 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'early-2025-pastgen',
-      title: 'Начало 2025 (PastGen)',
+      title: 'Начало 2025',
       theme: 'cinema',
       component: Early2025Slide,
       notes: 'Из 20Feb Early2025: тема cinema как spotlight-demo; три компактные панели в ряд, водяной PastGen; без изображений.',
     },
     {
       id: 'platforms-ecosystem-bento',
-      title: 'Платформы и модели (бенто)',
+      title: 'Платформы и модели',
       theme: 'editorial',
       component: PlatformsEcosystemBentoSlide,
       notes:
@@ -128,7 +129,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'floux-demo',
-      title: 'Демо Floux.pro',
+      title: 'Floux.pro',
       theme: 'signal',
       component: FlouxDemoSlide,
       notes: 'Из 20Feb FlouxDemoSlide: тема signal (синий), mesh backdrop; заголовок + видео /flow.mp4 (object-contain).',
@@ -143,7 +144,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'nano-banana-pro',
-      title: 'Nano Banana Pro',
+      title: 'Nano Banana — flash, pro, v2',
       theme: 'signal',
       component: NanoBananaProSlide,
       notes: 'Фон /bg/banana.png, градиент вниз розовый, заголовок по центру.',
@@ -151,7 +152,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'nano-banana-use-cases',
-      title: 'Nano Banana — сценарии использования',
+      title: 'Сценарии использования',
       theme: 'editorial',
       component: NanoBananaUseCasesSlide,
       notes:
@@ -173,7 +174,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'nano-banana-versions',
-      title: 'Версии Nano Banana (Flash / Pro / 2)',
+      title: 'Nano Banana',
       theme: 'signal',
       component: PlaceholderNanoBananaVersionsSlide,
       notes: 'Из 20Feb NanoBananaComparisonSlide: Flash / Pro / 2, строки параметров в колонках без таблицы; Pro — акцентный Box.',
@@ -203,7 +204,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'prompt-order-flex',
-      title: 'Промпт: порядок не догма',
+      title: 'Формула не догма',
       theme: 'cinema',
       component: PromptOrderFlexSlide,
       notes:
@@ -211,7 +212,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'prompt-order-pair-images',
-      title: 'Промпт: порядок — кадры',
+      title: 'Промпт: порядок',
       theme: 'cinema',
       component: PromptOrderPairImagesSlide,
       notes: 'Продолжение prompt-order-flex: сетка как у editing-prompt-principles, два рендера /images/prompt/001.png и 002.png.',
@@ -220,6 +221,7 @@ export const mainDeck: DeckDefinition = {
     {
       id: 'pro-contradictions',
       title: 'про противоречия',
+      link: 'https://app.floux.pro/w/hmBz7keW9FdS',
       theme: 'cinema',
       component: MinimalTitleSlide,
       notes: 'Чёрный минималистичный титул: одна строка по центру, без декора и мета.',
@@ -227,7 +229,7 @@ export const mainDeck: DeckDefinition = {
     // Идея для следующего слайда: пример про отсутствие противоречий (девушка заказывает кофе).
     {
       id: 'editing-prompt-structure',
-      title: 'Промпт на редактирование (структура)',
+      title: 'Промпт на редактирование',
       theme: 'cinema',
       component: EditingPromptStructureSlide,
       notes: 'Как prompt-structure, но 2 колонки: что правим / что сохраняем; слева акцентный блок Edit prompt.',
@@ -250,7 +252,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'style-copy-prompt-principles-copy-4',
-      title: 'Копирование стиля — слайд 4',
+      title: 'Копирование стиля',
       theme: 'editorial',
       component: StyleCopyPromptPrinciplesSlideCopy4,
       notes: 'Копия layout style-copy; править текст и пути картинок в компоненте Copy4.',
@@ -258,7 +260,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'style-copy-prompt-principles-copy-2',
-      title: 'Копирование стиля — слайд 2',
+      title: 'Точечное редактирование',
       theme: 'editorial',
       component: StyleCopyPromptPrinciplesSlideCopy2,
       notes: 'Копия layout style-copy; править текст и пути картинок в компоненте Copy2.',
@@ -266,7 +268,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'style-copy-prompt-principles-copy-3',
-      title: 'Копирование стиля — слайд 3',
+      title: 'Точечное редактирование',
       theme: 'editorial',
       component: StyleCopyPromptPrinciplesSlideCopy3,
       notes: 'Копия layout style-copy; править текст и пути картинок в компоненте Copy3.',
@@ -277,7 +279,7 @@ export const mainDeck: DeckDefinition = {
     // Точечное редактирование
     {
       id: 'multi-reference',
-      title: 'Мультиреференсность',
+      title: 'Мульти референсность',
       theme: 'cinema',
       component: MultiReferenceCoverSlide,
       notes: 'Обложка: riding.png, типографика как в 20Feb MultireferenceCover.',
@@ -285,7 +287,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'reference-counts',
-      title: 'Лимиты референсов по моделям',
+      title: 'Сколько референсов допускают модели',
       theme: 'cinema',
       component: ReferenceCountsSlide,
       notes: 'Из 20Feb ReferenceCounts: таблица лимитов; без сетки иконок слева.',
@@ -306,7 +308,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'leo-wide-shot',
-      title: 'Широкий план (Leo)',
+      title: 'Фотореализм',
       theme: 'editorial',
       component: LeoWideShotSlide,
       notes:
@@ -321,7 +323,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'leo-flux-vs-gpt',
-      title: 'Сравнение: Flux 2 и GPT Images',
+      title: 'Сравнение',
       theme: 'editorial',
       component: LeoFluxVsGptSlide,
       notes:
@@ -340,7 +342,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'composition-multi-ref',
-      title: 'Композиция (мультиреференс)',
+      title: 'Композиция',
       theme: 'editorial',
       component: CompositionSlide,
       notes:
@@ -354,7 +356,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'reference-analysis',
-      title: 'Анализ референсов',
+      title: 'Анализ референса',
       theme: 'editorial',
       component: ReferenceAnalysisSlide,
       notes: 'Два референса face/001–002, сравнение в колонках 6+6.',
@@ -362,7 +364,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'angles-lighting',
-      title: 'Особенности: углы, ракурсы, освещение',
+      title: 'Ракурс камеры и освещение',
       theme: 'signal',
       component: CameraAnglesSlide,
       notes: 'Ракурсы и освещение: два референс-изображения, декор comb.png.',
@@ -370,7 +372,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'gamepad-style-transfer',
-      title: 'Перенос стиля (геймпад)',
+      title: 'Перенос стиля',
       theme: 'editorial',
       component: GamepadStyleTransferSlide,
       notes:
@@ -379,18 +381,19 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'photorealism-clothing-copy',
-      title: 'Перенос стиля',
+      title: 'Перенос одежды',
       theme: 'editorial',
       component: PhotorealismSlideCopy,
       notes: 'Как editing: сетка 3+9; слева промпт, справа колонка из двух референсов + результат.',
       preloadAssets: ['/images/fashion/person.png', '/images/fashion/ref.png', '/images/fashion/out.png'],
     },
     {
-      id: 'pro-contradictions',
-      title: 'Пример на практике с переносом стиля',
+      id: 'less-obvious-use-cases',
+      title: 'Ссылка на пример',
+      link: 'https://app.floux.pro/templates/wYGwU6CDVWK9',
       theme: 'cinema',
       component: MinimalTitleSlide,
-      notes: 'Чёрный минималистичный титул: одна строка по центру, без декора и мета.',
+      notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
       id: 'photorealism-model-picks',
@@ -485,7 +488,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: '3d-two-refs-two-outs',
-      title: '3D: два референса → два результата',
+      title: '3D',
       theme: 'editorial',
       component: ThreeDRefsSlide,
       notes: 'Как LeoWideShot: сетка 3+9; слева промпт; два референса в левой колонке сетки, два результата в правой; /images/3d/.',
@@ -498,7 +501,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'workflow-comparison',
-      title: '3D workflow',
+      title: '3D воркфлоу',
       theme: 'cinema',
       component: WorkflowComparisonSlide,
       notes:
@@ -507,14 +510,15 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'less-obvious-use-cases',
-      title: 'Пример на практике',
+      title: 'Ссылка на пример',
+      link: 'https://app.floux.pro/w/3D2nLFZOr7L9',
       theme: 'cinema',
       component: MinimalTitleSlide,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
       id: 'speaker-channel-grid',
-      title: 'Спикер и сетка работ',
+      title: 'Макс Кукушкин',
       theme: 'editorial',
       component: SpeakerChannelGridSlide,
       notes:
@@ -530,7 +534,7 @@ export const mainDeck: DeckDefinition = {
     // Пример на практике
     {
       id: 'json-prompting-cover',
-      title: 'JSON-промптинг',
+      title: 'JSON промптинг',
       theme: 'cinema',
       component: JsonPromptingCoverSlide,
       notes: 'Обложка из 20Feb JsonPrompting: /bg/bg2.png, верх/низ мета как в оригинале.',
@@ -546,7 +550,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'structured-prompt-json',
-      title: 'Структурированный промпт (JSON)',
+      title: 'Структурированный промпт',
       theme: 'cinema',
       component: StructuredPromptsSlide,
       notes:
@@ -554,7 +558,7 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'json-images-triptych',
-      title: 'JSON — три изображения',
+      title: 'JSON и изображения',
       theme: 'editorial',
       component: JsonImagesSlide,
       notes:
@@ -563,10 +567,24 @@ export const mainDeck: DeckDefinition = {
     },
     {
       id: 'less-obvious-use-cases',
-      title: 'Другие примеры',
+      title: 'Ссылка на пример',
       theme: 'cinema',
       component: MinimalTitleSlide,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
+      link: 'https://app.floux.pro/templates/pEpa2FeYuOSx',
+      linkLabel: 'Floux — копирование композиции фото',
+    },
+    {
+      id: 'other-examples-floux-projects',
+      title: 'Другие примеры',
+      theme: 'cinema',
+      component: MinimalTitleMultiLinkSlide,
+      notes: 'Тот же минималистичный титул, несколько ссылок на проекты Floux.',
+      links: [
+        { href: 'https://app.floux.pro/w/sEdt6HD5IK4E', label: 'Примеры раз' },
+        { href: 'https://app.floux.pro/w/hPhGWhUNgmgH', label: 'Примеры два' },
+        { href: 'https://app.floux.pro/w/n8uIn8wki5HZ', label: 'Примеры три' },
+      ],
     },
     {
       id: 'thank-you',
