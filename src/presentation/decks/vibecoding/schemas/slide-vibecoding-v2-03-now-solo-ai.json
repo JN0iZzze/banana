@@ -1,0 +1,43 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт I · Зов к приключению",
+    "title": "Сейчас ту\u00A0же задачу делает один человек с\u00A0ИИ — за\u00A0недели",
+    "lead": "В\u00A02026-м на\u00A0месте команды — один автор и\u00A0агент. Это не\u00A0революция в\u00A0коде, а\u00A0сдвиг в\u00A0том, кому доступно производство продуктов."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 7,
+    "rightSpan": 5,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "leadingIcon": "sparkles",
+        "watermarkIcon": "sparkles",
+        "subtitle": { "variant": "overline", "text": "Что это даёт" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Идея → прототип → запуск без посредников" },
+          { "variant": "body", "text": "Стоимость ошибки падает в\u00A0десятки раз. Дизайнер и\u00A0продакт больше не\u00A0зависят от\u00A0слота разработчика — можно проверить гипотезу за\u00A0выходные, а\u00A0не за\u00A0квартал." }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "leadingIcon": "globe",
+        "subtitle": { "variant": "overline", "text": "Осторожный мост" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Звучит как фантастика? Для\u00A0больших компаний — да" },
+          { "variant": "body", "text": "Корпорации не\u00A0поворотливы — внедрение ИИ в\u00A0их процессы займёт годы. Но вопрос не\u00A0в\u00A0том, когда все придут к\u00A0этому. Вопрос — какое место ты хочешь занять в\u00A0этом будущем." }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт I · Переход порога",
+    "title": "Вайбкодинг — бустер, а\u00A0не\u00A0магия",
+    "lead": "Термин Карпатого (начало 2025): ты формулируешь намерения, агент пишет синтаксис. Ты\u00A0— куратор контекста, он\u00A0— руки."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "leadingIcon": "brain",
+        "subtitle": { "variant": "overline", "text": "Определение" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Ты решаешь «что», агент решает «как»" },
+          { "variant": "body", "text": "Практика, где человек задаёт намерения и\u00A0оценивает результат, а\u00A0модель закрывает синтаксис и\u00A0сборку. Это не\u00A0замена инженерам — это способ обойти барьер освоения стека." }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "leadingIcon": "zap",
+        "watermarkIcon": "sparkles",
+        "subtitle": { "variant": "overline", "text": "Что меняется" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Технологии те же, цена — другая" },
+          { "variant": "body", "text": "React, Postgres, API остаются на\u00A0месте. Меняется, кто их пишет и\u00A0сколько это стоит лично тебе. Решения — что делать и\u00A0что хорошо — всё ещё за\u00A0тобой." }
+        ]
+      }
+    }
+  }
+}

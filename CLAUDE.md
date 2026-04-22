@@ -10,17 +10,21 @@
 
 Ключевые файлы:
 - [src/presentation/decks/vibecodingDeck.ts](src/presentation/decks/vibecodingDeck.ts) — состав, порядок, заголовки, заметки для докладчика.
-- [src/presentation/decks/vibecodingSlideIds.ts](src/presentation/decks/vibecodingSlideIds.ts) — реестр id слайдов.
-- [src/presentation/decks/vibecoding/schemas/](src/presentation/decks/vibecoding/schemas/) — JSON-схемы деки «Вайбкодинг», по одному файлу на слайд, имя вида `slide-vibecoding-NN-<name>.json` (сейчас 18 слайдов, включая скрытый demo). Схемы деки **main** лежат в [src/presentation/decks/main/schemas/](src/presentation/decks/main/schemas/).
-- [src/presentation/jsonSlideDocumentRegistry.ts](src/presentation/jsonSlideDocumentRegistry.ts) — связка JSON-схем с id слайдов.
+- [src/presentation/decks/vibecodingSlideIds.ts](src/presentation/decks/vibecodingSlideIds.ts) — реестр id слайдов. **Сейчас пустой** — дека пересобирается с нуля по новому сценарию (апрель 2026).
+- [src/presentation/decks/vibecoding/jsonSlides.ts](src/presentation/decks/vibecoding/jsonSlides.ts) — активные JSON-слайды деки (сейчас пустой массив, заполняется по мере рендера из md-реестра).
+- [src/presentation/decks/vibecoding/schemas/](src/presentation/decks/vibecoding/schemas/) — JSON-схемы деки «Вайбкодинг» (папка создаётся при первом слайде). Схемы деки **main** лежат в [src/presentation/decks/main/schemas/](src/presentation/decks/main/schemas/).
+- [src/presentation/decks/vibecoding/archive/](src/presentation/decks/vibecoding/archive/) — **архив прежней версии деки** (18 слайдов и legacy-ключи). Не импортируется декой; доступен для справки и заимствований через `vibecodingLegacyJsonSlides` и `VIBECODING_LEGACY_SLIDE_IDS`.
+- [src/presentation/decks/defineJsonSlide.ts](src/presentation/decks/defineJsonSlide.ts) — фабрика JSON-слайда: валидация `raw` JSON и поле `jsonDocument` на слайде.
+- [src/presentation/decks/main/jsonSlides.ts](src/presentation/decks/main/jsonSlides.ts) / [src/presentation/decks/vibecoding/jsonSlides.ts](src/presentation/decks/vibecoding/jsonSlides.ts) — сборка JSON-слайдов деки (импорты схем + `defineJsonSlide`).
+- [src/presentation/decks/mainSlideIds.ts](src/presentation/decks/mainSlideIds.ts) — стабильные `id` для main JSON-слайдов (`DEMO_JSON_SLIDE_IDS`, `MIGRATED_JSON_SLIDE_IDS`).
 - [todo.md](todo.md) — идеи, ещё не распределённые по слайдам.
 - [Вайбкодинг_ обзор, инструменты, архитектура.md](Вайбкодинг_%20обзор,%20инструменты,%20архитектура.md) — исходные заметки к докладу.
 
 ## Как устроены JSON-слайды (кратко)
 1. Схема в `src/presentation/decks/<deckId>/schemas/` описывает `frame`, `backdrop`, `content`, `header`, `layout` (для `main` и `vibecoding` — в своих папках `schemas` рядом с `*Deck.ts`).
-2. Документ регистрируется в `jsonSlideDocumentRegistry.ts`.
-3. Запись в `vibecodingDeck.ts` указывает `component: JsonSlideRenderer` на id.
-4. Рендерер валидирует документ и диспатчит один из лэйаутов: `equalColumns`, `asymmetricColumns`, `splitLayout`, `stackLayout`, `uniformGrid`, `bentoGrid`, `mediaGallery`, плюс шаблоны `textStack` и `imageCover`.
+2. Слайд собирается через `defineJsonSlide` (в `main/jsonSlides.ts` или `vibecoding/jsonSlides.ts`); валидированный документ лежит в `slide.jsonDocument`.
+3. Запись в `mainDeck.ts` / `vibecodingDeck.ts` ссылается на готовый слайд (или для legacy — обычный `component: SomeSlide`).
+4. `JsonSlideRenderer` читает `slide.jsonDocument` и диспатчит один из лэйаутов: `equalColumns`, `asymmetricColumns`, `splitLayout`, `stackLayout`, `uniformGrid`, `bentoGrid`, `mediaGallery`, плюс шаблоны `textStack` и `imageCover`.
 
 Полный контракт (лэйауты, карточки, `items[]`, компоненты, типографика) — [src/presentation/json-renderer/README.md](src/presentation/json-renderer/README.md). Это главный источник правды для всего, что касается JSON-рендерера.
 

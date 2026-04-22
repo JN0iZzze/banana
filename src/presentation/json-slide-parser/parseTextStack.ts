@@ -14,6 +14,11 @@ import type {
   JsonSlideTextStackAlign,
   JsonSlideTextStackDocument,
   JsonSlideTextStackItem,
+  JsonSlideTextStackItemTextChunked,
+  JsonSlideTextStackItemTextPlain,
+  JsonSlideTextStackTextChunk,
+  JsonSlideTextStackTextChunkDecoration,
+  JsonSlideTextStackTextChunkTone,
   JsonSlideTextStackItemContext,
   JsonSlideTextStackItemSize,
   JsonSlideTextStackItemVariant,
@@ -21,7 +26,7 @@ import type {
   JsonSlideTextStackReveal,
   JsonSlideTextStackRevealPreset,
 } from '../jsonSlideTypes';
-import { err, GRID_GAPS, isRecord, parseString } from './parseUtils';
+import { err, GRID_GAPS, isRecord, parseOptionalString, parseString } from './parseUtils';
 
 type ParseResult<T> = { ok: true; value: T } | { ok: false; error: string };
 
@@ -52,6 +57,56 @@ const TEXT_STACK_ITEM_VARIANT_HINT =
   'h1, h2, h3, lead, body, bodyLg, caption, overline, prompt';
 const TEXT_STACK_ITEM_SIZES = new Set<JsonSlideTextStackItemSize>(['display', 'section', 'compact']);
 const TEXT_STACK_ITEM_CONTEXTS = new Set<JsonSlideTextStackItemContext>(['default', 'onAccent']);
+
+const TEXT_STACK_CHUNK_TONES = new Set<JsonSlideTextStackTextChunkTone>(['default', 'accent']);
+const TEXT_STACK_CHUNK_DECORATIONS = new Set<JsonSlideTextStackTextChunkDecoration>(['none', 'lineThrough']);
+
+function parsePositiveNumberField(
+  value: unknown,
+  fieldPath: string,
+): number | { ok: false; error: string } {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    return err(`${fieldPath} must be a finite number`);
+  }
+  if (value <= 0) {
+    return err(`${fieldPath} must be a positive number`);
+  }
+  return value;
+}
+
+function parseTextStackChunk(
+  raw: unknown,
+  itemIndex: number,
+  chunkIndex: number,
+): ParseResult<JsonSlideTextStackTextChunk> {
+  if (!isRecord(raw)) {
+    return err(`stack.items[${itemIndex}].chunks[${chunkIndex}] must be an object`);
+  }
+  const text = parseString(raw.text, `stack.items[${itemIndex}].chunks[${chunkIndex}].text`);
+  if (typeof text === 'object') return text;
+
+  if (raw.tone !== undefined) {
+    if (typeof raw.tone !== 'string' || !TEXT_STACK_CHUNK_TONES.has(raw.tone as JsonSlideTextStackTextChunkTone)) {
+      return err(`stack.items[${itemIndex}].chunks[${chunkIndex}].tone must be default or accent when present`);
+    }
+  }
+  if (raw.decoration !== undefined) {
+    if (typeof raw.decoration !== 'string' || !TEXT_STACK_CHUNK_DECORATIONS.has(raw.decoration as JsonSlideTextStackTextChunkDecoration)) {
+      return err(`stack.items[${itemIndex}].chunks[${chunkIndex}].decoration must be none or lineThrough when present`);
+    }
+  }
+
+  return {
+    ok: true,
+    value: {
+      text,
+      ...(raw.tone !== undefined ? { tone: raw.tone as JsonSlideTextStackTextChunkTone } : {}),
+      ...(raw.decoration !== undefined
+        ? { decoration: raw.decoration as JsonSlideTextStackTextChunkDecoration }
+        : {}),
+    },
+  };
+}
 
 function parseFrame(raw: unknown): ParseResult<JsonSlideFrame> {
   if (!isRecord(raw)) {
@@ -118,8 +173,8 @@ function parseStackItem(raw: unknown, index: number): ParseResult<JsonSlideTextS
   }
 
   const type = raw.type;
-  if (type !== 'text' && type !== 'link') {
-    return err(`stack.items[${index}].type must be "text" or "link"`);
+  if (type !== 'text' && type !== 'link' && type !== 'image') {
+    return err(`stack.items[${index}].type must be "text", "link", or "image"`);
   }
 
   if (type === 'link') {
@@ -130,14 +185,45 @@ function parseStackItem(raw: unknown, index: number): ParseResult<JsonSlideTextS
     return { ok: true, value: { type: 'link', href, label } };
   }
 
+  if (type === 'image') {
+    const src = parseString(raw.src, `stack.items[${index}].src`);
+    if (typeof src === 'object') return src;
+    const alt = parseOptionalString(raw.alt, `stack.items[${index}].alt`);
+    if (typeof alt === 'object') return alt;
+    const width = parsePositiveNumberField(raw.width, `stack.items[${index}].width`);
+    if (typeof width === 'object') return width;
+    let height: number | undefined;
+    if (raw.height !== undefined) {
+      const h = parsePositiveNumberField(raw.height, `stack.items[${index}].height`);
+      if (typeof h === 'object') return h;
+      height = h;
+    }
+    return {
+      ok: true,
+      value: {
+        type: 'image',
+        src,
+        width,
+        ...(alt !== undefined ? { alt } : {}),
+        ...(height !== undefined ? { height } : {}),
+      },
+    };
+  }
+
   // type === 'text'
   if (typeof raw.variant !== 'string' || !TEXT_STACK_ITEM_VARIANTS.has(raw.variant as JsonSlideTextStackItemVariant)) {
     return err(`stack.items[${index}].variant must be one of: ${TEXT_STACK_ITEM_VARIANT_HINT}`);
   }
   const variant = raw.variant as JsonSlideTextStackItemVariant;
 
-  const text = parseString(raw.text, `stack.items[${index}].text`);
-  if (typeof text === 'object') return text;
+  const hasText = raw.text !== undefined;
+  const hasChunks = raw.chunks !== undefined;
+  if (hasText && hasChunks) {
+    return err(`stack.items[${index}] must set either "text" or "chunks", not both`);
+  }
+  if (!hasText && !hasChunks) {
+    return err(`stack.items[${index}] must include "text" or "chunks"`);
+  }
 
   if (raw.size !== undefined) {
     if (variant !== 'h1') {
@@ -154,15 +240,46 @@ function parseStackItem(raw: unknown, index: number): ParseResult<JsonSlideTextS
     }
   }
 
+  const sizePart =
+    raw.size !== undefined && variant === 'h1' ? { size: raw.size as JsonSlideTextStackItemSize } : {};
+  const contextPart =
+    raw.context !== undefined ? { context: raw.context as JsonSlideTextStackItemContext } : {};
+
+  if (hasText) {
+    const text = parseString(raw.text, `stack.items[${index}].text`);
+    if (typeof text === 'object') return text;
+    return {
+      ok: true,
+      value: {
+        type: 'text',
+        variant,
+        text,
+        ...sizePart,
+        ...contextPart,
+      } satisfies JsonSlideTextStackItemTextPlain,
+    };
+  }
+
+  if (!Array.isArray(raw.chunks) || raw.chunks.length === 0) {
+    return err(`stack.items[${index}].chunks must be a non-empty array`);
+  }
+
+  const chunks: JsonSlideTextStackTextChunk[] = [];
+  for (let c = 0; c < raw.chunks.length; c++) {
+    const chunkRes = parseTextStackChunk(raw.chunks[c], index, c);
+    if (!chunkRes.ok) return chunkRes;
+    chunks.push(chunkRes.value);
+  }
+
   return {
     ok: true,
     value: {
       type: 'text',
       variant,
-      text,
-      ...(raw.size !== undefined && variant === 'h1' ? { size: raw.size as JsonSlideTextStackItemSize } : {}),
-      ...(raw.context !== undefined ? { context: raw.context as JsonSlideTextStackItemContext } : {}),
-    },
+      chunks: chunks as [JsonSlideTextStackTextChunk, ...JsonSlideTextStackTextChunk[]],
+      ...sizePart,
+      ...contextPart,
+    } satisfies JsonSlideTextStackItemTextChunked,
   };
 }
 

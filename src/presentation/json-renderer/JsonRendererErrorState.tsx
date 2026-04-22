@@ -6,7 +6,7 @@ export function JsonRendererMissingDocument({ slideId }: { slideId: string }) {
       <SlideBackdrop variant="none" />
       <SlideContent width="content" align="center" density="comfortable" className="h-full min-h-0 justify-center">
         <Text variant="bodyLg" className="text-center text-pretty">
-          Для слайда «{slideId}» не зарегистрирована JSON-схема в jsonSlideDocumentRegistry.
+          Для слайда «{slideId}» не передан JSON-документ (ожидается `jsonDocument` на слайде с `JsonSlideRenderer`).
         </Text>
       </SlideContent>
     </SlideFrame>

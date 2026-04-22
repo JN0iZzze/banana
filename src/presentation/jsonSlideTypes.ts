@@ -489,14 +489,38 @@ export type JsonSlideTextStackItemSize = 'display' | 'section' | 'compact';
 
 export type JsonSlideTextStackItemContext = 'default' | 'onAccent';
 
-export interface JsonSlideTextStackItemText {
+export type JsonSlideTextStackTextChunkTone = 'default' | 'accent';
+
+export type JsonSlideTextStackTextChunkDecoration = 'none' | 'lineThrough';
+
+/** One inline run inside a `text` stack row when `chunks` is used. */
+export interface JsonSlideTextStackTextChunk {
+  text: string;
+  /** Defaults to `default` (inherits parent `Text` color). */
+  tone?: JsonSlideTextStackTextChunkTone;
+  /** Defaults to `none`. */
+  decoration?: JsonSlideTextStackTextChunkDecoration;
+}
+
+export interface JsonSlideTextStackItemTextBase {
   type: 'text';
   variant: JsonSlideTextStackItemVariant;
-  text: string;
   /** Only allowed when variant is "h1". */
   size?: JsonSlideTextStackItemSize;
   context?: JsonSlideTextStackItemContext;
 }
+
+/** Plain one-line `text: string` (original contract). */
+export interface JsonSlideTextStackItemTextPlain extends JsonSlideTextStackItemTextBase {
+  text: string;
+}
+
+/** Rich line: `chunks` only; no `text` field. */
+export interface JsonSlideTextStackItemTextChunked extends JsonSlideTextStackItemTextBase {
+  chunks: [JsonSlideTextStackTextChunk, ...JsonSlideTextStackTextChunk[]];
+}
+
+export type JsonSlideTextStackItemText = JsonSlideTextStackItemTextPlain | JsonSlideTextStackItemTextChunked;
 
 export interface JsonSlideTextStackItemLink {
   type: 'link';
@@ -504,7 +528,20 @@ export interface JsonSlideTextStackItemLink {
   label: string;
 }
 
-export type JsonSlideTextStackItem = JsonSlideTextStackItemText | JsonSlideTextStackItemLink;
+export interface JsonSlideTextStackItemImage {
+  type: 'image';
+  src: string;
+  alt?: string;
+  /** Width in CSS pixels. */
+  width: number;
+  /** Height in CSS pixels. Omit to keep aspect ratio at the given `width`. */
+  height?: number;
+}
+
+export type JsonSlideTextStackItem =
+  | JsonSlideTextStackItemText
+  | JsonSlideTextStackItemLink
+  | JsonSlideTextStackItemImage;
 
 export type JsonSlideTextStackAlign = 'left' | 'center' | 'right';
 export type JsonSlideTextStackJustify = 'start' | 'center' | 'end';
@@ -525,7 +562,7 @@ export interface JsonSlideTextStack {
   items: [JsonSlideTextStackItem, ...JsonSlideTextStackItem[]];
 }
 
-/** Headerless text-stack slide: vertical list of text/link items, no layout dispatch. */
+/** Headerless text-stack slide: vertical list of text, link, or image items, no layout dispatch. */
 export interface JsonSlideTextStackDocument {
   template: 'textStack';
   theme?: SlideTheme;

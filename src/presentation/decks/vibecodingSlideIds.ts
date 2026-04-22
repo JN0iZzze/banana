@@ -1,21 +1,17 @@
-/** Slide ids for the vibecoding deck only (`/vibecoding`). Keys map to `jsonSlideDocumentBySlideId`. */
+/**
+ * Slide ids для вайбкодинг-деки (`/vibecoding`).
+ *
+ * Сценарий — `vibecoding-deck-plan.md`. Legacy-ключи прежней версии лежат в
+ * `./vibecoding/archive/legacyVibecodingSlideIds.ts` (`VIBECODING_LEGACY_SLIDE_IDS`).
+ * Префикс `v2` отделяет новые id от архивных (`vibecoding-01-cover` и т.д.).
+ */
 export const VIBECODING_DECK_SLIDE_IDS = {
-  cover: 'vibecoding-01-cover',
-  definition: 'vibecoding-02-definition',
-  refusal: 'vibecoding-03-refusal',
-  cycle: 'vibecoding-04-cycle',
-  landscape: 'vibecoding-05-landscape',
-  platforms: 'vibecoding-06-platforms',
-  philosophies: 'vibecoding-07-philosophies',
-  proTools: 'vibecoding-08-pro-tools',
-  cursorVsClaude: 'vibecoding-09-cursor-vs-claude',
-  doomLoop: 'vibecoding-10-doom-loop',
-  costOfReliability: 'vibecoding-11-cost-of-reliability',
-  architecture: 'vibecoding-12-architecture',
-  rules: 'vibecoding-13-rules',
-  mcp: 'vibecoding-14-mcp',
-  subagents: 'vibecoding-15-subagents',
-  security: 'vibecoding-16-security',
-  closing: 'vibecoding-17-closing',
-  demo: 'vibecoding-18-demo',
+  cover: 'vibecoding-v2-01-cover',
+  pastTeam: 'vibecoding-v2-02-past-team',
+  nowSoloAi: 'vibecoding-v2-03-now-solo-ai',
+  shiftIsReal: 'vibecoding-v2-04-shift-is-real',
+  booster: 'vibecoding-v2-05-booster',
+  hero: 'vibecoding-v2-06-hero',
+  threeFears: 'vibecoding-v2-07-three-fears',
+  act2Separator: 'vibecoding-v2-08-act2-separator',
 } as const;

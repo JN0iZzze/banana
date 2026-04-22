@@ -1,4 +1,4 @@
-import type { JsonSlideTextStackDocument, JsonSlideTextStackItem } from '../jsonSlideTypes';
+import type { JsonSlideTextStackDocument, JsonSlideTextStackItem, JsonSlideTextStackItemText } from '../jsonSlideTypes';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdrop, SlideBackdropFrame, SlideContent, SlideFrame, Text } from '../../ui/slides';
 
@@ -30,6 +30,23 @@ const gapClasses: Record<string, string> = {
 const linkClassName =
   'font-mono text-3xl tracking-[0.06em] text-[color:var(--slide-color-accent)] underline decoration-white/25 underline-offset-[0.35em] transition-colors hover:text-[color:var(--slide-color-text-soft)] hover:decoration-white/50';
 
+function renderTextStackTextContent(item: JsonSlideTextStackItemText) {
+  if ('chunks' in item) {
+    return item.chunks.map((chunk, c) => (
+      <span
+        key={c}
+        className={cn(
+          chunk.tone === 'accent' ? 'slide-text-stack-chunk-accent' : undefined,
+          chunk.decoration === 'lineThrough' ? 'slide-text-stack-chunk-lineThrough' : undefined,
+        )}
+      >
+        {chunk.text}
+      </span>
+    ));
+  }
+  return item.text;
+}
+
 function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, preset: string, textAlign: string) {
   if (item.type === 'link') {
     return (
@@ -50,6 +67,23 @@ function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, 
     );
   }
 
+  if (item.type === 'image') {
+    return (
+      <Reveal
+        key={`image-${index}`}
+        preset={preset as 'soft' | 'hero' | 'scale-in' | 'enter-up' | 'none'}
+        delay={delay}
+      >
+        <img
+          src={item.src}
+          alt={item.alt ?? ''}
+          className="block h-auto max-w-full object-contain"
+          style={{ width: item.width, height: item.height ?? 'auto' }}
+        />
+      </Reveal>
+    );
+  }
+
   return (
     <Reveal
       key={`text-${index}`}
@@ -63,10 +97,11 @@ function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, 
         className={cn(
           item.variant === 'h1' ? 'max-w-[var(--slide-content-wide)] text-pretty tracking-tight' : undefined,
           item.variant === 'prompt' ? 'max-w-full min-w-0' : undefined,
+          item.variant === 'lead' ? '!max-w-full min-w-0' : undefined,
           textAlign,
         )}
       >
-        {item.text}
+        {renderTextStackTextContent(item)}
       </Text>
     </Reveal>
   );

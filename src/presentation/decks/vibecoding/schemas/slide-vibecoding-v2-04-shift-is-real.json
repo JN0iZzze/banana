@@ -1,0 +1,50 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт I · Подтверждение",
+    "title": "Сдвиг уже случился — и не остановится",
+    "lead": "Цифры подтверждают сдвиг. Прогноз\u00A0— что ускорение продолжится."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "leadingIcon": "bar-chart-3",
+            "watermarkIcon": "layout-template",
+            "subtitle": { "variant": "overline", "text": "App Store · Q1 2026" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "+84% за квартал — 235 800 новых приложений" },
+              { "variant": "body", "text": "После нескольких лет спада App\u00A0Store снова растёт\u00A0— и причина прямая: Claude Code, Codex и вайбкодинг убрали порог входа. Приложения теперь делают люди без знания кода, и тренд не остановить. Побеждает теперь не код, а вкус и внимание к деталям." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "leadingIcon": "zap",
+            "watermarkIcon": "sparkles",
+            "subtitle": { "variant": "overline", "text": "Дарио Амодеи · Anthropic" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "«Конца радуги не видно»" },
+              { "variant": "body", "text": "Масштабирование моделей продолжается, потолка впереди не видно. То, что сегодня кажется мощным, через год снова устареет. Для продуктовых команд это значит одно: закладывать ускорение в роадмап нужно уже сейчас." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

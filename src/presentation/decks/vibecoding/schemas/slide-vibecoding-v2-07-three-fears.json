@@ -1,0 +1,91 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт I · Отказ от зова",
+    "title": "Три страха на\u00A0пороге",
+    "lead": "У\u00A0порога слышны три голоса. Все три кажутся разумными — и\u00A0всё равно уводят в\u00A0сторону от\u00A0действия."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "headerBadge": { "text": "01" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Возражение" },
+                  { "variant": "h2", "text": "«Я не программист, я дизайнер»" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Вайбкодинг убирает барьер освоения языков и\u00A0инструментов. То, что ты и\u00A0так умеешь — ставить цели и\u00A0оценивать результат — остаётся при\u00A0тебе." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "headerBadge": { "text": "02" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Возражение" },
+                  { "variant": "h2", "text": "«Это не настоящая разработка»" }  
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "React, NodeJS, Python — технологии общие с\u00A0«настоящими» разработчиками. Настоящая работа — это продукт, который решает задачу. Всё остальное — снобизм." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "headerBadge": { "text": "03" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Возражение" },
+                  { "variant": "h2", "text": "«ИИ не умеет, это хайп»" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "App Store за\u00A0квартал вырос на\u00A084% — 235\u00A0800 новых приложений. Это не\u00A0прогноз: люди без\u00A0знания кода уже собирают продукты, и\u00A0сам глава Anthropic говорит — потолка не\u00A0видно." }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

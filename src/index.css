@@ -228,7 +228,7 @@
 
   .slide-text-h3 {
     font-family: var(--font-body);
-    font-size: clamp(2rem, 3vw, 3rem);
+    font-size: clamp(1.8rem, 3vw, 2rem);
     font-weight: 700;
     line-height: 1.02;
     letter-spacing: -0.03em;
@@ -272,6 +272,18 @@
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: var(--slide-color-text-soft);
+  }
+
+  /** Inline `textStack` chunk styling (JSON `chunks` on `type: "text"` items). */
+  .slide-text-stack-chunk-accent {
+    color: var(--slide-color-accent);
+  }
+
+  .slide-text-stack-chunk-lineThrough {
+    text-decoration: line-through;
+    text-decoration-thickness: 0.08em;
+    text-decoration-skip-ink: none;
+    opacity: 0.7;
   }
 
   .slide-text-caption[data-slide-text-context="onAccent"] {

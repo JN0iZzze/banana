@@ -1,0 +1,55 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт I · Обычный мир",
+    "title": "Раньше продукт — это команда из\u00A0шести человек и\u00A0полгода",
+    "lead": "В\u00A02024-м, чтобы запустить MVP, нужна была полноценная команда: фронт, бэк, дизайнер, девопс, менеджер. Идея доходила до\u00A0пользователя через найм и\u00A0бюджет."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 5,
+    "rightSpan": 7,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "leadingIcon": "share-2",
+        "subtitle": { "variant": "overline", "text": "Типовая команда MVP" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Пять-шесть ролей в\u00A0одной лодке" },
+          {
+            "type": "component",
+            "component": "tagList",
+            "variant": "compact",
+            "gap": "sm",
+            "items": [
+              { "label": "Фронтенд" },
+              { "label": "Бэкенд" },
+              { "label": "Дизайнер" },
+              { "label": "DevOps" },
+              { "label": "Менеджер" },
+              { "label": "QA" }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "leadingIcon": "bar-chart-3",
+        "justify": "between",
+        "subtitle": { "variant": "overline", "text": "Сухие цифры" },
+        "items": [
+          { "variant": "h2", "text": "~6 месяцев и $50–200K на\u00A0MVP" },
+          { "variant": "body", "text": "Критический путь разработки упирался в\u00A0найм, а\u00A0не в\u00A0идею. Продуктовая разработка была доступна тем, у\u00A0кого есть бюджет или команда." }
+        ]
+      }
+    }
+  }
+}

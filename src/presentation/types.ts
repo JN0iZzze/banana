@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import type { JsonSlideDocument } from './jsonSlideTypes';
 
 export type SlideTheme = 'editorial' | 'signal' | 'cinema';
 
@@ -18,17 +19,10 @@ export type SlideExternalLink = {
   label: string;
 };
 
-export interface SlideRenderProps {
-  slide: SlideDefinition;
-  index: number;
-  totalSlides: number;
-}
-
-export interface SlideDefinition {
+export interface BaseSlideDefinition {
   id: string;
   title: string;
   theme: SlideTheme;
-  component: ComponentType<SlideRenderProps>;
   /** Не показывать в навигации и списке (шаблоны, черновики). */
   hidden?: boolean;
   notes?: string;
@@ -41,10 +35,30 @@ export interface SlideDefinition {
   links?: SlideExternalLink[];
 }
 
+export interface LegacySlideDefinition extends BaseSlideDefinition {
+  component: ComponentType<SlideRenderProps>;
+}
+
+export interface JsonSlideDefinition extends BaseSlideDefinition {
+  component: ComponentType<SlideRenderProps>;
+  jsonDocument: JsonSlideDocument;
+}
+
+export type SlideDefinition = LegacySlideDefinition | JsonSlideDefinition;
+
+export function isJsonSlideDefinition(slide: SlideDefinition): slide is JsonSlideDefinition {
+  return 'jsonDocument' in slide && slide.jsonDocument !== undefined;
+}
+
+export interface SlideRenderProps {
+  slide: SlideDefinition;
+  index: number;
+  totalSlides: number;
+}
+
 export interface DeckDefinition {
   id: string;
   title: string;
   slides: SlideDefinition[];
   defaultSlideId?: string;
 }
-

@@ -15,19 +15,20 @@ Do not use this path for slides that need custom widgets, charts, media logic, a
 The runtime entry is [`src/presentation/json-renderer/JsonSlideRenderer.tsx`](./JsonSlideRenderer.tsx).
 
 The rendering pipeline is:
-1. `mainDeck` points a slide entry at `JsonSlideRenderer`
-2. `JsonSlideRenderer` resolves a validated document from [`src/presentation/jsonSlideDocumentRegistry.ts`](../jsonSlideDocumentRegistry.ts)
+1. A deck’s slide entry for JSON is built with `defineJsonSlide()` (e.g. in [`decks/main/jsonSlides.ts`](../decks/main/jsonSlides.ts) or [`decks/vibecoding/jsonSlides.ts`](../decks/vibecoding/jsonSlides.ts)) and includes a validated `jsonDocument` on the slide
+2. `JsonSlideRenderer` reads `slide.jsonDocument` (no global registry)
 3. If `template` is `imageCover`, [`JsonImageCoverShell.tsx`](./JsonImageCoverShell.tsx) draws the full-bleed cover (image, overlay, frame, rails, headline) and returns — no `JsonSlideShell`, no `layout` dispatch
 4. Otherwise `JsonSlideShell` renders frame, backdrop, content, and header, then
 5. `renderJsonLayout()` dispatches to one supported layout renderer
 6. layout renderers render cards through [`nodes/JsonCardNode.tsx`](./nodes/JsonCardNode.tsx)
 
+Hybrid decks may also list slides with a normal React `component` and no `jsonDocument`; those never go through this JSON pipeline.
+
 ## Workflow For Adding A New JSON Slide
 1. Create or update a schema JSON file under the deck that owns the slide: [`src/presentation/decks/main/schemas/`](../decks/main/schemas) for the **main** deck, or [`src/presentation/decks/vibecoding/schemas/`](../decks/vibecoding/schemas) for **vibecoding**. For `spotlight` / `none` backdrops, set `backdrop.borderFrame: true` unless the slide is intentionally borderless (see `backdrop` below). `grid` / `mesh` already include the decorative frame inside [`SlideBackdrop`](../../ui/slides/layout.tsx) — do not add a second `borderFrame` for those.
-2. Register that JSON document in [`src/presentation/jsonSlideDocumentRegistry.ts`](../jsonSlideDocumentRegistry.ts).
-3. Add a visible or hidden slide entry to [`src/presentation/decks/mainDeck.ts`](../decks/mainDeck.ts) or [`src/presentation/decks/vibecodingDeck.ts`](../decks/vibecodingDeck.ts) with `component: JsonSlideRenderer`.
-4. Reuse only supported contract fields documented below.
-5. Verify with `npm run typecheck` and `npm run build`.
+2. **Main:** add a `defineJsonSlide({ ... })` entry in [`decks/main/jsonSlides.ts`](../decks/main/jsonSlides.ts) (or split imports there) and wire it in [`decks/mainDeck.ts`](../decks/mainDeck.ts). **Vibecoding:** add a `defineJsonSlide({ ... })` in [`decks/vibecoding/jsonSlides.ts`](../decks/vibecoding/jsonSlides.ts) and include it in the exported array. Helper: [`decks/defineJsonSlide.ts`](../decks/defineJsonSlide.ts). Slide ids for main live in [`decks/mainSlideIds.ts`](../decks/mainSlideIds.ts); vibecoding ids in [`decks/vibecodingSlideIds.ts`](../decks/vibecodingSlideIds.ts).
+3. Reuse only supported contract fields documented below.
+4. Verify with `npm run typecheck` and `npm run build`.
 
 If the slide needs unsupported behavior, stop and use a hand-written slide component instead of stretching the JSON contract.
 
@@ -87,7 +88,7 @@ Notes:
 - The shell currently fixes the `h1` style and lead style. Do not try to style header text from JSON.
 
 ### `template: "textStack"`
-Headerless centred slide: a vertical stack of `text` and `link` items without `SlideHeader` or layout dispatch. Use this for minimal title slides, multi-link slides, and about-me style slides.
+Headerless centred slide: a vertical stack of `text`, `link`, and optional `image` items without `SlideHeader` or layout dispatch. Use this for minimal title slides, multi-link slides, and about-me style slides.
 
 **Do not** set `header` or `layout` — the parser rejects them. All positioning is controlled by `stack`.
 
@@ -106,16 +107,50 @@ Rendered by [`JsonTextStackShell.tsx`](./JsonTextStackShell.tsx).
   - `preset`: `soft` | `hero` | `scale-in` | `enter-up` | `none` — `scale-in` is opacity + scale (no vertical slide); see [`Reveal.tsx`](../ui/slides/Reveal.tsx)
   - `baseDelay?`: number (seconds) for the first item (default `0`)
   - `step?`: number (seconds) added per item (default `0.08`)
-- `items`: non-empty array of `text` or `link` objects
+- `items`: non-empty array of `text`, `link`, or `image` objects
 
 **`type: "text"` item:**
+
+Use **either** the original single string **or** inline `chunks` — not both:
+- `text`: plain string (original form)
+- `chunks`: non-empty array of `{ "text", "tone"?, "decoration"? }` for partial accent / strikethrough inside one line
+
 ```json
 { "type": "text", "variant": "h1", "size": "display", "text": "Title here" }
 ```
+
+With **chunks** (example: strikethrough first word, rest normal):
+```json
+{
+  "type": "text",
+  "variant": "h1",
+  "size": "section",
+  "chunks": [
+    { "text": "Путь", "decoration": "lineThrough" },
+    { "text": " вайб героя" }
+  ]
+}
+```
+
 - `variant`: `h1` | `h2` | `h3` | `lead` | `body` | `bodyLg` | `caption` | `overline` | `prompt`
 - `size?`: `display` | `section` | `compact` — **only allowed when `variant` is `"h1"`**
 - `context?`: `default` | `onAccent`
-- `text`: required string
+- Per-chunk fields (only when `chunks` is used):
+  - `text`: required string (can be empty only if you intentionally want a gap; prefer including spaces in adjacent chunks)
+  - `tone?`: `default` | `accent` — `accent` uses theme accent color on that run
+  - `decoration?`: `none` | `lineThrough` — `lineThrough` for struck-through text (e.g. a joke)
+
+**Accent in one word** (other words default color):
+```json
+{
+  "type": "text",
+  "variant": "lead",
+  "chunks": [
+    { "text": "Одно слово " },
+    { "text": "акцент", "tone": "accent" }
+  ]
+}
+```
 
 **`type: "link"` item:**
 ```json
@@ -125,10 +160,22 @@ Rendered by [`JsonTextStackShell.tsx`](./JsonTextStackShell.tsx).
 - `label`: required display string
 - Link style matches legacy `MinimalTitleSlide` / `MinimalTitleMultiLinkSlide` (monospace, accent colour, underline). Style is hardcoded in the renderer — not configurable from JSON.
 
-**Restrictions (first iteration):**
-- No inline rich text / partial accents within a line
-- No arbitrary `className`
+**`type: "image"` item:**
+```json
+{ "type": "image", "src": "/images/example.png", "alt": "optional alt text", "width": 420 }
+```
+- `src`: required string (asset path or URL the slide shell can load)
+- `alt?`: optional string
+- `width`: required number — width in **CSS pixels**; height keeps aspect ratio unless `height` is set
+- `height?`: optional number — **CSS pixels**; omit for automatic height at the given `width`
+- No `objectFit`, caption, or radius in this minimal API; use `stack.gap` and `stack.align` for rhythm.
+
+**Restrictions (text `text` vs `chunks`):**
+- `text` and `chunks` are mutually exclusive on a single `type: "text"` row; one of them is required
+- `chunks` is **only** for `textStack` — do not add `chunks` to card items or `kind: "text"` regions in this project yet
+- No arbitrary per-span `className` or ad-hoc colors — only the allowlisted `tone` / `decoration` options above
 - `size` is only valid for `variant: "h1"`
+- `type: "image"` does not support inline styling beyond `width` / `height`
 
 **Minimal example — title + link:**
 ```json
@@ -163,6 +210,25 @@ Rendered by [`JsonTextStackShell.tsx`](./JsonTextStackShell.tsx).
       { "type": "text", "variant": "h1", "size": "section", "text": "Ivan Petrov" },
       { "type": "text", "variant": "lead", "text": "AI researcher & generative art practitioner" },
       { "type": "link", "href": "https://example.com/ivan", "label": "example.com/ivan" }
+    ]
+  }
+}
+```
+
+**Minimal example — overline + image + body:**
+```json
+{
+  "template": "textStack",
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "stack": {
+    "align": "center",
+    "justify": "center",
+    "gap": "md",
+    "reveal": { "preset": "soft", "step": 0.1 },
+    "items": [
+      { "type": "text", "variant": "overline", "text": "Section" },
+      { "type": "image", "src": "/images/hero.png", "width": 360 },
+      { "type": "text", "variant": "body", "text": "Caption or supporting line under the image." }
     ]
   }
 }
@@ -394,6 +460,21 @@ Controls vertical distribution of the card **body**. `subtitle` stays pinned abo
   - With flat `items`, **without** the `headerBadge` + `overline`+`h2` header pattern: body rows are distributed evenly across the body zone (with a single row, the runtime pins it to the bottom of the flex area).
   - With flat `items` **and** that header pattern: space goes **between** the header row and the block of remaining rows; if there are **two or more** tail rows, `between` also spreads them within that lower block (e.g. `body` vs `tagList` on prompt-structure cards). Prefer `slots` for new slides — the heuristic path is kept for backward compatibility.
 
+### Card authoring heuristics
+These are not parser rules, but they are the default quality bar for new cards and refactors.
+
+- A strong card usually has **one prominent title** (`h2` or `h3`) that carries the main thought. The title may sit in the top group or in the bottom group, depending on the composition.
+- The title often works best when it stays **glued to its supporting description**. If title + body should read as one semantic block, put them in the same `slot` instead of letting `justify: "between"` tear them apart.
+- Use `justify: "between"` to split a card into a clear **top part** and **bottom part**. Avoid layouts where `between` leaves a stray row visually hanging in the middle of the card.
+- If a card has three semantic zones instead of two, prefer `slots` with an intentional grouping, or switch to `start` / `end`. Do not rely on accidental mid-card spacing.
+- In comparison slides or grids of peer cards, keep the cards structurally homogeneous: same title level, same ordering of rows, same typography rhythm. Do **not** mix `h2` on one peer card with `h3` on another unless asymmetry is intentional and content-driven.
+- Card titles should usually name the **core entity / claim / fear** of the card, not the answer to it. Example: on a slide about "Три страха на пороге", the card title should be the fear itself; the response belongs in `body`, not in the title.
+- `subtitle` / `overline` are supporting labels, not the main title. If the card has a real heading, keep it in `items[]` as `h2` / `h3`.
+- If `headerBadge` is present, the visual header should also contain a real heading signal above the body: either a title (`h2` / `h3`) or an icon. Do not pair `headerBadge` in the top zone with only `overline` / `subtitle`.
+
+### Card icon style
+For `Claude`, `Cursor`, and similar tooling cards, prefer **monochrome** LobeHub icons from the registry. Do not use colored LobeHub marks inside cards.
+
 ### Card slots
 Use `slots` when `justify: "between"` must distribute **groups** of rows, not individual rows. Each slot is an indivisible vertical block; items inside a slot are separated by `gap` (or card `stackGap`). `leadingIcon`, `subtitle`, `headerBadge`, and `watermarkIcon` still behave the same and sit outside the slots stack.
 
@@ -583,8 +664,8 @@ If the order should change, change the JSON array order.
 - Use `body` for normal supporting copy.
 - Use `bodyLg` only when the card is sparse and needs larger body text.
 - Use `prompt` inside a card (often `surface: "ghost"`) for long monospace prompt copy; do not fake this with `body` + ad hoc classes.
-- Use `justify: "between"` for tall cards with a title and body in `items[]` (and optional `subtitle` for a fixed label).
-- Prefer `slots` over flat `items` when `justify: "between"` must pin **groups** (e.g. overline on top, `h2`+`body` glued together on the bottom) instead of spreading every row evenly.
+- Use `justify: "between"` for tall cards that clearly split into **top and bottom groups**.
+- Prefer `slots` over flat `items` when `justify: "between"` must pin **groups** (e.g. overline on top, `h2`+`body` glued together on the bottom) instead of spreading every row evenly or leaving a floating middle row.
 - Use `justify: "end"` for cards whose `items[]` should sit near the bottom.
 - Omit `justify` when normal top stacking is enough.
 

@@ -85,6 +85,7 @@ function renderItemText(
 /**
  * Presentation node: optional icons, pinned `subtitle`, `items[]`.
  * When `headerBadge` + leading `overline`/`h2`, the badge is pinned to the top-right of the card; `justify: "between"` splits space between that header text row and the remaining `items` block; inner body stack can still use `between` when there are multiple tail rows.
+ * Authoring heuristics for "good cards" live in `json-renderer/README.md` under the card contract.
  */
 export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
   const onAccent = card.tone === 'accent';
