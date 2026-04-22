@@ -1,0 +1,48 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт III · Артефакт силы II",
+    "title": "Второй артефакт: кодекс героя, который ИИ помнит, когда забываешь ты",
+    "lead": "CLAUDE.md, .cursorrules, AGENTS.md — это не документация, а постоянный контекст агента. Герой пишет правила один раз — ИИ соблюдает их всегда. Прямой ответ второй голове дракона: когнитивный долг падает, потому что стек, стиль и запреты больше не нужно держать в голове и повторять в каждом промпте."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 5,
+    "rightSpan": 7,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "leadingIcon": "pen-tool",
+        "watermarkIcon": "type",
+        "justify": "between",
+        "items": [
+          { "variant": "overline", "text": "Тон кодекса" },
+          { "variant": "h2", "text": "Боевой, а не вежливый" },
+          { "variant": "body", "text": "Короткие прямые команды без смягчителей и вводных слов. Каждое лишнее слово отъедает токены контекста и размывает правило. Кодекс героя читается как устав, а не как переписка." }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "subtitle": { "variant": "overline", "text": "Что входит в кодекс" },
+        "items": [
+          { "variant": "h3", "text": "Стек" },
+          { "variant": "body", "text": "«Next.js 14 с App Router. TypeScript строгий. Tailwind без inline-стилей.»" },
+          { "variant": "h3", "text": "Стиль" },
+          { "variant": "body", "text": "«Только именованные экспорты. Файлы — kebab-case. Компоненты — PascalCase.»" },
+          { "variant": "h3", "text": "Запреты" },
+          { "variant": "body", "text": "«Никакого Axios — только встроенный fetch. Никаких any. Никаких console.log в коммите.»" },
+          { "variant": "h3", "text": "Порядок действий" },
+          { "variant": "body", "text": "«Сначала ищи аналогичную функцию в проекте, потом пиши новую. Сначала тест на падение, потом починка.»" }
+        ]
+      }
+    }
+  }
+}

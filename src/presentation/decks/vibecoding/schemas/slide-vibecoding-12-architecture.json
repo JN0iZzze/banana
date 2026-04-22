@@ -1,0 +1,70 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт III · Артефакт силы I",
+    "title": "Первый артефакт: слои как стены против архитектурной энтропии",
+    "lead": "Герой достаёт из ножен первый артефакт — архитектурную дисциплину. Три слоя — Data, Controller, View — задают границы, через которые ИИ не может размазать решение. Это прямой ответ третьей голове дракона: энтропия не расползается там, где каждый слой знает свою роль."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "layers",
+            "headerBadge": { "text": "01" },
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Data · хранитель" },
+              { "variant": "h2", "text": "Слой данных" },
+              { "variant": "body", "text": "Предсказуемые схемы и чёткие контракты. Агент не придумывает фантомные таблицы и поля: всё, что он трогает, уже описано и имеет имя." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "workflow",
+            "headerBadge": { "text": "02", "tone": "onAccent" },
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Controller · дирижёр" },
+              { "variant": "h2", "text": "Слой логики" },
+              { "variant": "body", "text": "Максимально модульный. Чем меньше файл и уже ответственность, тем точнее правки ИИ и меньше радиус поражения у каждой итерации." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "layout-template",
+            "headerBadge": { "text": "03" },
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "View · лицо" },
+              { "variant": "h2", "text": "Слой представления" },
+              { "variant": "body", "text": "Атомарные компоненты: визуал и данные синхронизированы, состояние локально. Агент не перегружает контекст и не переписывает интерфейс, чтобы починить логику." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

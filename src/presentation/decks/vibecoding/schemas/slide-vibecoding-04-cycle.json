@@ -1,0 +1,93 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт I · Встреча с наставником",
+    "title": "Первый промпт — и барьер между идеей и реальностью рушится",
+    "lead": "Наставник героя — это Cursor, Replit, Figma Make и им подобные. Они отвечают не советом, а работающим кодом. Ты формулируешь мысль — через несколько секунд она становится интерфейсом, который можно открыть и потрогать. Дальше это уже не разовая магия, а цикл из четырёх шагов, который ты повторяешь десятки раз за вечер."
+  },
+  "layout": {
+    "type": "uniformGrid",
+    "columns": 4,
+    "gap": "md",
+    "items": [
+      {
+        "tone": "standard",
+        "padding": "default",
+        "headerBadge": { "text": "01" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Намерение" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "Описываешь, что хочешь" },
+              { "variant": "body", "text": "Не код — результат и ощущение, которое он должен давать." }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "headerBadge": { "text": "02" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Генерация" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "Наставник пишет код" },
+              { "variant": "body", "text": "Модель собирает файлы, зависимости и черновую реализацию за тебя." }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "headerBadge": { "text": "03" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Проверка" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "Запускаешь и смотришь" },
+              { "variant": "body", "text": "Интерфейс, ошибки, логи — всё возвращается обратно в диалог." }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "accent",
+        "padding": "default",
+        "headerBadge": { "text": "04", "tone": "onAccent" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Уточнение" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "Корректируешь вайб" },
+              { "variant": "body", "text": "Следующий промпт — и цикл начинается заново, уже ближе к цели." }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

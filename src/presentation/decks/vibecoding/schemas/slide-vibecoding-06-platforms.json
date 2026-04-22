@@ -1,0 +1,66 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Проводники",
+    "title": "Три проводника для первого шага в новый мир",
+    "lead": "На дороге первого шага героя встречают три проводника. Каждый ведёт своей тропой — один отвечает за всё сам, другой даёт красоту, третий — мгновенный отклик."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "replit",
+            "subtitle": { "variant": "overline", "text": "Проводник-автопилот" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Replit Agent" },
+              { "variant": "body", "text": "Берёт героя за руку от архитектуры до деплоя. Взамен просит доверия и жёсткой привязки к своей инфраструктуре." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "lovable",
+            "subtitle": { "variant": "overline", "text": "Проводник-художник" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Lovable" },
+              { "variant": "body", "text": "React, Tailwind и Supabase в одной связке. Красивый фронтенд из коробки и чистый экспортируемый код, если герой решит уйти дальше." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "subtitle": { "variant": "overline", "text": "Проводник-скороход" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Bolt.new" },
+              { "variant": "body", "text": "Node.js прямо в браузере через WebContainers. Идея превращается в прототип за минуты — но без полноценного терминала под капотом." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

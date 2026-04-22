@@ -1,0 +1,50 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт III · Последний удар",
+    "title": "Последнее испытание: 70% демок не переживают продакшн",
+    "lead": "Семь из десяти приложений, собранных чистым вайбкодингом, уходят в прод с критическими дырами. Это не статистика ради статистики, это цена игнора production hardening. Герой не получит Эликсир, пока не отразит три удара, которые отделяют красивую демку от настоящего продукта."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 4,
+    "rightSpan": 8,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "leadingIcon": "bar-chart-3",
+        "watermarkIcon": "zap",
+        "justify": "between",
+        "items": [
+          { "variant": "overline", "text": "Цена невнимания" },
+          { "variant": "h2", "text": "70%" },
+          { "variant": "body", "text": "приложений на Lovable и подобных платформах выходят в прод с критическими уязвимостями. Без последнего удара это не продукт, а игрушка." }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "subtitle": { "variant": "overline", "text": "Три удара, которые должен отразить герой" },
+        "items": [
+          {
+            "type": "component",
+            "component": "indexedList",
+            "gap": "md",
+            "items": [
+              { "index": 1, "title": "RLS не настроен", "subtitle": "Row-Level Security в базе отсутствует или дырявая — любой клиент видит чужие строки" },
+              { "index": 2, "title": "Вебхуки без подписи", "subtitle": "Платёжная логика верит любому POST-запросу извне, подделать транзакцию может школьник" },
+              { "index": 3, "title": "Инъекции через input", "subtitle": "Серверной валидации нет, клиенту доверяют — и пользовательский ввод попадает прямо в запрос" }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

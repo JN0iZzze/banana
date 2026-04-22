@@ -19,7 +19,8 @@ export function JsonUniformGridLayoutView({ layout }: JsonUniformGridLayoutProps
       }}
     >
       {layout.items.map((card, i) => {
-        const firstText = card.items.find((it): it is JsonSlideCardItemText => isJsonSlideCardItemText(it));
+        const allItems = card.items ?? card.slots?.flatMap((s) => s.items) ?? [];
+        const firstText = allItems.find((it): it is JsonSlideCardItemText => isJsonSlideCardItemText(it));
         const keySeed = firstText?.text.slice(0, 12) ?? `card-${i}`;
         return (
         <div key={`uniform-${i}-${keySeed}`} className="min-h-0">

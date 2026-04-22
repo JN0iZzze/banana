@@ -1,54 +1,71 @@
 import type { JsonSlideDocument } from './jsonSlideTypes';
 import { parseJsonSlideDocument } from './parseJsonSlideDocument';
-import rawAsymmetric from './schemas/demo-grid-asymmetric.json';
-import rawBento from './schemas/demo-grid-bento.json';
-import rawHeroJourneyBento from './schemas/slide-demo-hero-journey-bento.json';
-import rawEqual from './schemas/demo-grid-equal.json';
-import rawAttentionModels from './schemas/slide-attention-models-2026.json';
-import rawNanoBananaUseCases from './schemas/slide-nano-banana-use-cases.json';
-import rawMidjourneyVsNanoBanana from './schemas/slide-midjourney-vs-nano-banana.json';
-import rawPlatformsEcosystem from './schemas/slide-platforms-ecosystem.json';
-import rawPromptStructure from './schemas/slide-prompt-structure.json';
-import rawEditingPromptStructure from './schemas/slide-editing-prompt-structure.json';
-import rawHighsfield from './schemas/slide-higgsfield.json';
-import rawNodeBasedSystems from './schemas/slide-node-based-systems.json';
-import rawFlouxDemo from './schemas/slide-floux-demo.json';
-import rawAgenticWorkflowResult from './schemas/slide-agentic-workflow-result.json';
-import rawAgenticWorkflow from './schemas/slide-agentic-workflow.json';
-import rawPromptOrderPairImages from './schemas/slide-prompt-order-pair-images.json';
-import rawEditingPromptPrinciples from './schemas/slide-editing-prompt-principles.json';
-import rawReferenceRoles from './schemas/slide-reference-roles.json';
-import rawLeoWideShot from './schemas/slide-leo-wide-shot.json';
-import rawStyleCopyPromptPrinciples from './schemas/slide-style-copy-prompt-principles.json';
-import rawStyleCopyPromptPrinciplesCopy2 from './schemas/slide-style-copy-prompt-principles-copy-2.json';
-import rawStyleCopyPromptPrinciplesCopy3 from './schemas/slide-style-copy-prompt-principles-copy-3.json';
-import rawStyleCopyPromptPrinciplesCopy4 from './schemas/slide-style-copy-prompt-principles-copy-4.json';
-import rawImageCoverNanoBananaPro from './schemas/slide-image-cover-nano-banana-pro.json';
-import rawImageCoverMultiReference from './schemas/slide-image-cover-multi-reference.json';
-import rawImageCoverTexturingModeling from './schemas/slide-image-cover-texturing-modeling.json';
-import rawImageCoverJsonPrompting from './schemas/slide-image-cover-json-prompting.json';
-import rawReferenceAnalysis from './schemas/slide-reference-analysis.json';
-import rawAnglesLighting from './schemas/slide-angles-lighting.json';
-import rawPhotorealismModelPicks from './schemas/slide-photorealism-model-picks.json';
-import rawAboutMe from './schemas/slide-about-me.json';
-import rawProContradictions from './schemas/slide-pro-contradictions.json';
-import rawLessObviousUseCases from './schemas/slide-less-obvious-use-cases.json';
-import rawPhotorealismSectionTitle from './schemas/slide-photorealism-section-title.json';
-import rawNanoBananaConnection from './schemas/slide-nano-banana-connection.json';
-import rawLessObviousSectionTitle from './schemas/slide-less-obvious-section-title.json';
-import rawThreeDWorkflowLink from './schemas/slide-three-d-workflow-link.json';
-import rawCompositionPhotoLink from './schemas/slide-composition-photo-link.json';
-import rawGrokImagineBento from './schemas/slide-grok-imagine-bento.json';
-import rawRecraftV4Bento from './schemas/slide-recraft-v4-bento.json';
-import rawMidjorneyBento from './schemas/slide-midjorney-bento.json';
-import rawJsonImagesTriptych from './schemas/slide-json-images-triptych.json';
-import rawTextureWorkflow from './schemas/slide-texture-workflow.json';
-import rawThreeDTwoRefsTwoOuts from './schemas/slide-3d-two-refs-two-outs.json';
-import rawWorkflowComparison from './schemas/slide-workflow-comparison.json';
-import rawOtherExamplesFlouxProjects from './schemas/slide-other-examples-floux-projects.json';
-import rawPromptOrderFlex from './schemas/slide-prompt-order-flex.json';
-import rawNanoBananaVersions from './schemas/slide-nano-banana-versions.json';
-import rawVibecodingDemo from './schemas/slide-vibecoding-demo.json';
+import rawAsymmetric from './decks/main/schemas/demo-grid-asymmetric.json';
+import rawBento from './decks/main/schemas/demo-grid-bento.json';
+import rawHeroJourneyBento from './decks/main/schemas/slide-demo-hero-journey-bento.json';
+import rawEqual from './decks/main/schemas/demo-grid-equal.json';
+import rawAttentionModels from './decks/main/schemas/slide-attention-models-2026.json';
+import rawNanoBananaUseCases from './decks/main/schemas/slide-nano-banana-use-cases.json';
+import rawMidjourneyVsNanoBanana from './decks/main/schemas/slide-midjourney-vs-nano-banana.json';
+import rawPlatformsEcosystem from './decks/main/schemas/slide-platforms-ecosystem.json';
+import rawPromptStructure from './decks/main/schemas/slide-prompt-structure.json';
+import rawEditingPromptStructure from './decks/main/schemas/slide-editing-prompt-structure.json';
+import rawHighsfield from './decks/main/schemas/slide-higgsfield.json';
+import rawNodeBasedSystems from './decks/main/schemas/slide-node-based-systems.json';
+import rawFlouxDemo from './decks/main/schemas/slide-floux-demo.json';
+import rawAgenticWorkflowResult from './decks/main/schemas/slide-agentic-workflow-result.json';
+import rawAgenticWorkflow from './decks/main/schemas/slide-agentic-workflow.json';
+import rawPromptOrderPairImages from './decks/main/schemas/slide-prompt-order-pair-images.json';
+import rawEditingPromptPrinciples from './decks/main/schemas/slide-editing-prompt-principles.json';
+import rawReferenceRoles from './decks/main/schemas/slide-reference-roles.json';
+import rawLeoWideShot from './decks/main/schemas/slide-leo-wide-shot.json';
+import rawStyleCopyPromptPrinciples from './decks/main/schemas/slide-style-copy-prompt-principles.json';
+import rawStyleCopyPromptPrinciplesCopy2 from './decks/main/schemas/slide-style-copy-prompt-principles-copy-2.json';
+import rawStyleCopyPromptPrinciplesCopy3 from './decks/main/schemas/slide-style-copy-prompt-principles-copy-3.json';
+import rawStyleCopyPromptPrinciplesCopy4 from './decks/main/schemas/slide-style-copy-prompt-principles-copy-4.json';
+import rawImageCoverNanoBananaPro from './decks/main/schemas/slide-image-cover-nano-banana-pro.json';
+import rawImageCoverMultiReference from './decks/main/schemas/slide-image-cover-multi-reference.json';
+import rawImageCoverTexturingModeling from './decks/main/schemas/slide-image-cover-texturing-modeling.json';
+import rawImageCoverJsonPrompting from './decks/main/schemas/slide-image-cover-json-prompting.json';
+import rawReferenceAnalysis from './decks/main/schemas/slide-reference-analysis.json';
+import rawAnglesLighting from './decks/main/schemas/slide-angles-lighting.json';
+import rawPhotorealismModelPicks from './decks/main/schemas/slide-photorealism-model-picks.json';
+import rawAboutMe from './decks/main/schemas/slide-about-me.json';
+import rawProContradictions from './decks/main/schemas/slide-pro-contradictions.json';
+import rawLessObviousUseCases from './decks/main/schemas/slide-less-obvious-use-cases.json';
+import rawPhotorealismSectionTitle from './decks/main/schemas/slide-photorealism-section-title.json';
+import rawNanoBananaConnection from './decks/main/schemas/slide-nano-banana-connection.json';
+import rawLessObviousSectionTitle from './decks/main/schemas/slide-less-obvious-section-title.json';
+import rawThreeDWorkflowLink from './decks/main/schemas/slide-three-d-workflow-link.json';
+import rawCompositionPhotoLink from './decks/main/schemas/slide-composition-photo-link.json';
+import rawGrokImagineBento from './decks/main/schemas/slide-grok-imagine-bento.json';
+import rawRecraftV4Bento from './decks/main/schemas/slide-recraft-v4-bento.json';
+import rawMidjorneyBento from './decks/main/schemas/slide-midjorney-bento.json';
+import rawJsonImagesTriptych from './decks/main/schemas/slide-json-images-triptych.json';
+import rawTextureWorkflow from './decks/main/schemas/slide-texture-workflow.json';
+import rawThreeDTwoRefsTwoOuts from './decks/main/schemas/slide-3d-two-refs-two-outs.json';
+import rawWorkflowComparison from './decks/main/schemas/slide-workflow-comparison.json';
+import rawOtherExamplesFlouxProjects from './decks/main/schemas/slide-other-examples-floux-projects.json';
+import rawPromptOrderFlex from './decks/main/schemas/slide-prompt-order-flex.json';
+import rawNanoBananaVersions from './decks/main/schemas/slide-nano-banana-versions.json';
+import rawVibecoding01Cover from './decks/vibecoding/schemas/slide-vibecoding-01-cover.json';
+import rawVibecoding02Definition from './decks/vibecoding/schemas/slide-vibecoding-02-definition.json';
+import rawVibecoding03Refusal from './decks/vibecoding/schemas/slide-vibecoding-03-refusal.json';
+import rawVibecoding04Cycle from './decks/vibecoding/schemas/slide-vibecoding-04-cycle.json';
+import rawVibecoding05Landscape from './decks/vibecoding/schemas/slide-vibecoding-05-landscape.json';
+import rawVibecoding06Platforms from './decks/vibecoding/schemas/slide-vibecoding-06-platforms.json';
+import rawVibecoding07Philosophies from './decks/vibecoding/schemas/slide-vibecoding-07-philosophies.json';
+import rawVibecoding08ProTools from './decks/vibecoding/schemas/slide-vibecoding-08-pro-tools.json';
+import rawVibecoding09CursorVsClaude from './decks/vibecoding/schemas/slide-vibecoding-09-cursor-vs-claude.json';
+import rawVibecoding10DoomLoop from './decks/vibecoding/schemas/slide-vibecoding-10-doom-loop.json';
+import rawVibecoding11CostOfReliability from './decks/vibecoding/schemas/slide-vibecoding-11-cost-of-reliability.json';
+import rawVibecoding12Architecture from './decks/vibecoding/schemas/slide-vibecoding-12-architecture.json';
+import rawVibecoding13Rules from './decks/vibecoding/schemas/slide-vibecoding-13-rules.json';
+import rawVibecoding14Mcp from './decks/vibecoding/schemas/slide-vibecoding-14-mcp.json';
+import rawVibecoding15Subagents from './decks/vibecoding/schemas/slide-vibecoding-15-subagents.json';
+import rawVibecoding16Security from './decks/vibecoding/schemas/slide-vibecoding-16-security.json';
+import rawVibecoding17Closing from './decks/vibecoding/schemas/slide-vibecoding-17-closing.json';
+import rawVibecoding18Demo from './decks/vibecoding/schemas/slide-vibecoding-18-demo.json';
 import { VIBECODING_DECK_SLIDE_IDS } from './decks/vibecodingSlideIds';
 
 export { VIBECODING_DECK_SLIDE_IDS };
@@ -185,7 +202,24 @@ const docOtherExamplesFlouxProjects = loadDocument(
 );
 const docPromptOrderFlex = loadDocument(rawPromptOrderFlex, 'slide-prompt-order-flex.json');
 const docNanoBananaVersions = loadDocument(rawNanoBananaVersions, 'slide-nano-banana-versions.json');
-const docVibecodingDemo = loadDocument(rawVibecodingDemo, 'slide-vibecoding-demo.json');
+const docVibecoding01Cover = loadDocument(rawVibecoding01Cover, 'slide-vibecoding-01-cover.json');
+const docVibecoding02Definition = loadDocument(rawVibecoding02Definition, 'slide-vibecoding-02-definition.json');
+const docVibecoding03Refusal = loadDocument(rawVibecoding03Refusal, 'slide-vibecoding-03-refusal.json');
+const docVibecoding04Cycle = loadDocument(rawVibecoding04Cycle, 'slide-vibecoding-04-cycle.json');
+const docVibecoding05Landscape = loadDocument(rawVibecoding05Landscape, 'slide-vibecoding-05-landscape.json');
+const docVibecoding06Platforms = loadDocument(rawVibecoding06Platforms, 'slide-vibecoding-06-platforms.json');
+const docVibecoding07Philosophies = loadDocument(rawVibecoding07Philosophies, 'slide-vibecoding-07-philosophies.json');
+const docVibecoding08ProTools = loadDocument(rawVibecoding08ProTools, 'slide-vibecoding-08-pro-tools.json');
+const docVibecoding09CursorVsClaude = loadDocument(rawVibecoding09CursorVsClaude, 'slide-vibecoding-09-cursor-vs-claude.json');
+const docVibecoding10DoomLoop = loadDocument(rawVibecoding10DoomLoop, 'slide-vibecoding-10-doom-loop.json');
+const docVibecoding11CostOfReliability = loadDocument(rawVibecoding11CostOfReliability, 'slide-vibecoding-11-cost-of-reliability.json');
+const docVibecoding12Architecture = loadDocument(rawVibecoding12Architecture, 'slide-vibecoding-12-architecture.json');
+const docVibecoding13Rules = loadDocument(rawVibecoding13Rules, 'slide-vibecoding-13-rules.json');
+const docVibecoding14Mcp = loadDocument(rawVibecoding14Mcp, 'slide-vibecoding-14-mcp.json');
+const docVibecoding15Subagents = loadDocument(rawVibecoding15Subagents, 'slide-vibecoding-15-subagents.json');
+const docVibecoding16Security = loadDocument(rawVibecoding16Security, 'slide-vibecoding-16-security.json');
+const docVibecoding17Closing = loadDocument(rawVibecoding17Closing, 'slide-vibecoding-17-closing.json');
+const docVibecoding18Demo = loadDocument(rawVibecoding18Demo, 'slide-vibecoding-18-demo.json');
 
 /** Pre-validated schemas keyed by `SlideDefinition.id`. */
 export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
@@ -237,7 +271,24 @@ export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
   [MIGRATED_JSON_SLIDE_IDS.otherExamplesFlouxProjects]: docOtherExamplesFlouxProjects,
   [MIGRATED_JSON_SLIDE_IDS.promptOrderFlex]: docPromptOrderFlex,
   [MIGRATED_JSON_SLIDE_IDS.nanoBananaVersions]: docNanoBananaVersions,
-  [VIBECODING_DECK_SLIDE_IDS.demo]: docVibecodingDemo,
+  [VIBECODING_DECK_SLIDE_IDS.cover]: docVibecoding01Cover,
+  [VIBECODING_DECK_SLIDE_IDS.definition]: docVibecoding02Definition,
+  [VIBECODING_DECK_SLIDE_IDS.refusal]: docVibecoding03Refusal,
+  [VIBECODING_DECK_SLIDE_IDS.cycle]: docVibecoding04Cycle,
+  [VIBECODING_DECK_SLIDE_IDS.landscape]: docVibecoding05Landscape,
+  [VIBECODING_DECK_SLIDE_IDS.platforms]: docVibecoding06Platforms,
+  [VIBECODING_DECK_SLIDE_IDS.philosophies]: docVibecoding07Philosophies,
+  [VIBECODING_DECK_SLIDE_IDS.proTools]: docVibecoding08ProTools,
+  [VIBECODING_DECK_SLIDE_IDS.cursorVsClaude]: docVibecoding09CursorVsClaude,
+  [VIBECODING_DECK_SLIDE_IDS.doomLoop]: docVibecoding10DoomLoop,
+  [VIBECODING_DECK_SLIDE_IDS.costOfReliability]: docVibecoding11CostOfReliability,
+  [VIBECODING_DECK_SLIDE_IDS.architecture]: docVibecoding12Architecture,
+  [VIBECODING_DECK_SLIDE_IDS.rules]: docVibecoding13Rules,
+  [VIBECODING_DECK_SLIDE_IDS.mcp]: docVibecoding14Mcp,
+  [VIBECODING_DECK_SLIDE_IDS.subagents]: docVibecoding15Subagents,
+  [VIBECODING_DECK_SLIDE_IDS.security]: docVibecoding16Security,
+  [VIBECODING_DECK_SLIDE_IDS.closing]: docVibecoding17Closing,
+  [VIBECODING_DECK_SLIDE_IDS.demo]: docVibecoding18Demo,
 };
 
 export function getJsonSlideDocumentForSlideId(id: string): JsonSlideDocument | undefined {

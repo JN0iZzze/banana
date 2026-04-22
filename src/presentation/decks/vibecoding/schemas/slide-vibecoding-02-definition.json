@@ -1,0 +1,49 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт I · Обычный мир",
+    "title": "Стек тот же — роль другая",
+    "lead": "Андрей Карпатый ввёл термин в феврале 2025-го. Вайбкодинг — не новые технологии: React, Python, SQL остаются прежними. Меняется вопрос, который задаёт человек: не «как написать», а «какого эффекта достичь»."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "leadingIcon": "type",
+            "justify": "between",
+            "subtitle": { "variant": "overline", "text": "Традиционное программирование" },
+            "items": [
+              { "variant": "h2", "text": "Инженер пишет код" },
+              { "variant": "body", "text": "Профессиональный порог строился на знании синтаксиса, API и зависимостей. Разработчик отвечал за каждую строку — он был и архитектором, и исполнителем одновременно." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "leadingIcon": "brain",
+            "watermarkIcon": "sparkles",
+            "justify": "between",
+            "subtitle": { "variant": "overline", "text": "Вайбкодинг" },
+            "items": [
+              { "variant": "h2", "text": "Вайбкодер управляет агентом" },
+              { "variant": "body", "text": "Роль меняется на «куратора контекста»: описываешь что нужно и какого эффекта хочешь достичь. Синтаксис, зависимости, отладка — на агенте." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

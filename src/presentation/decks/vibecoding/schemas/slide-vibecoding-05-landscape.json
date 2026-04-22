@@ -1,0 +1,128 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Мир приключений",
+    "title": "Четыре дороги, которые открываются за порогом",
+    "lead": "Герой шагает в новый мир — и видит ландшафт. Четыре тропы: в браузерный цех, в мастерскую инженера, в терминал архитектора и в UI-кузницу. Каждая ведёт к своему ремеслу."
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 6,
+    "rows": 2,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "leadingIcon": "layout-template",
+          "watermarkIcon": "sparkles",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                { "variant": "overline", "text": "Дорога первого шага" }
+              ]
+            },
+            {
+              "items": [
+                { "variant": "h2", "text": "Lovable · Bolt · Replit" },
+                {
+                  "variant": "body",
+                  "text": "Полностековые конструкторы. Запуск за минуты, идеально для первой вылазки из обычного мира."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "leadingIcon": "monitor",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                { "variant": "overline", "text": "Дорога мастера" }
+              ]
+            },
+            {
+              "items": [
+                { "variant": "h2", "text": "Cursor · Windsurf · Trae" },
+                {
+                  "variant": "body",
+                  "text": "ИИ-ориентированные IDE. Полный контроль над кодом и Git — для тех, кто готов держать штурвал сам."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 5,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "leadingIcon": "workflow",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                { "variant": "overline", "text": "Дорога архитектора" }
+              ]
+            },
+            {
+              "items": [
+                { "variant": "h2", "text": "Claude Code · Gemini CLI" },
+                {
+                  "variant": "body",
+                  "text": "Терминальные агенты. Автономные задачи на ночь — герой ставит цель, агент работает сам."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 2,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "palette",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                { "variant": "overline", "text": "Дорога ремесленника" }
+              ]
+            },
+            {
+              "items": [
+                { "variant": "h2", "text": "v0 · Framer AI" },
+                {
+                  "variant": "body",
+                  "text": "UI-генераторы для фронтенда и лендингов. Компоненты, которые не стыдно отдать в прод."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

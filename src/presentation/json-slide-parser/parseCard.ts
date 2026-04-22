@@ -9,6 +9,7 @@ import type {
   JsonSlideCardItemVariant,
   JsonSlideCardJustify,
   JsonSlideCardPadding,
+  JsonSlideCardSlot,
   JsonSlideCardSubtitle,
   JsonSlideCardSurface,
   JsonSlideCardTagListDirection,
@@ -493,11 +494,31 @@ export function parseCard(raw: unknown, path: string): JsonSlideCard | { ok: fal
     return watermarkIcon;
   }
 
-  const itemsParsed = parseCardItems(raw.items, `${path}.items`);
-  if (typeof itemsParsed === 'object' && itemsParsed !== null && 'ok' in itemsParsed && itemsParsed.ok === false) {
-    return itemsParsed;
+  const hasSlots = raw.slots !== undefined;
+  const hasItems = raw.items !== undefined;
+  if (hasSlots && hasItems) {
+    return err(`${path} must use either "items" or "slots", not both`);
   }
-  const items = itemsParsed as JsonSlideCardItem[];
+  if (!hasSlots && !hasItems) {
+    return err(`${path} must include "items" or "slots"`);
+  }
+
+  let items: JsonSlideCardItem[] | undefined;
+  let slots: JsonSlideCardSlot[] | undefined;
+
+  if (hasSlots) {
+    const slotsParsed = parseCardSlots(raw.slots, `${path}.slots`);
+    if (typeof slotsParsed === 'object' && slotsParsed !== null && 'ok' in slotsParsed && slotsParsed.ok === false) {
+      return slotsParsed;
+    }
+    slots = slotsParsed as JsonSlideCardSlot[];
+  } else {
+    const itemsParsed = parseCardItems(raw.items, `${path}.items`);
+    if (typeof itemsParsed === 'object' && itemsParsed !== null && 'ok' in itemsParsed && itemsParsed.ok === false) {
+      return itemsParsed;
+    }
+    items = itemsParsed as JsonSlideCardItem[];
+  }
 
   return {
     tone,
@@ -509,6 +530,36 @@ export function parseCard(raw: unknown, path: string): JsonSlideCard | { ok: fal
     watermarkIcon: watermarkIcon as JsonSlideCardIconId | undefined,
     subtitle: subtitle as JsonSlideCardSubtitle | undefined,
     justify,
-    items,
+    ...(items !== undefined ? { items } : {}),
+    ...(slots !== undefined ? { slots } : {}),
   };
+}
+
+function parseCardSlots(raw: unknown, path: string): JsonSlideCardSlot[] | { ok: false; error: string } {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return err(`${path} must be a non-empty array`);
+  }
+  const slots: JsonSlideCardSlot[] = [];
+  for (let i = 0; i < raw.length; i += 1) {
+    const el = raw[i];
+    if (!isRecord(el)) {
+      return err(`${path}[${i}] must be an object`);
+    }
+    const innerItems = parseCardItems(el.items, `${path}[${i}].items`);
+    if (typeof innerItems === 'object' && innerItems !== null && 'ok' in innerItems && innerItems.ok === false) {
+      return innerItems;
+    }
+    let gap: JsonSlideGridGap | undefined;
+    if (el.gap !== undefined) {
+      if (typeof el.gap !== 'string' || !GRID_GAPS.has(el.gap as JsonSlideGridGap)) {
+        return err(`${path}[${i}].gap must be xs, sm, md, or lg when present`);
+      }
+      gap = el.gap as JsonSlideGridGap;
+    }
+    slots.push({
+      items: innerItems as JsonSlideCardItem[],
+      ...(gap !== undefined ? { gap } : {}),
+    });
+  }
+  return slots;
 }

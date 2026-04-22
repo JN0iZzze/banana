@@ -1,0 +1,68 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт II · Оружие мастера",
+    "title": "Ты перерос проводников — пора взять настоящее оружие",
+    "lead": "Герой шагнул на тропу открытой разработки. Там, где заканчиваются Replit, Lovable и Bolt, его встречает индустриальный стандарт 2026 года: Cursor и Claude Code. Это уже не проводники за руку, а инструменты, которыми работают профессионалы."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "leadingIcon": "cursor",
+            "watermarkIcon": "layout-template",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [{ "variant": "overline", "text": "Меч в руке — IDE с ИИ внутри" }]
+              },
+              {
+                "items": [
+                  { "variant": "h2", "text": "Cursor" },
+                  {
+                    "variant": "body",
+                    "text": "Форк VS Code, в котором ИИ стоит рядом с курсором. Автодополнение Tab угадывает следующий шаг, чат понимает всю кодовую базу, Composer правит несколько файлов одним запросом. Ты остаёшься автором — модель усиливает каждое движение."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "leadingIcon": "claude-code",
+            "watermarkIcon": "brain",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [{ "variant": "overline", "text": "Голем-напарник — агент в терминале" }]
+              },
+              {
+                "items": [
+                  { "variant": "h2", "text": "Claude Code" },
+                  {
+                    "variant": "body",
+                    "text": "Автономный старший инженер в CLI. Сам читает файлы, запускает команды, ищет баги в логах, проводит многофайловые рефакторинги по задаче. Ты ставишь цель — он идёт и делает, оставляя тебе роль архитектора и ревьюера."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -18,18 +18,20 @@ const justifyClass: Record<NonNullable<JsonSlideCard['justify']>, string> = {
 };
 
 const headerBadgeToneClass: Record<NonNullable<JsonSlideCardHeaderBadge['tone']>, string> = {
-  default: 'border-[color:var(--slide-color-line)] bg-white/[0.04] text-[color:var(--slide-color-text)]',
-  accent: 'border-[color:var(--slide-color-line)] bg-white/[0.04] text-[color:var(--slide-color-accent)]',
-  onAccent:
-    'border-[color:var(--slide-color-line)] bg-white/[0.04] text-[color:var(--slide-color-accent-contrast)]',
+  default: 'bg-white/[0.04] text-[color:var(--slide-color-text)]',
+  accent: 'bg-white/[0.04] text-[color:var(--slide-color-accent)]',
+  onAccent: 'bg-white/[0.04] text-[color:var(--slide-color-accent-contrast)]',
 };
 
-function renderHeaderBadge(badge: JsonSlideCardHeaderBadge) {
+function renderHeaderBadge(badge: JsonSlideCardHeaderBadge, onAccentCard: boolean) {
   const tone = badge.tone ?? 'accent';
   return (
     <div
       className={cn(
         'flex h-12 w-12 shrink-0 items-center justify-center rounded-full border text-[1rem] font-semibold',
+        onAccentCard
+          ? 'border-white/18'
+          : 'border-[color:var(--slide-color-line)]',
         headerBadgeToneClass[tone],
       )}
     >
@@ -82,16 +84,17 @@ function renderItemText(
 
 /**
  * Presentation node: optional icons, pinned `subtitle`, `items[]`.
- * When `headerBadge` + leading `overline`/`h2`, `justify: "between"` splits space between that header row and the remaining `items` block; inner body stack can still use `between` when there are multiple tail rows.
+ * When `headerBadge` + leading `overline`/`h2`, the badge is pinned to the top-right of the card; `justify: "between"` splits space between that header text row and the remaining `items` block; inner body stack can still use `between` when there are multiple tail rows.
  */
 export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
   const onAccent = card.tone === 'accent';
+  const surface = card.surface ?? 'box';
+  const onAccentCard = onAccent || surface === 'accentGradient';
   const justify = card.justify ?? 'start';
   const padding = card.padding ?? 'default';
   const compactCard = padding === 'compact';
   const stackGapResolved: JsonSlideGridGap = card.stackGap ?? (compactCard ? 'sm' : 'md');
   const stackGapStyle = cardStackGapCssVar(stackGapResolved);
-  const surface = card.surface ?? 'box';
 
   const LeadingIcon = card.leadingIcon ? getJsonSlideCardIcon(card.leadingIcon) : null;
   const WatermarkIcon = card.watermarkIcon ? getJsonSlideCardIcon(card.watermarkIcon) : null;
@@ -100,15 +103,18 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
   const leadingSize = compactCard ? 32 : onAccent ? 48 : 40;
   const leadingPad = compactCard ? 'p-3' : 'p-4';
 
-  const headerHasPair =
-    Boolean(card.headerBadge) &&
-    card.items.length >= 2 &&
-    isJsonSlideCardItemText(card.items[0]) &&
-    card.items[0].variant === 'overline' &&
-    isJsonSlideCardItemText(card.items[1]) &&
-    card.items[1].variant === 'h2';
+  const flatItems = card.items ?? [];
 
-  const itemsBody = headerHasPair ? card.items.slice(2) : card.items;
+  const headerHasPair =
+    !card.slots &&
+    Boolean(card.headerBadge) &&
+    flatItems.length >= 2 &&
+    isJsonSlideCardItemText(flatItems[0]) &&
+    flatItems[0].variant === 'overline' &&
+    isJsonSlideCardItemText(flatItems[1]) &&
+    flatItems[1].variant === 'h2';
+
+  const itemsBody = headerHasPair ? flatItems.slice(2) : flatItems;
   /** `between` applies between header row and body when badge + overline/h2 pattern matches. */
   const distributeHeaderAndBody =
     Boolean(headerHasPair && card.headerBadge && justify === 'between');
@@ -125,35 +131,63 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
 
   const headerPairRow =
     headerHasPair && card.headerBadge ? (
-      <div className="relative z-10 flex shrink-0 items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-col" style={{ gap: stackGapStyle }}>
+      <div className="relative z-10 flex shrink-0 items-start">
+        <div
+          className="flex min-w-0 flex-1 flex-col pr-16"
+          style={{ gap: stackGapStyle }}
+        >
           {renderItemText(
-            card.items[0] as JsonSlideCardItemText,
+            flatItems[0] as JsonSlideCardItemText,
             'hdr0',
             onAccent,
             compactCard,
             surface,
           )}
           {renderItemText(
-            card.items[1] as JsonSlideCardItemText,
+            flatItems[1] as JsonSlideCardItemText,
             'hdr1',
             onAccent,
             compactCard,
             surface,
           )}
         </div>
-        {renderHeaderBadge(card.headerBadge)}
       </div>
     ) : null;
 
-  const bodyStack = (
+  const bodyStack = card.slots ? (
+    <div
+      className={cn(
+        'relative z-10 flex min-h-0 flex-1 flex-col',
+        justifyClass[justify],
+        card.headerBadge && 'pr-16',
+      )}
+      style={justify === 'between' ? undefined : { gap: stackGapStyle }}
+    >
+      {card.slots.map((slot, si) => {
+        const slotGap = slot.gap ? cardStackGapCssVar(slot.gap) : stackGapStyle;
+        return (
+          <div
+            key={`slot-${si}`}
+            className="flex min-w-0 flex-col"
+            style={{ gap: slotGap }}
+          >
+            {slot.items.map((item, ii) =>
+              isJsonSlideCardItemText(item)
+                ? renderItemText(item, `slot-${si}-item-${ii}`, onAccent, compactCard, surface)
+                : renderJsonCardComponentItem(card.tone, item, ii),
+            )}
+          </div>
+        );
+      })}
+    </div>
+  ) : (
     <div
       className={cn(
         'relative z-10 flex min-h-0 flex-col',
         distributeHeaderAndBody && 'min-w-0 flex-1',
         !distributeHeaderAndBody && 'flex-1',
         bodyStackJustifyClass,
-        card.headerBadge && !headerHasPair && 'pr-16',
+        card.headerBadge && 'pr-16',
       )}
       style={{ gap: stackGapStyle }}
     >
@@ -173,8 +207,10 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
 
   const inner = (
     <div className="relative flex h-full min-h-0 flex-col" style={{ gap: stackGapStyle }}>
-      {card.headerBadge && !headerHasPair ? (
-        <div className="pointer-events-none absolute right-4 top-4 z-20">{renderHeaderBadge(card.headerBadge)}</div>
+      {card.headerBadge ? (
+        <div className="pointer-events-none absolute right-0 top-0 z-20">
+          {renderHeaderBadge(card.headerBadge, onAccentCard)}
+        </div>
       ) : null}
 
       {WatermarkIcon ? (

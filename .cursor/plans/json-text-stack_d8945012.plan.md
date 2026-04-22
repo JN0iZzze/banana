@@ -114,7 +114,7 @@ isProject: false
 - добавить 1-2 минимальных JSON-примера
 
 ### 5. Демо-схемы и миграция примеров
-Создать хотя бы два JSON-примера в [src/presentation/schemas](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/schemas):
+Создать хотя бы два JSON-примера в [src/presentation/decks/main/schemas](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/decks/main/schemas):
 - минимальный title/link слайд
 - about-me-подобный стек строк
 

@@ -6,7 +6,7 @@ This file is written for an AI coding agent. Treat it as the local contract for 
 Use the JSON renderer when a slide can be expressed as:
 - one standard slide shell
 - one supported layout preset
-- cards made from ordered **`items[]`**: text rows and optional **registry-backed component** rows (`tagList`, `indexedList`)
+- cards made from ordered **`items[]`** (flat) or **`slots[]`** (grouped): text rows and optional **registry-backed component** rows (`tagList`, `indexedList`)
 - optional **registry icons** on cards (`leadingIcon`, `watermarkIcon`)
 
 Do not use this path for slides that need custom widgets, charts, media logic, arbitrary React trees, or icon keys outside the allowlists. Component slots are **not** arbitrary props; each id is validated in the parser and rendered through [`jsonSlideCardComponentRegistry.tsx`](./jsonSlideCardComponentRegistry.tsx): concrete components (e.g. `JsonCardTagList`, `JsonCardIndexedList`), the typed map `JSON_SLIDE_CARD_COMPONENT_REGISTRY`, and dispatch helper `renderJsonCardComponentItem()` (used from [`nodes/JsonCardNode.tsx`](./nodes/JsonCardNode.tsx)).
@@ -23,9 +23,9 @@ The rendering pipeline is:
 6. layout renderers render cards through [`nodes/JsonCardNode.tsx`](./nodes/JsonCardNode.tsx)
 
 ## Workflow For Adding A New JSON Slide
-1. Create or update a schema JSON file under [`src/presentation/schemas/`](../schemas). For `spotlight` / `none` backdrops, set `backdrop.borderFrame: true` unless the slide is intentionally borderless (see `backdrop` below). `grid` / `mesh` already include the decorative frame inside [`SlideBackdrop`](../../ui/slides/layout.tsx) — do not add a second `borderFrame` for those.
+1. Create or update a schema JSON file under the deck that owns the slide: [`src/presentation/decks/main/schemas/`](../decks/main/schemas) for the **main** deck, or [`src/presentation/decks/vibecoding/schemas/`](../decks/vibecoding/schemas) for **vibecoding**. For `spotlight` / `none` backdrops, set `backdrop.borderFrame: true` unless the slide is intentionally borderless (see `backdrop` below). `grid` / `mesh` already include the decorative frame inside [`SlideBackdrop`](../../ui/slides/layout.tsx) — do not add a second `borderFrame` for those.
 2. Register that JSON document in [`src/presentation/jsonSlideDocumentRegistry.ts`](../jsonSlideDocumentRegistry.ts).
-3. Add a visible or hidden slide entry to [`src/presentation/decks/mainDeck.ts`](../decks/mainDeck.ts) with `component: JsonSlideRenderer`.
+3. Add a visible or hidden slide entry to [`src/presentation/decks/mainDeck.ts`](../decks/mainDeck.ts) or [`src/presentation/decks/vibecodingDeck.ts`](../decks/vibecodingDeck.ts) with `component: JsonSlideRenderer`.
 4. Reuse only supported contract fields documented below.
 5. Verify with `npm run typecheck` and `npm run build`.
 
@@ -168,7 +168,7 @@ Rendered by [`JsonTextStackShell.tsx`](./JsonTextStackShell.tsx).
 }
 ```
 
-Demo schemas: [`demo-text-stack-minimal-title.json`](../schemas/demo-text-stack-minimal-title.json), [`demo-text-stack-about-me.json`](../schemas/demo-text-stack-about-me.json)
+Demo schemas: [`demo-text-stack-minimal-title.json`](../decks/main/schemas/demo-text-stack-minimal-title.json), [`demo-text-stack-about-me.json`](../decks/main/schemas/demo-text-stack-about-me.json)
 
 ## Supported Layout Presets
 
@@ -185,7 +185,7 @@ Rules:
 - all spans must sum to `12`
 - use for patterns like `7+5`, `8+4`, `3+9`
 
-**Example (two columns, card regions):** [`demo-grid-asymmetric.json`](../schemas/demo-grid-asymmetric.json)
+**Example (two columns, card regions):** [`demo-grid-asymmetric.json`](../decks/main/schemas/demo-grid-asymmetric.json)
 
 ### `equalColumns`
 Use when all columns should have equal visual weight. Same as `asymmetricColumns`, but all `span` values must be **identical** (e.g. `4+4+4`).
@@ -202,8 +202,8 @@ Rules:
 - use for `6+6`, `4+4+4`, `3+3+3+3`
 
 **Examples:**
-- three equal card columns: [`demo-grid-equal.json`](../schemas/demo-grid-equal.json)
-- `4+4+4` with per-column `stackLayout` (title + image): [`slide-json-images-triptych.json`](../schemas/slide-json-images-triptych.json)
+- three equal card columns: [`demo-grid-equal.json`](../decks/main/schemas/demo-grid-equal.json)
+- `4+4+4` with per-column `stackLayout` (title + image): [`slide-json-images-triptych.json`](../decks/main/schemas/slide-json-images-triptych.json)
 
 ### `bentoGrid`
 Use when cells need explicit coordinates and varying spans.
@@ -253,7 +253,7 @@ Rules:
   - `{ "kind": "quote", "quote": JsonSlideQuote }` (see [Quote region](#quote-region-split-panes))
 - recursive `splitLayout` inside a region is allowed up to a **fixed depth** enforced in the parser (see `SPLIT_LAYOUT_MAX_DEPTH` in [`parseJsonSlideDocument.ts`](../parseJsonSlideDocument.ts))
 
-Example (4 + 8 with nested grid): [`src/presentation/schemas/slide-prompt-structure.json`](../schemas/slide-prompt-structure.json)
+Example (4 + 8 with nested grid): [`src/presentation/decks/main/schemas/slide-prompt-structure.json`](../decks/main/schemas/slide-prompt-structure.json)
 
 ### `stackLayout`
 Vertical stack of **regions** (same `JsonSlideRegion` union as `splitLayout`: `card`, `text`, `layout`, `quote`). Row heights are proportional **fr** weights from each item’s `span` (spans must sum to **12**, same convention as column layouts).
@@ -263,7 +263,7 @@ Fields:
 - `gap?`: `xs` | `sm` | `md` | `lg`
 - `items`: non-empty array of `{ "span": number (1–12), "region": JsonSlideRegion }`
 
-Use for gallery columns that need a **pair above + single below** (see [`slide-reference-roles.json`](../schemas/slide-reference-roles.json)) or any vertical composition of nested layouts.
+Use for gallery columns that need a **pair above + single below** (see [`slide-reference-roles.json`](../decks/main/schemas/slide-reference-roles.json)) or any vertical composition of nested layouts.
 
 ### `mediaGallery`
 Renders a strip or grid of **images and/or videos** (no card chrome). Use inside a `splitLayout` or `stackLayout` region via `{ "kind": "layout", "layout": { "type": "mediaGallery", ... } }`.
@@ -284,7 +284,7 @@ Fields:
 - `single`: exactly **1** item; one main media cell
 - `pair`: exactly **2** items; with `cellVariant: "fill"` uses a **2-column** grid of fill cells; otherwise uses `SlideImagePair` (two-up strip, panel-style images)
 - `row`: a flexible **row** of equal flex children (`flex-1`), for multiple side-by-side items without the 5+ special-case
-- `column`: **N** items in one column, **N** equal-height rows (for stacked reference/result strips — see [`slide-leo-wide-shot.json`](../schemas/slide-leo-wide-shot.json))
+- `column`: **N** items in one column, **N** equal-height rows (for stacked reference/result strips — see [`slide-leo-wide-shot.json`](../decks/main/schemas/slide-leo-wide-shot.json))
 
 ### Text region (split/stack)
 Plain text stack without `SurfaceCard` / card padding — use when you need headings or body copy in a `splitLayout` or `stackLayout` pane but **not** a full card. **Not** the same as `imageCover` top/bottom rail items that use `kind: "text"` with `lines` (different template; see [imageCover](#template-imagecover)).
@@ -294,7 +294,7 @@ Under `text`:
 - `stackGap?` — `xs` | `sm` | `md` | `lg` (default `md`)
 - `align?` — `left` | `center` | `right` (default `left`)
 
-Rendered in [`nodes/JsonTextRegionNode.tsx`](./nodes/JsonTextRegionNode.tsx). Example: [`slide-angles-lighting.json`](../schemas/slide-angles-lighting.json) (left column).
+Rendered in [`nodes/JsonTextRegionNode.tsx`](./nodes/JsonTextRegionNode.tsx). Example: [`slide-angles-lighting.json`](../decks/main/schemas/slide-angles-lighting.json) (left column).
 
 ```json
 {
@@ -315,7 +315,7 @@ Object shape (under `quote`):
 - `text?` — main quoted string
 - `paragraphs?` — optional array of strings; each paragraph renders as its own quote block. At least one of `text` (non-empty) or non-empty `paragraphs` is required.
 
-Rendered in [`nodes/JsonQuoteNode.tsx`](./nodes/JsonQuoteNode.tsx). Examples: [`slide-agentic-workflow-result.json`](../schemas/slide-agentic-workflow-result.json), [`slide-prompt-order-pair-images.json`](../schemas/slide-prompt-order-pair-images.json), [`slide-editing-prompt-principles.json`](../schemas/slide-editing-prompt-principles.json)
+Rendered in [`nodes/JsonQuoteNode.tsx`](./nodes/JsonQuoteNode.tsx). Examples: [`slide-agentic-workflow-result.json`](../decks/main/schemas/slide-agentic-workflow-result.json), [`slide-prompt-order-pair-images.json`](../decks/main/schemas/slide-prompt-order-pair-images.json), [`slide-editing-prompt-principles.json`](../decks/main/schemas/slide-editing-prompt-principles.json)
 
 ## Card Contract
 Cards are rendered by [`src/presentation/json-renderer/nodes/JsonCardNode.tsx`](./nodes/JsonCardNode.tsx).
@@ -352,8 +352,9 @@ Use this contract:
 - `leadingIcon?`: optional **registry** id — small icon in a rounded badge above `subtitle` / content (see [Card icons](#card-icons))
 - `watermarkIcon?`: optional **registry** id — large faded icon in the bottom-right of the card (decorative)
 - `subtitle?`: optional pinned label above the content zone (see below)
-- `justify?`: `start` | `end` | `between` — vertical layout of the **body** `items[]` zone, not `subtitle`. Special case: when `headerBadge` is set and the first two `items[]` are `overline` then `h2`, those two render as a **header row** with the badge; `between` then puts space **between** that row and the remaining `items[]`. If there are several rows after the header, `between` also spreads them inside that lower block.
-- `items`: required, non-empty array — **union** (see [Card `items[]`](#card-items): text rows and optional `type: "component"` rows)
+- `justify?`: `start` | `end` | `between` — vertical layout of the body zone, not `subtitle`. With `slots`, `justify` applies **between slots**; items inside a slot stay glued by `gap`. With flat `items`, special case: when `headerBadge` is set and the first two `items[]` are `overline` then `h2`, those two render as a **header row** with the badge; `between` then puts space **between** that row and the remaining `items[]`. If there are several rows after the header, `between` also spreads them inside that lower block.
+- `items`: flat rows — **union** of text rows and `type: "component"` rows (see [Card `items[]`](#card-items)). Provide **either** `items` **or** `slots`, not both.
+- `slots?`: grouped rows — array of `{ items, gap? }` blocks (see [Card slots](#card-slots)). Use when `justify: "between"` must pin top/bottom groups while keeping inner rows glued.
 
 ### Card icons
 Allowed ids are a **closed set** (extend by editing [`jsonSlideCardIconRegistry.tsx`](./jsonSlideCardIconRegistry.tsx) and [`jsonSlideTypes.ts`](../jsonSlideTypes.ts) `JSON_SLIDE_CARD_ICON_IDS`).
@@ -384,13 +385,51 @@ Example:
 - Does **not** participate in `justify`; only the content stack (`items[]`) is distributed vertically per `justify`.
 
 ### `justify`
-Controls vertical distribution of the card **body** (the `items[]` stack, or the tail of `items[]` after an optional `overline`+`h2`+`headerBadge` header row). `subtitle` stays pinned above and does not participate.
+Controls vertical distribution of the card **body**. `subtitle` stays pinned above and does not participate.
 
 - `start` -> body rows stay at the **top** of the body zone
 - `end` -> body rows stay at the **bottom** of the body zone
 - `between` ->
-  - **Without** the `headerBadge` + `overline`+`h2` header pattern: body rows are distributed across the available height of the body zone (with a single body row, the runtime pins it to the bottom of the flex area).
-  - **With** that header pattern: space goes **between** the header row and the block of remaining rows; if there are **two or more** tail rows, `between` also spreads them within that lower block (e.g. `body` vs `tagList` on prompt-structure cards).
+  - With **`slots`**: space is distributed **between slots**; items inside a slot stay glued by `gap` (or card `stackGap`).
+  - With flat `items`, **without** the `headerBadge` + `overline`+`h2` header pattern: body rows are distributed evenly across the body zone (with a single row, the runtime pins it to the bottom of the flex area).
+  - With flat `items` **and** that header pattern: space goes **between** the header row and the block of remaining rows; if there are **two or more** tail rows, `between` also spreads them within that lower block (e.g. `body` vs `tagList` on prompt-structure cards). Prefer `slots` for new slides — the heuristic path is kept for backward compatibility.
+
+### Card slots
+Use `slots` when `justify: "between"` must distribute **groups** of rows, not individual rows. Each slot is an indivisible vertical block; items inside a slot are separated by `gap` (or card `stackGap`). `leadingIcon`, `subtitle`, `headerBadge`, and `watermarkIcon` still behave the same and sit outside the slots stack.
+
+Shape:
+
+```json
+{
+  "tone": "standard",
+  "leadingIcon": "type",
+  "justify": "between",
+  "slots": [
+    {
+      "items": [
+        { "variant": "overline", "text": "До 2025" }
+      ]
+    },
+    {
+      "items": [
+        { "variant": "h2",   "text": "Идея упиралась в синтаксис" },
+        { "variant": "body", "text": "Most ideas never left the notebook." }
+      ]
+    }
+  ]
+}
+```
+
+Slot fields:
+- `items`: required, non-empty array — same **union** as flat `items[]` (text rows and `type: "component"` rows)
+- `gap?`: `xs` | `sm` | `md` | `lg` — vertical spacing between items inside **this slot only**; defaults to card-level `stackGap`
+
+Rules:
+- Provide **either** `items` **or** `slots` on a card, not both — the parser rejects mixing.
+- Slot depth is exactly one; slots cannot nest.
+- With `slots`, the legacy `headerBadge` + `overline`+`h2` header-pair heuristic is **disabled**. If you need a header row next to a badge, put the header rows in the first slot yourself.
+
+Example slide: [`slide-vibecoding-02-definition.json`](../decks/vibecoding/schemas/slide-vibecoding-02-definition.json).
 
 ## Card `items[]`
 Each entry is either:
@@ -421,10 +460,10 @@ Shape:
 - `gap` optional: `xs` | `sm` | `md` | `lg` — spacing between pills; default `sm`
 - `items` required: non-empty array of `{ "label": string }` — duplicate labels are rejected at parse time
 
-Example (abbreviated): [`src/presentation/schemas/slide-midjourney-vs-nano-banana.json`](../schemas/slide-midjourney-vs-nano-banana.json)
+Example (abbreviated): [`src/presentation/decks/main/schemas/slide-midjourney-vs-nano-banana.json`](../decks/main/schemas/slide-midjourney-vs-nano-banana.json)
 
 ### `indexedList`
-Numbered vertical list (index + title + subtitle per row). Styling follows `card.tone` (`accent` rows use the same on-accent treatment as the hero card on [`slide-prompt-structure.json`](../schemas/slide-prompt-structure.json)).
+Numbered vertical list (index + title + subtitle per row). Styling follows `card.tone` (`accent` rows use the same on-accent treatment as the hero card on [`slide-prompt-structure.json`](../decks/main/schemas/slide-prompt-structure.json)).
 
 Shape:
 
@@ -466,7 +505,7 @@ Shape:
   - `label` — non-empty string; rendered as subdued supporting caption
   - `value` — non-empty string; rendered as the primary value
 
-Example: [`slide-nano-banana-versions.json`](../schemas/slide-nano-banana-versions.json)
+Example: [`slide-nano-banana-versions.json`](../decks/main/schemas/slide-nano-banana-versions.json)
 
 ### How to register a new component item
 1. Add the id to `JSON_SLIDE_CARD_COMPONENT_IDS` in [`jsonSlideTypes.ts`](../jsonSlideTypes.ts) and extend `JsonSlideCardItem` with a **fully typed** branch (no `Record<string, unknown>` props).
@@ -474,7 +513,7 @@ Example: [`slide-nano-banana-versions.json`](../schemas/slide-nano-banana-versio
 3. In [`jsonSlideCardComponentRegistry.tsx`](./jsonSlideCardComponentRegistry.tsx): implement a `React` component with `{ tone, item }` props, add it to `JSON_SLIDE_CARD_COMPONENT_REGISTRY` (must satisfy `JsonSlideCardComponentRegistry` — a missing key is a type error), and add an exhaustive `case` in `renderJsonCardComponentItem()`. Do **not** add branches in [`nodes/JsonCardNode.tsx`](./nodes/JsonCardNode.tsx); it only dispatches text vs `renderJsonCardComponentItem()`.
 4. If the grid uses “first text item” heuristics for React keys, update [`layouts/JsonUniformGridLayout.tsx`](./layouts/JsonUniformGridLayout.tsx) to treat your component like other non-text rows (use [`isJsonSlideCardItemText`](../jsonSlideTypes.ts)).
 5. Re-export any new public types from [`jsonSlideSchema.ts`](../jsonSlideSchema.ts) if needed for callers.
-6. Document the shape in this file (contract + example) and add a schema under [`schemas/`](../schemas) when the deck ships the slide.
+6. Document the shape in this file (contract + example) and add a schema JSON under the owning deck’s [`schemas/`](../decks/main/schemas) folder (or [`vibecoding/schemas/`](../decks/vibecoding/schemas)) when the deck ships the slide.
 
 ## Allowed Card Item Variants
 For **text** items, allowed `card.items[].variant` values are intentionally narrower than the full `Text` component API:
@@ -499,7 +538,7 @@ Reason:
 
 **Extending typography:** add new JSON-facing modes as new `variant` values in `Text.tsx` and extend the parser allowlists — not `className`, `font`, or other style escape hatches.
 
-**Example — mono prompt in a ghost card** (see [`slide-prompt-order-flex.json`](../schemas/slide-prompt-order-flex.json)):
+**Example — mono prompt in a ghost card** (see [`slide-prompt-order-flex.json`](../decks/main/schemas/slide-prompt-order-flex.json)):
 
 ```json
 {
@@ -545,6 +584,7 @@ If the order should change, change the JSON array order.
 - Use `bodyLg` only when the card is sparse and needs larger body text.
 - Use `prompt` inside a card (often `surface: "ghost"`) for long monospace prompt copy; do not fake this with `body` + ad hoc classes.
 - Use `justify: "between"` for tall cards with a title and body in `items[]` (and optional `subtitle` for a fixed label).
+- Prefer `slots` over flat `items` when `justify: "between"` must pin **groups** (e.g. overline on top, `h2`+`body` glued together on the bottom) instead of spreading every row evenly.
 - Use `justify: "end"` for cards whose `items[]` should sit near the bottom.
 - Omit `justify` when normal top stacking is enough.
 

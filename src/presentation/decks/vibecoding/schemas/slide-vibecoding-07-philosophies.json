@@ -1,0 +1,72 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт II · Развилка",
+    "title": "Развилка двух троп: довериться платформе или взять штурвал",
+    "lead": "Герой уже попробовал проводников и понял вкус скорости. Но дальше развилка становится глубже — это выбор не инструмента, а философии, с которой он пойдёт в остальной путь."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "leadingIcon": "zap",
+            "watermarkIcon": "layout-template",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Тропа низкого риска" },
+              { "variant": "h2", "text": "Закрытая платформа держит героя в своих рамках" },
+              { "variant": "body", "text": "Инфраструктура, база данных и хостинг — всё внутри одного мира. MVP за часы, но стены этого мира ты не раздвинешь: vendor lock-in и болезненная миграция, если история вырастет из платформы." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "sm",
+                "items": [
+                  { "label": "Lovable" },
+                  { "label": "Bolt.new" },
+                  { "label": "Replit Agent" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "leadingIcon": "workflow",
+            "watermarkIcon": "share-2",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Тропа высокой отдачи" },
+              { "variant": "h2", "text": "Открытая разработка отдаёт штурвал в руки героя" },
+              { "variant": "body", "text": "Любой стек, любая библиотека, Git и собственное окружение. Старт тяжелее — зато продукт растёт вместе с героем и не упирается в чужие стены, когда ставки повышаются." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "sm",
+                "items": [
+                  { "label": "Cursor" },
+                  { "label": "Claude Code" },
+                  { "label": "Windsurf" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

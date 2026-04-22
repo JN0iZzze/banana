@@ -1,0 +1,70 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт III · Цена надёжности",
+    "title": "Прототип за 2 часа, продукт — за 8-16. Умножай на два-четыре",
+    "lead": "Герой видит дракона, но артефактов ещё нет. Прежде чем браться за оружие, нужно принять цену, которую ИИ сделал видимой: доведение прототипа до продакшна занимает в 2–4 раза больше времени, чем сам прототип. Это не недостаток вайбкодинга — это правда разработки. Кто не принял её, входит в битву безоружным."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "layers",
+            "watermarkIcon": "workflow",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Урок I" },
+              { "variant": "h3", "text": "×2–4 на production hardening" },
+              { "variant": "body", "text": "Обработка ошибок, безопасность, нагрузка, тесты, деплой, мониторинг. Демо за два часа превращается в продукт за восемь-шестнадцать. Эта дельта всегда была, просто скорость ИИ сделала её видимой." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "brain",
+            "watermarkIcon": "pen-tool",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Урок II" },
+              { "variant": "h3", "text": "От «Accept All» к критическому ревью" },
+              { "variant": "body", "text": "Нажимать «принять» подряд — путь к когнитивному долгу. Герой перестаёт быть оператором кнопки и становится директором: читает каждую правку, спрашивает «зачем» и «что сломается», отклоняет то, что не объясняется одним предложением." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "zap",
+            "watermarkIcon": "layout-template",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Урок III" },
+              { "variant": "h3", "text": "Позитивные спецификации вместо бесконечных промптов" },
+              { "variant": "body", "text": "«Исправь это / нет, не так / опять не то» — это цикл без цели. Вместо него — spec, PRD, контракт: что должно быть, какие входы, какие выходы, какие границы. Чёткая цель меняет экономику каждого запроса к ИИ." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

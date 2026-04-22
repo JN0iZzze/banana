@@ -89,9 +89,21 @@ export function isJsonSlideCardItemText(item: JsonSlideCardItem): item is JsonSl
 
 /**
  * Vertical distribution of the card body stack (flex main axis).
- * With `headerBadge` + leading `overline` then `h2`, the renderer treats that pair as a fixed header row; `between` then splits space between that row and the remaining `items[]` (and can still spread multiple tail rows inside the lower block).
+ * With `slots`, `justify` applies between slots; items inside a slot stay glued by `gap`.
+ * Legacy flat `items`: `headerBadge` + leading `overline`+`h2` triggers a header-pair heuristic where `between` splits space between header row and the rest.
  */
 export type JsonSlideCardJustify = 'start' | 'end' | 'between';
+
+/**
+ * Indivisible vertical block inside a card. Items inside are separated by `gap` (or card `stackGap`);
+ * outer `justify` distributes whole slots. Prefer `slots` over flat `items` when you need
+ * `justify: "between"` to pin top/bottom groups.
+ */
+export interface JsonSlideCardSlot {
+  items: JsonSlideCardItem[];
+  /** Gap between items inside this slot. Defaults to card-level `stackGap`. */
+  gap?: JsonSlideGridGap;
+}
 
 /** Pinned top zone; same `variant` + `text` shape as a text `items[]` row; does not participate in `justify`. */
 export type JsonSlideCardSubtitle = JsonSlideCardItemText;
@@ -131,6 +143,11 @@ export const JSON_SLIDE_CARD_ICON_IDS = [
   'monitor',
   'globe',
   'brain',
+  'cursor',
+  'claude',
+  'claude-code',
+  'replit',
+  'lovable',
 ] as const;
 
 export type JsonSlideCardIconId = (typeof JSON_SLIDE_CARD_ICON_IDS)[number];
@@ -264,7 +281,10 @@ export interface JsonSlideCard {
   subtitle?: JsonSlideCardSubtitle;
   /** See `JsonSlideCardJustify`. Does not apply to `subtitle`. */
   justify?: JsonSlideCardJustify;
-  items: JsonSlideCardItem[];
+  /** Flat rows. Provide either `items` or `slots`, not both. */
+  items?: JsonSlideCardItem[];
+  /** Grouped rows; `justify` distributes slots, items within a slot stay glued. */
+  slots?: JsonSlideCardSlot[];
 }
 
 export interface JsonSlideColumnItem {

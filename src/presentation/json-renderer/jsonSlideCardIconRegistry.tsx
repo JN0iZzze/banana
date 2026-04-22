@@ -1,5 +1,9 @@
 import type { ComponentType } from 'react';
 import ByteDance from '@lobehub/icons/es/ByteDance';
+import ClaudeIcon from '@lobehub/icons/es/Claude';
+import CursorIcon from '@lobehub/icons/es/Cursor';
+import LovableIcon from '@lobehub/icons/es/Lovable';
+import ReplitIcon from '@lobehub/icons/es/Replit';
 import Flux from '@lobehub/icons/es/Flux';
 import Gemini from '@lobehub/icons/es/Gemini';
 import Grok from '@lobehub/icons/es/Grok';
@@ -53,6 +57,11 @@ export const JSON_SLIDE_CARD_ICON_REGISTRY: Record<JsonSlideCardIconId, JsonSlid
   monitor: Monitor,
   globe: Globe,
   brain: Brain,
+  cursor: CursorIcon,
+  claude: ClaudeIcon,
+  'claude-code': ClaudeIcon,
+  replit: ReplitIcon,
+  lovable: LovableIcon,
 };
 
 export function getJsonSlideCardIcon(id: JsonSlideCardIconId): JsonSlideCardIconComponent {

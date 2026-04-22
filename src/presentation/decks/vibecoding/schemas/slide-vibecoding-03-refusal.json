@@ -1,0 +1,74 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт I · Отказ от зова",
+    "title": "Три страха, из-за которых герой отступает",
+    "lead": "Каждый герой на пороге сомневается. Вайбкодер — не исключение: прежде чем сделать первый шаг, он спорит сам с собой."
+  },
+  "layout": {
+    "type": "uniformGrid",
+    "columns": 3,
+    "gap": "md",
+    "items": [
+      {
+        "tone": "standard",
+        "padding": "default",
+        "headerBadge": { "text": "01" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Интеллектуальный страх" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "«Я разучусь думать»" },
+              { "variant": "body", "text": "Если код за меня пишет модель, не деградирую ли я когнитивно? Не потеряю ли навык разбираться в том, как всё устроено на самом деле?" }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "headerBadge": { "text": "02" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Синдром самозванца" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "«Это же не настоящая разработка»" },
+              { "variant": "body", "text": "Вайбкодинг кажется фаст-фудом инженерии: быстро, вкусно, но несерьёзно. Для настоящего продукта так нельзя — нужен настоящий код и настоящие разработчики." }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "headerBadge": { "text": "03" },
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Технический скепсис" }
+            ]
+          },
+          {
+            "items": [
+              { "variant": "h3", "text": "«Галлюцинации и чёрный ящик»" },
+              { "variant": "body", "text": "Модель придумывает несуществующие библиотеки, генерирует код, который страшно поддерживать, и принимает решения, которые невозможно объяснить." }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

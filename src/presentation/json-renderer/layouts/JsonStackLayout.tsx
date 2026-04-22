@@ -16,7 +16,7 @@ export function JsonStackLayoutView({ layout }: JsonStackLayoutViewProps) {
       style={{ gap: gapValue, gridTemplateRows: rowTemplate }}
     >
       {layout.items.map((item, i) => (
-        <div key={`stack-${i}-${item.span}`} className="min-h-0 min-w-0 overflow-hidden">
+        <div key={`stack-${i}-${item.span}`} className="min-h-0 min-w-0">
           <JsonSlideRegionNode region={item.region} delay={0.16 + i * 0.06} />
         </div>
       ))}

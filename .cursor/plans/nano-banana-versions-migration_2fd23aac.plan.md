@@ -42,7 +42,7 @@ isProject: false
 - расширять только `card.items[]` через новый `type: "component"`
 
 ## Целевая JSON-композиция
-Создать новую схему, например [src/presentation/schemas/slide-nano-banana-versions.json](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/schemas/slide-nano-banana-versions.json), со структурой:
+Создать новую схему, например [src/presentation/decks/main/schemas/slide-nano-banana-versions.json](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/decks/main/schemas/slide-nano-banana-versions.json), со структурой:
 
 - `frame.padding: "compact"`
 - `backdrop.variant: "mesh"`
@@ -166,7 +166,7 @@ isProject: false
 - при расширении icon ids — не забыть, что README ссылается на allowlist card icons как на closed set
 
 ### 6. Schema и регистрация
-Создать новую schema [src/presentation/schemas/slide-nano-banana-versions.json](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/schemas/slide-nano-banana-versions.json), затем:
+Создать новую schema [src/presentation/decks/main/schemas/slide-nano-banana-versions.json](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/decks/main/schemas/slide-nano-banana-versions.json), затем:
 - зарегистрировать её в [src/presentation/jsonSlideDocumentRegistry.ts](/Users/jn0izzze/OtherAIPro/newgen/src/presentation/jsonSlideDocumentRegistry.ts)
 - добавить migrated id
 - связать id с document registry

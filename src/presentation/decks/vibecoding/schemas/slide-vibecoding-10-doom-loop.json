@@ -1,0 +1,70 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт III · Главное испытание",
+    "title": "Doom Loop: трёхголовый дракон, через которого проходит каждый вайбкодер",
+    "lead": "Вооружённый Cursor и Claude Code, герой входит в продакшн — и обнаруживает, что прототип и реальная система живут по разным законам. То, что летало на демо, начинает гнить на десятой итерации. Враг не один. У него три головы, и пока не срубишь каждую — хобби не становится профессией."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "workflow",
+            "watermarkIcon": "layers",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Голова I" },
+              { "variant": "h3", "text": "Техдолг" },
+              { "variant": "body", "text": "Код в потоке лишён обработки ошибок, проверок безопасности и запаса на масштаб. Работает на десяти пользователях — рушится на тысяче. Опаснее всего, что долг копится незаметно: каждая следующая фича сажает фундамент на миллиметр глубже." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "brain",
+            "watermarkIcon": "pen-tool",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Голова II" },
+              { "variant": "h3", "text": "Когнитивный долг" },
+              { "variant": "body", "text": "Это код, который ты не писал. Чтобы развивать систему, приходится разобраться в чужой — ИИ-шной — реализации и переосмыслить её. Кнопка «Accept All» заканчивается там, где начинается ответственность: нужен критический разбор каждой правки." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "share-2",
+            "watermarkIcon": "layout-template",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Голова III" },
+              { "variant": "h3", "text": "Архитектурная энтропия" },
+              { "variant": "body", "text": "ИИ решает похожие задачи по-разному в разных файлах: здесь один паттерн, там другой, рядом третий. Без позитивных спецификаций и жёстких границ проект расползается, и каждая новая правка ломает невидимые связи с соседними." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

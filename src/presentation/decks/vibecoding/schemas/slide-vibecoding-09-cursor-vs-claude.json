@@ -1,0 +1,86 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "mesh" },
+  "content": { "width": "wide", "density": "comfortable" },
+  "header": {
+    "meta": "Акт II · Два наставника",
+    "title": "Два наставника, два характера — выбор зависит от того, кем ты становишься",
+    "lead": "Это не спор «что лучше». Это два разных характера: один стоит у тебя за плечом и ускоряет каждое движение, другой уходит делать работу сам и возвращается с результатом. Оба уважают автора — но по-разному."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h2", "text": "Cursor" },
+                  { "variant": "caption", "text": "Мастер клинка · стоит рядом" }
+                ]
+              },
+              {
+                "items": [
+                  {
+                    "type": "component",
+                    "component": "featureList",
+                    "gap": "sm",
+                    "items": [
+                      { "icon": "layout-template", "label": "Роль", "value": "Партнёр у плеча" },
+                      { "icon": "pen-tool", "label": "Как учит", "value": "Tab + Composer в IDE" },
+                      { "icon": "brain", "label": "Память", "value": "~70–120k токенов" },
+                      { "icon": "zap", "label": "Сила характера", "value": "Скорость и поток" },
+                      { "icon": "layers", "label": "Контроль ученика", "value": "Диффы вручную" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h2", "text": "Claude Code" },
+                  { "variant": "caption", "text": "Молчаливый стратег · уходит делать" }
+                ]
+              },
+              {
+                "items": [
+                  {
+                    "type": "component",
+                    "component": "featureList",
+                    "gap": "sm",
+                    "items": [
+                      { "icon": "layout-template", "label": "Роль", "value": "Автономный исполнитель" },
+                      { "icon": "pen-tool", "label": "Как учит", "value": "Задачи в CLI" },
+                      { "icon": "brain", "label": "Память", "value": "200k (до 1M в бете)" },
+                      { "icon": "zap", "label": "Сила характера", "value": "Многофайловые правки" },
+                      { "icon": "layers", "label": "Контроль ученика", "value": "План → исполнение" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

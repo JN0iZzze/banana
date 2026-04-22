@@ -227,10 +227,11 @@
   }
 
   .slide-text-h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-body);
     font-size: clamp(2rem, 3vw, 3rem);
-    font-style: italic;
+    font-weight: 700;
     line-height: 1.02;
+    letter-spacing: -0.03em;
     color: var(--slide-color-text);
   }
 

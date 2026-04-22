@@ -1,0 +1,61 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable", "align": "left" },
+  "header": {
+    "meta": "Акт III · Артефакт силы IV",
+    "title": "Четвёртый артефакт: герой не один — с ним отряд союзников",
+    "lead": "В любом пути героя рядом с протагонистом появляются союзники-делегаты. У вайбкодера тоже: субагенты берут на себя изолированные задачи — тесты, документацию, ревью, поиск — и работают параллельно, пока главный герой держит общую картину фичи. Это не фича платформы, это команда."
+  },
+  "layout": {
+    "type": "uniformGrid",
+    "columns": 4,
+    "gap": "md",
+    "items": [
+      {
+        "tone": "accent",
+        "padding": "default",
+        "leadingIcon": "brain",
+        "justify": "between",
+        "items": [
+          { "variant": "overline", "text": "Герой" },
+          { "variant": "h3", "text": "Держит замысел" },
+          { "variant": "body", "text": "Главный агент хранит контекст фичи целиком и решает, кому делегировать каждый кусок." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "pen-tool",
+        "justify": "between",
+        "items": [
+          { "variant": "overline", "text": "Союзник · Тестер" },
+          { "variant": "h3", "text": "Закрывает код тестами" },
+          { "variant": "body", "text": "Параллельно покрывает новую логику проверками, пока герой продолжает двигаться дальше." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "type",
+        "justify": "between",
+        "items": [
+          { "variant": "overline", "text": "Союзник · Документалист" },
+          { "variant": "h3", "text": "Синхронизирует доки" },
+          { "variant": "body", "text": "README и комментарии не отстают от правок — за этим следит отдельный агент, не отвлекая героя." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "layers",
+        "justify": "between",
+        "items": [
+          { "variant": "overline", "text": "Союзник · Ревьюер" },
+          { "variant": "h3", "text": "Ищет слабые места" },
+          { "variant": "body", "text": "Отдельный агент приходит свежим взглядом: архитектурные и security-риски ловятся до продакшна." }
+        ]
+      }
+    ]
+  }
+}

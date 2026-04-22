@@ -1,0 +1,18 @@
+{
+  "template": "textStack",
+  "theme": "editorial",
+  "frame": { "align": "center", "padding": "default" },
+  "backdrop": { "variant": "mesh" },
+  "content": { "width": "content", "align": "center", "density": "comfortable" },
+  "stack": {
+    "align": "center",
+    "justify": "center",
+    "gap": "md",
+    "reveal": { "preset": "soft", "baseDelay": 0, "step": 0.08 },
+    "items": [
+      { "type": "text", "variant": "overline", "text": "Акт I · Пролог" },
+      { "type": "text", "variant": "h1", "size": "display", "text": "Вайбкодинг" },
+      { "type": "text", "variant": "lead", "text": "История одной трансформации: от идеи в голове до продукта, который работает" }
+    ]
+  }
+}

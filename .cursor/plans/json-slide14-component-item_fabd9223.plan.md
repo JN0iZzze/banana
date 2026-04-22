@@ -99,7 +99,7 @@ isProject: false
 - card 1: `h2`, `bodyLg`, затем component item `tagList`
 - card 2: то же, но `tone: accent`
 
-Добавить новый schema JSON под [`src/presentation/schemas/`](src/presentation/schemas/), зарегистрировать его в [`src/presentation/jsonSlideDocumentRegistry.ts`](src/presentation/jsonSlideDocumentRegistry.ts) и переключить `midjourney-vs-nano-banana` в [`src/presentation/decks/mainDeck.ts`](src/presentation/decks/mainDeck.ts) на `JsonSlideRenderer`.
+Добавить новый schema JSON под [`src/presentation/decks/main/schemas/`](src/presentation/decks/main/schemas/), зарегистрировать его в [`src/presentation/jsonSlideDocumentRegistry.ts`](src/presentation/jsonSlideDocumentRegistry.ts) и переключить `midjourney-vs-nano-banana` в [`src/presentation/decks/mainDeck.ts`](src/presentation/decks/mainDeck.ts) на `JsonSlideRenderer`.
 
 ## Documentation
 Обновить [`src/presentation/json-renderer/README.md`](src/presentation/json-renderer/README.md):

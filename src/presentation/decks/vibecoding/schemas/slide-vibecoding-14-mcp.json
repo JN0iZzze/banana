@@ -1,0 +1,67 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт III · Артефакт силы III",
+    "title": "Третий артефакт: глаза и уши во внешнем мире",
+    "lead": "До MCP агент сидел запертым в песочнице кода и угадывал реальность по обрывкам. Model Context Protocol открывает ему каналы восприятия — базы данных, живую документацию, SDK. Это прямой ответ на первую голову дракона: агент перестаёт галлюцинировать и начинает проверять мир, прежде чем в нём что-то менять."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "leadingIcon": "share-2",
+            "watermarkIcon": "layers",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Канал 1 · DBHub" },
+              { "variant": "h2", "text": "Зрение в базе" },
+              { "variant": "body", "text": "Агент сам открывает схему таблиц и смотрит реальные записи, прежде чем написать запрос. Никаких выдуманных полей." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "leadingIcon": "brain",
+            "watermarkIcon": "sparkles",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Канал 2 · Context7" },
+              { "variant": "h2", "text": "Слух в документации" },
+              { "variant": "body", "text": "Живые версии библиотек, вышедших уже после даты обучения модели. Агент слышит, как API работает сейчас, а не полгода назад." }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "leadingIcon": "workflow",
+            "watermarkIcon": "layout-template",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Канал 3 · Xcode MCP" },
+              { "variant": "h2", "text": "Связь с SDK" },
+              { "variant": "body", "text": "Флаги сборки iOS агент берёт из настоящего тулчейна, а не выдумывает по памяти. Инструмент становится продолжением руки." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
