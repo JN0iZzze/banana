@@ -1,0 +1,82 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": {
+    "variant": "spotlight",
+    "dimmed": true,
+    "borderFrame": true
+  },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Промпт: порядок",
+    "title": "Формула не догма"
+  },
+  "layout": {
+    "type": "stackLayout",
+    "gap": "md",
+    "items": [
+      {
+        "span": 9,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "equalColumns",
+            "gap": "md",
+            "items": [
+              {
+                "span": 6,
+                "region": {
+                  "kind": "card",
+                  "card": {
+                    "tone": "standard",
+                    "surface": "ghost",
+                    "padding": "default",
+                    "items": [
+                      {
+                        "variant": "prompt",
+                        "text": "Extreme low angle shot, Asian model in high-end eccentric pink blazer and gold pleated trousers, dramatic pose, studio lighting, stark concrete backdrop, Hasselblad H6D, fashion editorial, hyper-realistic."
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "span": 6,
+                "region": {
+                  "kind": "card",
+                  "card": {
+                    "tone": "standard",
+                    "surface": "ghost",
+                    "padding": "default",
+                    "items": [
+                      {
+                        "variant": "prompt",
+                        "text": "Азиатская модель в роскошном эксцентричном розовом блейзере и золотых плиссированных брюках, эффектная поза, студийное освещение, строгий бетонный фон, Hasselblad H6D, модная фотосессия, гиперреалистичный стиль. Съемка с крайне низкого ракурса,"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 3,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "surface": "accentGradient",
+            "padding": "default",
+            "items": [
+              {
+                "variant": "bodyLg",
+                "text": "Важнее не священный порядок, а полнота инструкции, ясные приоритеты и отсутствие противоречий."
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

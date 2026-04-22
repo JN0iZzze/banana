@@ -1,14 +1,8 @@
 import type { DeckDefinition } from '../types';
-import { DemoFoundationSlide } from '../slides/DemoFoundationSlide';
-import { DemoSpotlightStackSlide } from '../slides/DemoSpotlightStackSlide';
-import { DemoTriptychSlide } from '../slides/DemoTriptychSlide';
-import { AgenticWorkflowSlide } from '../slides/AgenticWorkflowSlide';
 import { ReferenceCountsSlide } from '../slides/ReferenceCountsSlide';
-import { PlaceholderNanoBananaVersionsSlide } from '../slides/PlaceholderNanoBananaVersionsSlide';
 import { PhotorealismSlide } from '../slides/PhotorealismSlide';
 import { PhotorealismSlideCopy } from '../slides/PhotorealismSlideCopy';
 import { LeoFluxVsGptSlide } from '../slides/LeoFluxVsGptSlide';
-import { ThreeDRefsSlide } from '../slides/ThreeDRefsSlide';
 import { CompositionSlide } from '../slides/CompositionSlide';
 import { SpeakerChannelGridSlide } from '../slides/SpeakerChannelGridSlide';
 import { GamepadStyleTransferSlide } from '../slides/GamepadStyleTransferSlide';
@@ -17,10 +11,6 @@ import { Early2025Slide } from '../slides/Early2025Slide';
 import { CombGripSlide } from '../slides/CombGripSlide';
 import { StructuredPromptsSlide } from '../slides/StructuredPromptsSlide';
 import { JsonPromptingDefinitionSlide } from '../slides/JsonPromptingDefinitionSlide';
-import { PromptOrderFlexSlide } from '../slides/PromptOrderFlexSlide';
-import { MinimalTitleMultiLinkSlide } from '../slides/MinimalTitleMultiLinkSlide';
-import { WorkflowComparisonSlide } from '../slides/WorkflowComparisonSlide';
-import { TextureWorkflowSlide } from '../slides/TextureWorkflowSlide';
 import { ThankYouSlide } from '../slides/ThankYouSlide';
 import { JsonSlideRenderer } from '../json-renderer/JsonSlideRenderer';
 import { DEMO_JSON_SLIDE_IDS, MIGRATED_JSON_SLIDE_IDS } from '../jsonSlideDocumentRegistry';
@@ -44,30 +34,6 @@ export const mainDeck: DeckDefinition = {
       theme: 'editorial',
       component: JsonSlideRenderer,
       notes: 'Из 20Feb AboutMe: имя, роли, Floux.pro founder; без изображений.',
-    },
-    {
-      id: 'foundation-demo',
-      title: 'Система для будущих слайдов, а не одноразовый макет',
-      theme: 'editorial',
-      component: DemoFoundationSlide,
-      hidden: true,
-      notes: 'Эталонный слайд для будущей сборки deck из composable primitives.',
-    },
-    {
-      id: 'triptych-demo',
-      title: 'Три колонки — один ритм',
-      theme: 'signal',
-      component: DemoTriptychSlide,
-      hidden: true,
-      notes: 'Три равные колонки, фон mesh — другой ритм сетки относительно 7+5.',
-    },
-    {
-      id: 'spotlight-stack-demo',
-      title: 'Вертикальный протокол',
-      theme: 'cinema',
-      component: DemoSpotlightStackSlide,
-      hidden: true,
-      notes: 'Узкий центрированный столбик и SlideSection вместо боковой сетки.',
     },
     {
       id: DEMO_JSON_SLIDE_IDS.asymmetric,
@@ -170,18 +136,19 @@ export const mainDeck: DeckDefinition = {
       notes: 'JSON: equalColumns 6+6, component tagList; slide-midjourney-vs-nano-banana.json.',
     },
     {
-      id: 'agentic-workflow',
+      id: MIGRATED_JSON_SLIDE_IDS.agenticWorkflow,
       title: 'Nano Banana Pro — как агент',
       theme: 'editorial',
-      component: AgenticWorkflowSlide,
-      notes: 'Из 20Feb AgenticWorkflow: три шага (думает → проверяет → рисует), lucide; без изображений.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: equalColumns 4+4+4, три карточки с headerBadge 01–03, leadingIcon (workflow / bar-chart-3 / layers), без стрелок; slide-agentic-workflow.json.',
     },
     {
-      id: 'nano-banana-versions',
+      id: MIGRATED_JSON_SLIDE_IDS.nanoBananaVersions,
       title: 'Nano Banana',
       theme: 'signal',
-      component: PlaceholderNanoBananaVersionsSlide,
-      notes: 'Из 20Feb NanoBananaComparisonSlide: Flash / Pro / 2, строки параметров в колонках без таблицы; Pro — акцентный Box.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: equalColumns 4+4+4, featureList component item (icon+label+value rows с dividers); Pro — accent card; slide-nano-banana-versions.json.',
     },
     {
       id: MIGRATED_JSON_SLIDE_IDS.agenticWorkflowResult,
@@ -209,12 +176,12 @@ export const mainDeck: DeckDefinition = {
         'JSON: splitLayout 4+8, accentGradient + indexedList слева, uniformGrid 2×2 ghost cards + headerBadge + tagList; slide-prompt-structure.json; spotlight + borderFrame.',
     },
     {
-      id: 'prompt-order-flex',
+      id: MIGRATED_JSON_SLIDE_IDS.promptOrderFlex,
       title: 'Формула не догма',
       theme: 'cinema',
-      component: PromptOrderFlexSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Из 20Feb PromptOrderFlexSlide: два варианта одного промпта (A/B), вывод про полноту и приоритеты; без изображений.',
+        'JSON: stackLayout + equalColumns, два ghost-card с variant prompt, accentGradient вывод; slide-prompt-order-flex.json; из 20Feb PromptOrderFlexSlide.',
     },
     {
       id: MIGRATED_JSON_SLIDE_IDS.promptOrderPairImages,
@@ -491,20 +458,21 @@ export const mainDeck: DeckDefinition = {
       preloadAssets: ['/images/creme.png'],
     },
     {
-      id: 'texture-workflow',
+      id: MIGRATED_JSON_SLIDE_IDS.textureWorkflow,
       title: 'Texture workflow',
       theme: 'editorial',
-      component: TextureWorkflowSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Из 20Feb TextureWorkflowSlide: промпт слева, справа 002 object-contain + 003 квадрат object-cover; декор ®©; grid.',
+        'JSON: splitLayout 3+9, quote + nested split 4+8, два mediaGallery single (contain + cover); slide-texture-workflow.json; grid. Без legacy ®© и фиксированной 380px колонки.',
       preloadAssets: ['/images/workflow/002.png', '/images/workflow/003.png'],
     },
     {
-      id: '3d-two-refs-two-outs',
+      id: MIGRATED_JSON_SLIDE_IDS.threeDTwoRefsTwoOuts,
       title: '3D',
       theme: 'editorial',
-      component: ThreeDRefsSlide,
-      notes: 'Как LeoWideShot: сетка 3+9; слева промпт; два референса в левой колонке сетки, два результата в правой; /images/3d/.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery 2×2 (ref1, out1, ref2, out2); slide-3d-two-refs-two-outs.json; grid; /images/3d/.',
       preloadAssets: [
         '/images/3d/ref1.png',
         '/images/3d/ref2.jpg',
@@ -513,12 +481,12 @@ export const mainDeck: DeckDefinition = {
       ],
     },
     {
-      id: 'workflow-comparison',
+      id: MIGRATED_JSON_SLIDE_IDS.workflowComparison,
       title: '3D воркфлоу',
       theme: 'cinema',
-      component: WorkflowComparisonSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Из 20Feb WorkflowComparison: слева видео extra-v.mp4, справа два кадра extra1/extra2; cinema, spotlight.',
+        'JSON: splitLayout 6+6, слева video single, справа mediaGallery column (extra1/extra2); slide-workflow-comparison.json; spotlight, borderFrame.',
       preloadAssets: ['/images/workflow/extra-v.mp4', '/images/workflow/extra1.png', '/images/workflow/extra2.png'],
     },
     {
@@ -585,16 +553,11 @@ export const mainDeck: DeckDefinition = {
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
-      id: 'other-examples-floux-projects',
+      id: MIGRATED_JSON_SLIDE_IDS.otherExamplesFlouxProjects,
       title: 'Другие примеры',
       theme: 'cinema',
-      component: MinimalTitleMultiLinkSlide,
-      notes: 'Тот же минималистичный титул, несколько ссылок на проекты Floux.',
-      links: [
-        { href: 'https://app.floux.pro/w/sEdt6HD5IK4E', label: 'Примеры раз' },
-        { href: 'https://app.floux.pro/w/hPhGWhUNgmgH', label: 'Примеры два' },
-        { href: 'https://app.floux.pro/w/n8uIn8wki5HZ', label: 'Примеры три' },
-      ],
+      component: JsonSlideRenderer,
+      notes: 'JSON textStack: h1 + три ссылки Floux; slide-other-examples-floux-projects.json; cinema, backdrop none + borderFrame.',
     },
     {
       id: 'thank-you',

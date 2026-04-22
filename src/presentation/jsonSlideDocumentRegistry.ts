@@ -14,6 +14,7 @@ import rawHighsfield from './schemas/slide-higgsfield.json';
 import rawNodeBasedSystems from './schemas/slide-node-based-systems.json';
 import rawFlouxDemo from './schemas/slide-floux-demo.json';
 import rawAgenticWorkflowResult from './schemas/slide-agentic-workflow-result.json';
+import rawAgenticWorkflow from './schemas/slide-agentic-workflow.json';
 import rawPromptOrderPairImages from './schemas/slide-prompt-order-pair-images.json';
 import rawEditingPromptPrinciples from './schemas/slide-editing-prompt-principles.json';
 import rawReferenceRoles from './schemas/slide-reference-roles.json';
@@ -41,6 +42,16 @@ import rawGrokImagineBento from './schemas/slide-grok-imagine-bento.json';
 import rawRecraftV4Bento from './schemas/slide-recraft-v4-bento.json';
 import rawMidjorneyBento from './schemas/slide-midjorney-bento.json';
 import rawJsonImagesTriptych from './schemas/slide-json-images-triptych.json';
+import rawTextureWorkflow from './schemas/slide-texture-workflow.json';
+import rawThreeDTwoRefsTwoOuts from './schemas/slide-3d-two-refs-two-outs.json';
+import rawWorkflowComparison from './schemas/slide-workflow-comparison.json';
+import rawOtherExamplesFlouxProjects from './schemas/slide-other-examples-floux-projects.json';
+import rawPromptOrderFlex from './schemas/slide-prompt-order-flex.json';
+import rawNanoBananaVersions from './schemas/slide-nano-banana-versions.json';
+import rawVibecodingDemo from './schemas/slide-vibecoding-demo.json';
+import { VIBECODING_DECK_SLIDE_IDS } from './decks/vibecodingSlideIds';
+
+export { VIBECODING_DECK_SLIDE_IDS };
 
 export const DEMO_JSON_SLIDE_IDS = {
   asymmetric: 'demo-json-grid-asymmetric',
@@ -61,6 +72,7 @@ export const MIGRATED_JSON_SLIDE_IDS = {
   nodeBasedSystems: 'node-based-systems',
   flouxDemo: 'floux-demo',
   agenticWorkflowResult: 'agentic-workflow-result',
+  agenticWorkflow: 'agentic-workflow',
   promptOrderPairImages: 'prompt-order-pair-images',
   editingPromptPrinciples: 'editing-prompt-principles',
   referenceRoles: 'reference-roles',
@@ -88,6 +100,12 @@ export const MIGRATED_JSON_SLIDE_IDS = {
   recraftV4Bento: 'recraft-v4-bento',
   midjorneyBento: 'midjorney-bento',
   jsonImagesTriptych: 'json-images-triptych',
+  textureWorkflow: 'texture-workflow',
+  threeDTwoRefsTwoOuts: '3d-two-refs-two-outs',
+  workflowComparison: 'workflow-comparison',
+  otherExamplesFlouxProjects: 'other-examples-floux-projects',
+  promptOrderFlex: 'prompt-order-flex',
+  nanoBananaVersions: 'nano-banana-versions',
 } as const;
 
 function loadDocument(raw: unknown, label: string): JsonSlideDocument {
@@ -112,6 +130,7 @@ const docHighsfield = loadDocument(rawHighsfield, 'slide-higgsfield.json');
 const docNodeBasedSystems = loadDocument(rawNodeBasedSystems, 'slide-node-based-systems.json');
 const docFlouxDemo = loadDocument(rawFlouxDemo, 'slide-floux-demo.json');
 const docAgenticWorkflowResult = loadDocument(rawAgenticWorkflowResult, 'slide-agentic-workflow-result.json');
+const docAgenticWorkflow = loadDocument(rawAgenticWorkflow, 'slide-agentic-workflow.json');
 const docPromptOrderPairImages = loadDocument(rawPromptOrderPairImages, 'slide-prompt-order-pair-images.json');
 const docEditingPromptPrinciples = loadDocument(rawEditingPromptPrinciples, 'slide-editing-prompt-principles.json');
 const docReferenceRoles = loadDocument(rawReferenceRoles, 'slide-reference-roles.json');
@@ -157,6 +176,16 @@ const docGrokImagineBento = loadDocument(rawGrokImagineBento, 'slide-grok-imagin
 const docRecraftV4Bento = loadDocument(rawRecraftV4Bento, 'slide-recraft-v4-bento.json');
 const docMidjorneyBento = loadDocument(rawMidjorneyBento, 'slide-midjorney-bento.json');
 const docJsonImagesTriptych = loadDocument(rawJsonImagesTriptych, 'slide-json-images-triptych.json');
+const docTextureWorkflow = loadDocument(rawTextureWorkflow, 'slide-texture-workflow.json');
+const docThreeDTwoRefsTwoOuts = loadDocument(rawThreeDTwoRefsTwoOuts, 'slide-3d-two-refs-two-outs.json');
+const docWorkflowComparison = loadDocument(rawWorkflowComparison, 'slide-workflow-comparison.json');
+const docOtherExamplesFlouxProjects = loadDocument(
+  rawOtherExamplesFlouxProjects,
+  'slide-other-examples-floux-projects.json',
+);
+const docPromptOrderFlex = loadDocument(rawPromptOrderFlex, 'slide-prompt-order-flex.json');
+const docNanoBananaVersions = loadDocument(rawNanoBananaVersions, 'slide-nano-banana-versions.json');
+const docVibecodingDemo = loadDocument(rawVibecodingDemo, 'slide-vibecoding-demo.json');
 
 /** Pre-validated schemas keyed by `SlideDefinition.id`. */
 export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
@@ -174,6 +203,7 @@ export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
   [MIGRATED_JSON_SLIDE_IDS.nodeBasedSystems]: docNodeBasedSystems,
   [MIGRATED_JSON_SLIDE_IDS.flouxDemo]: docFlouxDemo,
   [MIGRATED_JSON_SLIDE_IDS.agenticWorkflowResult]: docAgenticWorkflowResult,
+  [MIGRATED_JSON_SLIDE_IDS.agenticWorkflow]: docAgenticWorkflow,
   [MIGRATED_JSON_SLIDE_IDS.promptOrderPairImages]: docPromptOrderPairImages,
   [MIGRATED_JSON_SLIDE_IDS.editingPromptPrinciples]: docEditingPromptPrinciples,
   [MIGRATED_JSON_SLIDE_IDS.referenceRoles]: docReferenceRoles,
@@ -201,6 +231,13 @@ export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
   [MIGRATED_JSON_SLIDE_IDS.recraftV4Bento]: docRecraftV4Bento,
   [MIGRATED_JSON_SLIDE_IDS.midjorneyBento]: docMidjorneyBento,
   [MIGRATED_JSON_SLIDE_IDS.jsonImagesTriptych]: docJsonImagesTriptych,
+  [MIGRATED_JSON_SLIDE_IDS.textureWorkflow]: docTextureWorkflow,
+  [MIGRATED_JSON_SLIDE_IDS.threeDTwoRefsTwoOuts]: docThreeDTwoRefsTwoOuts,
+  [MIGRATED_JSON_SLIDE_IDS.workflowComparison]: docWorkflowComparison,
+  [MIGRATED_JSON_SLIDE_IDS.otherExamplesFlouxProjects]: docOtherExamplesFlouxProjects,
+  [MIGRATED_JSON_SLIDE_IDS.promptOrderFlex]: docPromptOrderFlex,
+  [MIGRATED_JSON_SLIDE_IDS.nanoBananaVersions]: docNanoBananaVersions,
+  [VIBECODING_DECK_SLIDE_IDS.demo]: docVibecodingDemo,
 };
 
 export function getJsonSlideDocumentForSlideId(id: string): JsonSlideDocument | undefined {

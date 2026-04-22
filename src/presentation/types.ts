@@ -37,7 +37,7 @@ export interface SlideDefinition {
   link?: string;
   /** Подпись к ссылке; если не задана при наличии `link`, показывается сам URL. */
   linkLabel?: string;
-  /** Несколько ссылок под заголовком (компоненты вроде MinimalTitleMultiLinkSlide). */
+  /** Несколько ссылок под заголовком (legacy; для JSON-слайдов ссылки в документе textStack). */
   links?: SlideExternalLink[];
 }
 

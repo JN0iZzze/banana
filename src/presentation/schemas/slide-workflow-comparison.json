@@ -1,0 +1,56 @@
+{
+  "theme": "cinema",
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "3D воркфлоу" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "cellVariant": "fill",
+        "gap": "md",
+        "items": [
+          {
+            "type": "video",
+            "src": "/images/workflow/extra-v.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "playsInline": true,
+            "objectFit": "cover"
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "column",
+        "cellVariant": "fill",
+        "gap": "md",
+        "items": [
+          {
+            "type": "image",
+            "src": "/images/workflow/extra1.png",
+            "alt": "Кадр 1",
+            "objectFit": "cover"
+          },
+          {
+            "type": "image",
+            "src": "/images/workflow/extra2.png",
+            "alt": "Кадр 2",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    }
+  }
+}

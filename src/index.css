@@ -49,6 +49,8 @@
     --slide-radius-frame: 36px;
     --slide-radius-panel: 28px;
     --slide-radius-inner: 18px;
+    /** JSON `mediaGallery` image/video corners — slightly above `--slide-radius-inner` */
+    --slide-radius-media: 24px;
 
     --slide-shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.16);
     --slide-shadow-solid: 0 26px 48px rgba(0, 0, 0, 0.28);
@@ -180,7 +182,8 @@
   .slide-text-caption,
   .slide-text-overline,
   .slide-text-tile-accent,
-  .slide-text-meta {
+  .slide-text-meta,
+  .slide-text-prompt {
     margin: 0;
   }
 
@@ -270,6 +273,11 @@
     color: var(--slide-color-text-soft);
   }
 
+  .slide-text-caption[data-slide-text-context="onAccent"] {
+    color: var(--slide-color-accent-contrast);
+    opacity: 0.65;
+  }
+
   .slide-text-overline[data-slide-text-context="onAccent"] {
     color: var(--slide-color-accent-contrast);
     opacity: 0.7;
@@ -309,6 +317,18 @@
     font-weight: 500;
     line-height: 1.22;
     letter-spacing: -0.02em;
+    color: var(--slide-color-accent-contrast);
+  }
+
+  .slide-text-prompt {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1.5rem;
+    line-height: 1.375;
+    white-space: pre-wrap;
+    color: var(--slide-color-text);
+  }
+
+  .slide-text-prompt[data-slide-text-context="onAccent"] {
     color: var(--slide-color-accent-contrast);
   }
 }

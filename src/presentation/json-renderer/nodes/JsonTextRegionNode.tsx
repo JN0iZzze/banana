@@ -21,14 +21,17 @@ const alignToTextClass: Record<NonNullable<JsonSlideTextRegionPayload['align']>,
 };
 
 function renderTextRow(item: JsonSlideCardItemText, index: number) {
+  const isPrompt = item.variant === 'prompt';
+  const isBodyRow = item.variant === 'body' || item.variant === 'bodyLg';
   return (
     <Text
       key={`tr-${index}`}
       variant={item.variant}
       className={cn(
         (item.variant === 'h2' || item.variant === 'h3') && 'text-pretty',
-        (item.variant === 'body' || item.variant === 'bodyLg') && 'text-pretty',
-        (item.variant === 'body' || item.variant === 'bodyLg') && 'text-[color:var(--slide-color-text-soft)]',
+        !isPrompt && isBodyRow && 'text-pretty',
+        !isPrompt && isBodyRow && 'text-[color:var(--slide-color-text-soft)]',
+        isPrompt && 'max-w-full min-w-0',
       )}
     >
       {item.text}

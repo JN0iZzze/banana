@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import type {
   JsonSlideCardComponentId,
   JsonSlideCardItem,
+  JsonSlideCardItemFeatureList,
   JsonSlideCardItemIndexedList,
   JsonSlideCardItemTagList,
   JsonSlideCardTone,
@@ -9,6 +10,7 @@ import type {
 import { Text } from '../../ui/slides';
 import { cn } from '../../ui/slides/cn';
 import { cardStackGapCssVar } from './layouts/cardStackGapCssVar';
+import { getJsonSlideCardIcon } from './jsonSlideCardIconRegistry';
 
 /** Card `items[]` rows with `type: "component"` (parser allowlist). */
 export type JsonSlideCardComponentItem = Extract<JsonSlideCardItem, { type: 'component' }>;
@@ -129,10 +131,73 @@ export function JsonCardIndexedList({ tone, item }: JsonCardIndexedListProps) {
   );
 }
 
+export interface JsonCardFeatureListProps {
+  tone: JsonSlideCardTone;
+  item: JsonSlideCardItemFeatureList;
+}
+
+/** Registry-backed `featureList`: icon badge + label + value rows with dividers; follows card tone. */
+export function JsonCardFeatureList({ tone, item }: JsonCardFeatureListProps) {
+  const onAccent = tone === 'accent';
+  const gap = item.gap ?? 'sm';
+  const gapStyle = cardStackGapCssVar(gap);
+
+  return (
+    <ul className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ gap: gapStyle }}>
+      {item.items.map((row, idx) => {
+        const Icon = getJsonSlideCardIcon(row.icon);
+        return (
+          <li
+            key={`${row.label}-${idx}`}
+            className={cn(
+              'flex gap-3 border-b pb-[var(--slide-stack-gap-sm)] last:border-b-0 last:pb-0',
+              onAccent
+                ? 'border-[color:color-mix(in_srgb,var(--slide-color-accent-contrast)_22%,transparent)]'
+                : 'border-[color:var(--slide-color-line)]',
+            )}
+          >
+            <div
+              className={cn(
+                'flex h-14 w-14 shrink-0 items-center justify-center rounded-[var(--slide-radius-inner)]',
+                onAccent
+                  ? 'bg-[color:var(--slide-color-accent-contrast)]/12 text-[color:var(--slide-color-accent-contrast)]'
+                  : 'bg-[color:var(--slide-color-surface-quiet)] text-[color:var(--slide-color-text-soft)]',
+              )}
+            >
+              <Icon size={24} aria-hidden />
+            </div>
+            <div className="min-w-0 flex-1">
+              <Text
+                variant="caption"
+                className={cn(
+                  'font-semibold',
+                  onAccent
+                    ? 'text-[color:var(--slide-color-accent-contrast)]/65'
+                    : 'text-[color:var(--slide-color-text)]/60',
+                )}
+              >
+                {row.label}
+              </Text>
+              <Text
+                variant="body"
+                context={onAccent ? 'onAccent' : 'default'}
+                className="mt-0.5 text-pretty font-medium"
+              >
+                {row.value}
+              </Text>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 /** Maps JSON `component` ids to renderers; add a new entry when extending `JSON_SLIDE_CARD_COMPONENT_IDS`. */
 export const JSON_SLIDE_CARD_COMPONENT_REGISTRY = {
   tagList: JsonCardTagList,
   indexedList: JsonCardIndexedList,
+  featureList: JsonCardFeatureList,
 } satisfies JsonSlideCardComponentRegistry;
 
 /**
@@ -157,6 +222,14 @@ export function renderJsonCardComponentItem(
       return (
         <JSON_SLIDE_CARD_COMPONENT_REGISTRY.indexedList
           key={`item-${index}-indexedList`}
+          tone={tone}
+          item={item}
+        />
+      );
+    case 'featureList':
+      return (
+        <JSON_SLIDE_CARD_COMPONENT_REGISTRY.featureList
+          key={`item-${index}-featureList`}
           tone={tone}
           item={item}
         />

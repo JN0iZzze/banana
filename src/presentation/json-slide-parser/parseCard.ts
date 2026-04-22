@@ -4,6 +4,7 @@ import type {
   JsonSlideCardHeaderBadgeTone,
   JsonSlideCardIconId,
   JsonSlideCardItem,
+  JsonSlideCardItemFeatureList,
   JsonSlideCardItemText,
   JsonSlideCardItemVariant,
   JsonSlideCardJustify,
@@ -28,7 +29,11 @@ const CARD_ITEM_VARIANTS = new Set<JsonSlideCardItemVariant>([
   'h3',
   'body',
   'bodyLg',
+  'prompt',
 ]);
+
+const CARD_ITEM_VARIANT_HINT =
+  'overline, caption, h2, h3, body, bodyLg, prompt';
 const CARD_JUSTIFY = new Set<JsonSlideCardJustify>(['start', 'end', 'between']);
 const TAG_LIST_DIRECTIONS = new Set<JsonSlideCardTagListDirection>(['row', 'column']);
 const TAG_LIST_VARIANTS = new Set<JsonSlideCardTagListVariant>(['default', 'compact']);
@@ -57,7 +62,7 @@ function parseTextOnlyItems(raw: unknown, path: string): JsonSlideCardItemText[]
     }
     const variantRaw = el.variant;
     if (typeof variantRaw !== 'string' || !CARD_ITEM_VARIANTS.has(variantRaw as JsonSlideCardItemVariant)) {
-      return err(`${path}[${i}].variant must be one of: overline, caption, h2, h3, body, bodyLg`);
+      return err(`${path}[${i}].variant must be one of: ${CARD_ITEM_VARIANT_HINT}`);
     }
     const variant = variantRaw as JsonSlideCardItemVariant;
     const textResult = parseString(el.text, `${path}[${i}].text`);
@@ -240,6 +245,64 @@ function parseIndexedListComponentItem(
   };
 }
 
+function parseFeatureListComponentItem(
+  el: Record<string, unknown>,
+  path: string,
+): JsonSlideCardItemFeatureList | { ok: false; error: string } {
+  let gap: JsonSlideGridGap | undefined;
+  if (el.gap !== undefined) {
+    if (typeof el.gap !== 'string' || !GRID_GAPS.has(el.gap as JsonSlideGridGap)) {
+      return err(`${path}.gap must be xs, sm, md, or lg when present`);
+    }
+    gap = el.gap as JsonSlideGridGap;
+  }
+
+  const rawList = el.items;
+  if (!Array.isArray(rawList) || rawList.length === 0) {
+    return err(`${path}.items must be a non-empty array`);
+  }
+
+  const rows: { icon: JsonSlideCardIconId; label: string; value: string }[] = [];
+  for (let j = 0; j < rawList.length; j += 1) {
+    const row = rawList[j];
+    if (!isRecord(row)) {
+      return err(`${path}.items[${j}] must be an object`);
+    }
+
+    const iconRaw = row.icon;
+    if (typeof iconRaw !== 'string' || !CARD_ICON_IDS.has(iconRaw)) {
+      return err(`${path}.items[${j}].icon must be a known icon id (${CARD_ICON_ID_HINT})`);
+    }
+
+    const labelResult = parseString(row.label, `${path}.items[${j}].label`);
+    if (typeof labelResult === 'object' && 'ok' in labelResult && labelResult.ok === false) {
+      return labelResult;
+    }
+    const label = labelResult as string;
+    if (label.trim().length === 0) {
+      return err(`${path}.items[${j}].label must be non-empty`);
+    }
+
+    const valueResult = parseString(row.value, `${path}.items[${j}].value`);
+    if (typeof valueResult === 'object' && 'ok' in valueResult && valueResult.ok === false) {
+      return valueResult;
+    }
+    const value = valueResult as string;
+    if (value.trim().length === 0) {
+      return err(`${path}.items[${j}].value must be non-empty`);
+    }
+
+    rows.push({ icon: iconRaw as JsonSlideCardIconId, label, value });
+  }
+
+  return {
+    type: 'component',
+    component: 'featureList',
+    ...(gap !== undefined ? { gap } : {}),
+    items: rows,
+  };
+}
+
 function parseComponentCardItem(
   el: Record<string, unknown>,
   path: string,
@@ -250,6 +313,9 @@ function parseComponentCardItem(
   }
   if (comp === 'indexedList') {
     return parseIndexedListComponentItem(el, path);
+  }
+  if (comp === 'featureList') {
+    return parseFeatureListComponentItem(el, path);
   }
   return err(`${path}.component must be a registered id: ${CARD_COMPONENT_ID_HINT}`);
 }
@@ -275,7 +341,7 @@ function parseCardItems(raw: unknown, path: string): JsonSlideCardItem[] | { ok:
 
     const variantRaw = el.variant;
     if (typeof variantRaw !== 'string' || !CARD_ITEM_VARIANTS.has(variantRaw as JsonSlideCardItemVariant)) {
-      return err(`${path}[${i}].variant must be one of: overline, caption, h2, h3, body, bodyLg`);
+      return err(`${path}[${i}].variant must be one of: ${CARD_ITEM_VARIANT_HINT}`);
     }
     const variant = variantRaw as JsonSlideCardItemVariant;
     const textResult = parseString(el.text, `${path}[${i}].text`);
@@ -316,7 +382,7 @@ function parseCardSubtitle(
   }
   const variantRaw = raw.variant !== undefined ? raw.variant : raw.type;
   if (typeof variantRaw !== 'string' || !CARD_ITEM_VARIANTS.has(variantRaw as JsonSlideCardItemVariant)) {
-    return err(`${path}.variant must be one of: overline, caption, h2, h3, body, bodyLg (legacy key: type)`);
+    return err(`${path}.variant must be one of: ${CARD_ITEM_VARIANT_HINT} (legacy key: type)`);
   }
   const variant = variantRaw as JsonSlideCardItemVariant;
   const textResult = parseString(raw.text, `${path}.text`);

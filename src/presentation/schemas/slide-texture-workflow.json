@@ -1,0 +1,63 @@
+{
+  "theme": "editorial",
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Texture workflow" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Texture workflow",
+        "text": "texture this shapes with acrylic holographic transparent texture"
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "splitLayout",
+        "gap": "md",
+        "leftSpan": 4,
+        "rightSpan": 8,
+        "left": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "single",
+            "verticalAlign": "top",
+            "gap": "md",
+            "items": [
+              {
+                "type": "image",
+                "src": "/images/workflow/002.png",
+                "alt": "Текстура 002",
+                "objectFit": "contain"
+              }
+            ]
+          }
+        },
+        "right": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "single",
+            "cellVariant": "fill",
+            "gap": "md",
+            "items": [
+              {
+                "type": "image",
+                "src": "/images/workflow/003.png",
+                "alt": "Текстура 003",
+                "objectFit": "cover"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Nano Banana Pro · агент",
+    "title": "Nano Banana Pro — как агент"
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "spacious",
+            "headerBadge": { "text": "01", "tone": "onAccent" },
+            "leadingIcon": "workflow",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Разбирает задачу" },
+              { "variant": "h2", "text": "Сначала думает" },
+              {
+                "variant": "bodyLg",
+                "text": "Разбирает запрос, понимает сцену, композицию и что именно нужно получить на выходе"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "spacious",
+            "headerBadge": { "text": "02", "tone": "accent" },
+            "leadingIcon": "bar-chart-3",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Ищет факты и контекст" },
+              { "variant": "h2", "text": "Потом проверяет" },
+              {
+                "variant": "caption",
+                "text": "(Онлайн поиск доступен не на всех платформах)"
+              },
+              {
+                "variant": "bodyLg",
+                "text": "При необходимости ищет нужные подробности и опирается не только на догадку, но и на реальные данные"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "spacious",
+            "headerBadge": { "text": "03", "tone": "onAccent" },
+            "leadingIcon": "layers",
+            "justify": "between",
+            "items": [
+              { "variant": "overline", "text": "Собирает сцену целиком" },
+              { "variant": "h2", "text": "И только потом рисует" },
+              {
+                "variant": "bodyLg",
+                "text": "Собирает кадр, удерживает логику сцены, свет, материал и текст внутри изображения"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

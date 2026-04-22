@@ -1,0 +1,54 @@
+{
+  "theme": "editorial",
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "3D" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Промпт",
+        "text": "Apply texture to [Image 1] (Gray 3d model) from [Image 2] Keep the angle of object the same"
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "cellVariant": "fill",
+        "gap": "md",
+        "items": [
+          {
+            "type": "image",
+            "src": "/images/3d/ref1.png",
+            "alt": "Референс 1",
+            "objectFit": "cover"
+          },
+          {
+            "type": "image",
+            "src": "/images/3d/out1.png",
+            "alt": "Результат 1",
+            "objectFit": "cover"
+          },
+          {
+            "type": "image",
+            "src": "/images/3d/ref2.jpg",
+            "alt": "Референс 2",
+            "objectFit": "cover"
+          },
+          {
+            "type": "image",
+            "src": "/images/3d/out2.png",
+            "alt": "Результат 2",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    }
+  }
+}

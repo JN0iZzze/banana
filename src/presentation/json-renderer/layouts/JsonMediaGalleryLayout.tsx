@@ -3,6 +3,7 @@ import type {
   JsonSlideMediaGalleryItem,
   JsonSlideMediaGalleryLayout,
   JsonSlideMediaGalleryPreset,
+  JsonSlideMediaGalleryVerticalAlign,
 } from '../../jsonSlideTypes';
 import { Reveal, SlideAssetImage, SlideImagePair, Text } from '../../../ui/slides';
 import { cn } from '../../../ui/slides/cn';
@@ -23,6 +24,33 @@ function effectiveCellMode(cellVariant: JsonSlideMediaGalleryCellVariant | undef
   return cellVariant === 'fill' ? 'fill' : 'panel';
 }
 
+/** Single source for media corners inside JSON `mediaGallery` (must match `contain` vs `clip` rules below). */
+const GALLERY_MEDIA_RADIUS = 'rounded-[var(--slide-radius-media)]';
+
+function effectiveVerticalAlign(
+  v: JsonSlideMediaGalleryVerticalAlign | undefined,
+): JsonSlideMediaGalleryVerticalAlign {
+  return v ?? 'center';
+}
+
+/** For `flex-row` containers, vertical alignment uses `items-*` (cross axis). */
+function rowCrossForVertical(
+  v: JsonSlideMediaGalleryVerticalAlign,
+): 'items-start' | 'items-center' | 'items-end' {
+  if (v === 'top') return 'items-start';
+  if (v === 'bottom') return 'items-end';
+  return 'items-center';
+}
+
+/** For `flex-col` containers, vertical alignment uses `justify-*` (main axis). */
+function colMainForVertical(
+  v: JsonSlideMediaGalleryVerticalAlign,
+): 'justify-start' | 'justify-center' | 'justify-end' {
+  if (v === 'top') return 'justify-start';
+  if (v === 'bottom') return 'justify-end';
+  return 'justify-center';
+}
+
 interface MediaItemProps {
   item: JsonSlideMediaGalleryItem;
   delay: number;
@@ -31,6 +59,7 @@ interface MediaItemProps {
    */
   frameWidth?: 'content' | 'fill';
   cellMode?: 'panel' | 'fill';
+  verticalAlign?: JsonSlideMediaGalleryVerticalAlign;
 }
 
 function renderImageFillCell(item: Extract<JsonSlideMediaGalleryItem, { type: 'image' }>) {
@@ -61,16 +90,59 @@ function renderVideoFillCell(item: Extract<JsonSlideMediaGalleryItem, { type: 'v
   );
 }
 
-function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel' }: MediaItemProps) {
+function mediaItemObjectFit(item: JsonSlideMediaGalleryItem): 'cover' | 'contain' {
+  return item.objectFit ?? 'cover';
+}
+
+function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel', verticalAlign }: MediaItemProps) {
+  const v = effectiveVerticalAlign(verticalAlign);
   const showCaption = item.showCaption === true && item.caption != null;
   const mediaFrameMaxHeightClass = showCaption ? 'max-h-[calc(100%_-_1.75rem)]' : 'max-h-full';
   const widthClass = frameWidth === 'fill' ? 'w-full' : 'w-fit';
   const isPairStrip = frameWidth === 'fill' && cellMode === 'panel';
+  const fit = mediaItemObjectFit(item);
 
   if (cellMode === 'fill') {
+    if (fit === 'contain' && (item.type === 'image' || item.type === 'video')) {
+      return (
+        <Reveal preset="scale-in" delay={delay} className="flex h-full min-h-0 w-full min-w-0 flex-col">
+          <div
+            className={cn('relative flex min-h-0 min-w-0 flex-1 justify-center', rowCrossForVertical(v))}
+          >
+            {item.type === 'image' ? (
+              <img
+                src={item.src}
+                alt={item.alt ?? ''}
+                className={cn(
+                  'block h-auto max-h-full w-auto max-w-full object-contain object-center',
+                  GALLERY_MEDIA_RADIUS,
+                )}
+              />
+            ) : (
+              <video
+                src={item.src}
+                className={cn('h-auto max-h-full max-w-full w-auto object-contain', GALLERY_MEDIA_RADIUS)}
+                autoPlay={item.autoplay !== false}
+                loop={item.loop !== false}
+                muted={item.muted !== false}
+                playsInline={item.playsInline !== false}
+              />
+            )}
+          </div>
+          {showCaption ? (
+            <Text variant="overline" className="mt-2 shrink-0 text-center tracking-[0.35em]">
+              {item.caption}
+            </Text>
+          ) : null}
+        </Reveal>
+      );
+    }
+
     return (
       <Reveal preset="scale-in" delay={delay} className="flex h-full min-h-0 w-full min-w-0 flex-col">
-        <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden rounded-[var(--slide-radius-inner)]">
+        <div
+          className={cn('relative min-h-0 min-w-0 flex-1 overflow-hidden', GALLERY_MEDIA_RADIUS)}
+        >
           {item.type === 'image' ? renderImageFillCell(item) : renderVideoFillCell(item)}
         </div>
         {showCaption ? (
@@ -89,31 +161,70 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel' }: 
       className={
         isPairStrip
           ? 'flex h-full min-h-0 w-full min-w-0'
-          : 'flex h-full min-h-0 w-full min-w-0 flex-col items-center justify-center'
+          : cn('flex h-full min-h-0 w-full min-w-0 flex-col items-center', colMainForVertical(v))
       }
     >
       {isPairStrip ? (
-        <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-end overflow-hidden">
+        <div
+          className={cn(
+            'flex h-full w-full min-h-0 min-w-0 justify-end overflow-hidden',
+            rowCrossForVertical(v),
+          )}
+        >
           {item.type === 'image' ? (
             item.objectFit === 'cover' ? (
-              renderImageFillCell(item)
+              <div
+                className={cn('h-full w-full min-h-0 min-w-0 overflow-hidden', GALLERY_MEDIA_RADIUS)}
+              >
+                {renderImageFillCell(item)}
+              </div>
             ) : (
               <SlideAssetImage
                 src={item.src}
                 alt={item.alt ?? ''}
                 objectAlign={item.objectAlign ?? 'right'}
-                className="!h-auto max-h-full"
+                className={cn('!h-auto max-h-full', GALLERY_MEDIA_RADIUS)}
               />
             )
           ) : (
             <video
               src={item.src}
-              className={[
-                'h-auto max-w-full max-h-full rounded-3xl',
+              className={cn(
+                'h-auto max-w-full max-h-full',
+                GALLERY_MEDIA_RADIUS,
                 item.objectFit === 'cover' ? 'object-cover' : 'object-contain',
-              ]
-                .filter(Boolean)
-                .join(' ')}
+              )}
+              autoPlay={item.autoplay !== false}
+              loop={item.loop !== false}
+              muted={item.muted !== false}
+              playsInline={item.playsInline !== false}
+            />
+          )}
+        </div>
+      ) : fit === 'cover' && (item.type === 'image' || item.type === 'video') ? (
+        <div
+          className={cn(
+            'flex min-h-0 max-w-full justify-center overflow-hidden',
+            rowCrossForVertical(v),
+            GALLERY_MEDIA_RADIUS,
+            widthClass,
+            mediaFrameMaxHeightClass,
+          )}
+        >
+          {item.type === 'image' ? (
+            <img
+              src={item.src}
+              alt={item.alt ?? ''}
+              className="block h-auto max-h-full w-auto max-w-full object-cover object-center"
+            />
+          ) : (
+            <video
+              src={item.src}
+              className={cn(
+                'h-auto max-w-full max-h-full',
+                item.objectFit === 'cover' ? 'object-cover' : 'object-contain',
+                showCaption ? 'object-bottom' : '',
+              )}
               autoPlay={item.autoplay !== false}
               loop={item.loop !== false}
               muted={item.muted !== false}
@@ -123,44 +234,34 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel' }: 
         </div>
       ) : (
         <div
-          className={[
-            'flex min-h-0 max-w-full items-center justify-center overflow-hidden rounded-[var(--slide-radius-panel)]',
+          className={cn(
+            'flex min-h-0 max-w-full justify-center',
+            rowCrossForVertical(v),
             widthClass,
             mediaFrameMaxHeightClass,
-          ].join(' ')}
+          )}
         >
           {item.type === 'image' ? (
-            item.objectFit === 'cover' ? (
-              <img
-                src={item.src}
-                alt={item.alt ?? ''}
-                className="block h-auto max-h-full w-auto max-w-full object-cover object-center"
-              />
-            ) : (
-              <SlideAssetImage
-                src={item.src}
-                alt={item.alt ?? ''}
-                objectAlign={item.objectAlign ?? 'center'}
-                className={[
-                  '!h-auto',
-                  'max-h-full',
-                  showCaption ? 'object-bottom' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
-              />
-            )
+            <SlideAssetImage
+              src={item.src}
+              alt={item.alt ?? ''}
+              objectAlign={item.objectAlign ?? 'center'}
+              className={cn(
+                '!h-auto',
+                'max-h-full',
+                GALLERY_MEDIA_RADIUS,
+                showCaption ? 'object-bottom' : '',
+              )}
+            />
           ) : (
             <video
               src={item.src}
-              className={[
-                'h-auto max-w-full rounded-[var(--slide-radius-panel)]',
-                'max-h-full',
+              className={cn(
+                'h-auto max-w-full max-h-full',
+                GALLERY_MEDIA_RADIUS,
                 item.objectFit === 'cover' ? 'object-cover' : 'object-contain',
                 showCaption ? 'object-bottom' : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
+              )}
               autoPlay={item.autoplay !== false}
               loop={item.loop !== false}
               muted={item.muted !== false}
@@ -190,10 +291,12 @@ function CountBasedGallery({
   items,
   gapValue,
   cellMode,
+  verticalAlign,
 }: {
   items: JsonSlideMediaGalleryItem[];
   gapValue: string;
   cellMode: 'panel' | 'fill';
+  verticalAlign: JsonSlideMediaGalleryVerticalAlign | undefined;
 }) {
   const count = items.length;
   if (count >= 5) {
@@ -208,7 +311,12 @@ function CountBasedGallery({
             className="min-h-0"
             style={{ flexBasis: '20%', maxWidth: '20%' }}
           >
-            <MediaItem item={item} delay={0.2 + i * 0.08} cellMode={cellMode} />
+            <MediaItem
+              item={item}
+              delay={0.2 + i * 0.08}
+              cellMode={cellMode}
+              verticalAlign={verticalAlign}
+            />
           </div>
         ))}
       </div>
@@ -222,7 +330,12 @@ function CountBasedGallery({
     >
       {items.map((item, i) => (
         <div key={`mgallery-${i}`} className="min-h-0">
-          <MediaItem item={item} delay={0.2 + i * 0.08} cellMode={cellMode} />
+          <MediaItem
+            item={item}
+            delay={0.2 + i * 0.08}
+            cellMode={cellMode}
+            verticalAlign={verticalAlign}
+          />
         </div>
       ))}
     </div>
@@ -230,14 +343,15 @@ function CountBasedGallery({
 }
 
 export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutProps) {
-  const { items, gap, preset, rowJustify, cellVariant } = layout;
+  const { items, gap, preset, rowJustify, cellVariant, verticalAlign } = layout;
   const gapValue = bentoGridGapCssVar(gap);
   const j = stripJustify(rowJustify);
   const autoMode = isAutoPreset(preset);
   const cellMode = effectiveCellMode(cellVariant);
+  const va = verticalAlign;
 
   if (autoMode) {
-    return <CountBasedGallery items={items} gapValue={gapValue} cellMode={cellMode} />;
+    return <CountBasedGallery items={items} gapValue={gapValue} cellMode={cellMode} verticalAlign={va} />;
   }
 
   if (preset === 'single') {
@@ -245,7 +359,7 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
     return (
       <div className="flex min-h-0 w-full flex-1 auto-rows-fr items-stretch" style={{ gap: gapValue }}>
         <div className="min-h-0 w-full">
-          <MediaItem item={item} delay={0.2} cellMode={cellMode} />
+          <MediaItem item={item} delay={0.2} cellMode={cellMode} verticalAlign={va} />
         </div>
       </div>
     );
@@ -264,7 +378,7 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
       >
         {items.map((item, i) => (
           <div key={`mgallery-col-${i}`} className="min-h-0 min-w-0">
-            <MediaItem item={item} delay={0.2 + i * 0.08} cellMode={cellMode} />
+            <MediaItem item={item} delay={0.2 + i * 0.08} cellMode={cellMode} verticalAlign={va} />
           </div>
         ))}
       </div>
@@ -280,7 +394,7 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
         >
           {items.map((item, i) => (
             <div key={`mgallery-${i}`} className="min-h-0 min-w-0">
-              <MediaItem item={item} delay={0.2 + i * 0.08} cellMode="fill" />
+              <MediaItem item={item} delay={0.2 + i * 0.08} cellMode="fill" verticalAlign={va} />
             </div>
           ))}
         </div>
@@ -296,22 +410,27 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
               delay={0.2 + i * 0.08}
               className="flex h-full min-h-0 shrink-0"
             >
-              <div className="flex h-full min-h-0 shrink-0 items-center justify-end overflow-hidden">
+              <div
+                className={cn(
+                  'flex h-full min-h-0 shrink-0 justify-end overflow-hidden',
+                  rowCrossForVertical(effectiveVerticalAlign(va)),
+                )}
+              >
                 {item.type === 'image' ? (
                   <SlideAssetImage
                     src={item.src}
                     alt={item.alt ?? ''}
                     objectAlign={item.objectAlign ?? 'right'}
+                    className={GALLERY_MEDIA_RADIUS}
                   />
                 ) : (
                   <video
                     src={item.src}
-                    className={[
-                      'h-auto max-w-full rounded-3xl',
+                    className={cn(
+                      'h-auto max-w-full',
+                      GALLERY_MEDIA_RADIUS,
                       item.objectFit === 'cover' ? 'object-cover' : 'object-contain',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
+                    )}
                     autoPlay={item.autoplay !== false}
                     loop={item.loop !== false}
                     muted={item.muted !== false}
@@ -337,12 +456,18 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
       >
         {items.map((item, i) => (
           <div key={`mgallery-${i}`} className="min-h-0 min-w-0 flex-1">
-            <MediaItem item={item} delay={0.2 + i * 0.08} frameWidth="fill" cellMode={cellMode} />
+            <MediaItem
+              item={item}
+              delay={0.2 + i * 0.08}
+              frameWidth="fill"
+              cellMode={cellMode}
+              verticalAlign={va}
+            />
           </div>
         ))}
       </div>
     );
   }
 
-  return <CountBasedGallery items={items} gapValue={gapValue} cellMode={cellMode} />;
+  return <CountBasedGallery items={items} gapValue={gapValue} cellMode={cellMode} verticalAlign={va} />;
 }

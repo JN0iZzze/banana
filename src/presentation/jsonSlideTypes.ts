@@ -17,7 +17,14 @@ export type JsonSlideCardTone = 'standard' | 'accent';
 export type JsonSlideCardPadding = 'compact' | 'default' | 'spacious';
 
 /** Subset of `Text` variants allowed inside JSON card `items`. */
-export type JsonSlideCardItemVariant = 'overline' | 'caption' | 'h2' | 'h3' | 'body' | 'bodyLg';
+export type JsonSlideCardItemVariant =
+  | 'overline'
+  | 'caption'
+  | 'h2'
+  | 'h3'
+  | 'body'
+  | 'bodyLg'
+  | 'prompt';
 
 /** Text row inside a card — backward compatible; `type` не обязателен. */
 export interface JsonSlideCardItemText {
@@ -26,7 +33,7 @@ export interface JsonSlideCardItemText {
 }
 
 /** Allowlist id для `type: "component"` items (см. `jsonSlideCardComponentRegistry.tsx`). */
-export const JSON_SLIDE_CARD_COMPONENT_IDS = ['tagList', 'indexedList'] as const;
+export const JSON_SLIDE_CARD_COMPONENT_IDS = ['tagList', 'indexedList', 'featureList'] as const;
 
 export type JsonSlideCardComponentId = (typeof JSON_SLIDE_CARD_COMPONENT_IDS)[number];
 
@@ -51,7 +58,18 @@ export interface JsonSlideCardItemIndexedList {
   items: { index: number; title: string; subtitle: string }[];
 }
 
-export type JsonSlideCardItem = JsonSlideCardItemText | JsonSlideCardItemTagList | JsonSlideCardItemIndexedList;
+export interface JsonSlideCardItemFeatureList {
+  type: 'component';
+  component: 'featureList';
+  gap?: JsonSlideGridGap;
+  items: { icon: JsonSlideCardIconId; label: string; value: string }[];
+}
+
+export type JsonSlideCardItem =
+  | JsonSlideCardItemText
+  | JsonSlideCardItemTagList
+  | JsonSlideCardItemIndexedList
+  | JsonSlideCardItemFeatureList;
 
 export function isJsonSlideCardItemTagList(item: JsonSlideCardItem): item is JsonSlideCardItemTagList {
   return 'type' in item && item.type === 'component' && item.component === 'tagList';
@@ -61,11 +79,18 @@ export function isJsonSlideCardItemIndexedList(item: JsonSlideCardItem): item is
   return 'type' in item && item.type === 'component' && item.component === 'indexedList';
 }
 
+export function isJsonSlideCardItemFeatureList(item: JsonSlideCardItem): item is JsonSlideCardItemFeatureList {
+  return 'type' in item && item.type === 'component' && item.component === 'featureList';
+}
+
 export function isJsonSlideCardItemText(item: JsonSlideCardItem): item is JsonSlideCardItemText {
   return !('type' in item && item.type === 'component');
 }
 
-/** Vertical distribution of card text stack (flex main axis). */
+/**
+ * Vertical distribution of the card body stack (flex main axis).
+ * With `headerBadge` + leading `overline` then `h2`, the renderer treats that pair as a fixed header row; `between` then splits space between that row and the remaining `items[]` (and can still spread multiple tail rows inside the lower block).
+ */
 export type JsonSlideCardJustify = 'start' | 'end' | 'between';
 
 /** Pinned top zone; same `variant` + `text` shape as a text `items[]` row; does not participate in `justify`. */
@@ -81,7 +106,7 @@ export interface JsonSlideCardHeaderBadge {
   tone?: JsonSlideCardHeaderBadgeTone;
 }
 
-/** Allowed keys for `leadingIcon` / `watermarkIcon`; resolved in `json-renderer/jsonSlideCardIconRegistry.tsx`. */
+/** Allowed keys for `leadingIcon` / `watermarkIcon` / `featureList` row icons; resolved in `json-renderer/jsonSlideCardIconRegistry.tsx`. */
 export const JSON_SLIDE_CARD_ICON_IDS = [
   'gemini',
   'byte-dance',
@@ -102,6 +127,10 @@ export const JSON_SLIDE_CARD_ICON_IDS = [
   'type',
   'layers',
   'share-2',
+  'zap',
+  'monitor',
+  'globe',
+  'brain',
 ] as const;
 
 export type JsonSlideCardIconId = (typeof JSON_SLIDE_CARD_ICON_IDS)[number];
@@ -184,6 +213,8 @@ export type JsonSlideMediaGalleryItem =
   | JsonSlideMediaGalleryItemImage
   | JsonSlideMediaGalleryItemVideo;
 
+export type JsonSlideMediaGalleryVerticalAlign = 'top' | 'center' | 'bottom';
+
 export interface JsonSlideMediaGalleryLayout {
   type: 'mediaGallery';
   gap?: JsonSlideGridGap;
@@ -191,6 +222,8 @@ export interface JsonSlideMediaGalleryLayout {
    * Layout mode. Omitted or `auto` keeps count-based columns (1 → 1 col, 2 → 2 col, 3 → 3 col, 4 → 2×2, 5+ → flex strip).
    */
   preset?: JsonSlideMediaGalleryPreset;
+  /** Vertical alignment of media within each cell. Omitted = `center`. */
+  verticalAlign?: JsonSlideMediaGalleryVerticalAlign;
   /** For `pair` and `row`: horizontal distribution (default `end`, matches `SlideImagePair`). */
   rowJustify?: JsonSlideMediaRowJustify;
   /**
@@ -229,6 +262,7 @@ export interface JsonSlideCard {
   watermarkIcon?: JsonSlideCardIconId;
   /** Optional label above content; always top; not affected by `justify`. */
   subtitle?: JsonSlideCardSubtitle;
+  /** See `JsonSlideCardJustify`. Does not apply to `subtitle`. */
   justify?: JsonSlideCardJustify;
   items: JsonSlideCardItem[];
 }
@@ -290,7 +324,7 @@ export type JsonSlideTextRegionAlign = 'left' | 'center' | 'right';
 
 /**
  * Plain text stack for `splitLayout` / `stackLayout` regions — no card chrome, no `type: "component"` rows.
- * Same `items[]` text shape as in cards: only `overline` | `caption` | `h2` | `h3` | `body` | `bodyLg`.
+ * Same `items[]` text shape as in cards (including `prompt` for monospace prompt blocks).
  */
 export interface JsonSlideTextRegionPayload {
   items: JsonSlideCardItemText[];
@@ -420,7 +454,15 @@ export interface JsonSlideImageCoverDocument {
 
 /** Text variant allowlist for textStack items (wider than card items; covers h1/lead for title slides). */
 export type JsonSlideTextStackItemVariant =
-  | 'h1' | 'h2' | 'h3' | 'lead' | 'body' | 'bodyLg' | 'caption' | 'overline';
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'lead'
+  | 'body'
+  | 'bodyLg'
+  | 'caption'
+  | 'overline'
+  | 'prompt';
 
 /** Only applies when variant is "h1". */
 export type JsonSlideTextStackItemSize = 'display' | 'section' | 'compact';

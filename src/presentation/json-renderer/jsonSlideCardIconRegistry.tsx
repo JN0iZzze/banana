@@ -8,10 +8,13 @@ import OpenAI from '@lobehub/icons/es/OpenAI';
 import Volcengine from '@lobehub/icons/es/Volcengine';
 import {
   BarChart3,
+  Brain,
   Clapperboard,
+  Globe,
   Image as ImageLucide,
   LayoutTemplate,
   Layers,
+  Monitor,
   Palette,
   PenTool,
   Share2,
@@ -19,6 +22,7 @@ import {
   Type,
   Video,
   Workflow,
+  Zap,
 } from 'lucide-react';
 import type { JsonSlideCardIconId } from '../jsonSlideTypes';
 
@@ -45,6 +49,10 @@ export const JSON_SLIDE_CARD_ICON_REGISTRY: Record<JsonSlideCardIconId, JsonSlid
   type: Type,
   layers: Layers,
   'share-2': Share2,
+  zap: Zap,
+  monitor: Monitor,
+  globe: Globe,
+  brain: Brain,
 };
 
 export function getJsonSlideCardIcon(id: JsonSlideCardIconId): JsonSlideCardIconComponent {

@@ -1,0 +1,97 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "mesh" },
+  "content": { "width": "wide", "density": "comfortable" },
+  "header": {
+    "meta": "Gemini Image Line · Nano Banana",
+    "title": "Nano Banana",
+    "lead": "У каждой версии свой баланс скорости, точности и возможностей"
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "items": [
+              { "variant": "caption", "text": "Fast / Flash" },
+              { "variant": "h2", "text": "Nano Banana" },
+              {
+                "type": "component",
+                "component": "featureList",
+                "gap": "sm",
+                "items": [
+                  { "icon": "zap",     "label": "Философия",              "value": "Быстрая" },
+                  { "icon": "monitor", "label": "Разрешение",             "value": "1K" },
+                  { "icon": "image",   "label": "Кол-во референсов",      "value": "4 шт" },
+                  { "icon": "type",    "label": "Текст",                   "value": "Плохо" },
+                  { "icon": "globe",   "label": "Поиск",                   "value": "—" },
+                  { "icon": "brain",   "label": "Следование инструкции",  "value": "Базово" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "items": [
+              { "variant": "caption", "text": "Better control" },
+              { "variant": "h2", "text": "Nano Banana Pro" },
+              {
+                "type": "component",
+                "component": "featureList",
+                "gap": "sm",
+                "items": [
+                  { "icon": "zap",     "label": "Философия",              "value": "Точная" },
+                  { "icon": "monitor", "label": "Разрешение",             "value": "4K" },
+                  { "icon": "image",   "label": "Кол-во референсов",      "value": "14 шт" },
+                  { "icon": "type",    "label": "Текст",                   "value": "Отлично" },
+                  { "icon": "globe",   "label": "Поиск",                   "value": "Да" },
+                  { "icon": "brain",   "label": "Следование инструкции",  "value": "Хорошо" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "items": [
+              { "variant": "caption", "text": "Next step" },
+              { "variant": "h2", "text": "Nano Banana 2" },
+              {
+                "type": "component",
+                "component": "featureList",
+                "gap": "sm",
+                "items": [
+                  { "icon": "zap",     "label": "Философия",              "value": "Баланс" },
+                  { "icon": "monitor", "label": "Разрешение",             "value": "4K" },
+                  { "icon": "image",   "label": "Кол-во референсов",      "value": "14 шт" },
+                  { "icon": "type",    "label": "Текст",                   "value": "Отлично" },
+                  { "icon": "globe",   "label": "Поиск",                   "value": "Да" },
+                  { "icon": "brain",   "label": "Следование инструкции",  "value": "Отлично" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

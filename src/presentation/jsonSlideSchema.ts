@@ -64,6 +64,7 @@ export type {
   JsonSlideMediaGalleryLayout,
   JsonSlideMediaGalleryObjectAlign,
   JsonSlideMediaGalleryObjectFit,
+  JsonSlideMediaGalleryVerticalAlign,
   JsonSlideRegion,
   JsonSlideSplitLayout,
   JsonSlideStackItem,

@@ -8,6 +8,7 @@ import type {
   JsonSlideMediaGalleryItem,
   JsonSlideMediaGalleryLayout,
   JsonSlideMediaGalleryPreset,
+  JsonSlideMediaGalleryVerticalAlign,
   JsonSlideMediaRowJustify,
   JsonSlideQuote,
   JsonSlideRegion,
@@ -18,6 +19,7 @@ import { parseCard, parseTextRegionPayload } from './parseCard';
 import {
   MEDIA_GALLERY_CELL_VARIANTS,
   MEDIA_GALLERY_PRESETS,
+  MEDIA_GALLERY_VERTICAL_ALIGNS,
   MEDIA_ROW_JUSTIFIES,
   parseMediaGalleryItems,
 } from './parseMediaGallery';
@@ -408,6 +410,17 @@ export function parseLayout(
       cellVariant = raw.cellVariant as JsonSlideMediaGalleryCellVariant;
     }
 
+    let verticalAlign: JsonSlideMediaGalleryVerticalAlign | undefined;
+    if (raw.verticalAlign !== undefined) {
+      if (
+        typeof raw.verticalAlign !== 'string' ||
+        !MEDIA_GALLERY_VERTICAL_ALIGNS.has(raw.verticalAlign as JsonSlideMediaGalleryVerticalAlign)
+      ) {
+        return err(`${pathPrefix}.verticalAlign must be top, center, or bottom when present`);
+      }
+      verticalAlign = raw.verticalAlign as JsonSlideMediaGalleryVerticalAlign;
+    }
+
     const effectivePreset: JsonSlideMediaGalleryPreset | 'auto' = preset ?? 'auto';
     if (effectivePreset === 'single' && count !== 1) {
       return err(`${pathPrefix} with preset "single" requires exactly 1 media item (got ${count})`);
@@ -439,6 +452,9 @@ export function parseLayout(
     }
     if (cellVariant !== undefined) {
       layout.cellVariant = cellVariant;
+    }
+    if (verticalAlign !== undefined) {
+      layout.verticalAlign = verticalAlign;
     }
     return layout;
   }

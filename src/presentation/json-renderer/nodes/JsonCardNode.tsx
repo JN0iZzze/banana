@@ -44,8 +44,11 @@ function renderItemText(
   onAccent: boolean,
   compactCard: boolean,
   surface: NonNullable<JsonSlideCard['surface']> | undefined,
+  tailClassName?: string,
 ) {
   const ghost = surface === 'ghost';
+  const isPrompt = item.variant === 'prompt';
+  const isBodyRow = item.variant === 'body' || item.variant === 'bodyLg';
   return (
     <Text
       key={`${reactKey}-${item.variant}-${item.text.slice(0, 24)}`}
@@ -66,10 +69,10 @@ function renderItemText(
         onAccent &&
           (item.variant === 'h2' || item.variant === 'h3') &&
           'text-[color:var(--slide-color-accent-contrast)]',
-        (item.variant === 'body' || item.variant === 'bodyLg') && 'text-pretty',
-        (item.variant === 'body' || item.variant === 'bodyLg') &&
-          !onAccent &&
-          'text-[color:var(--slide-color-text-soft)]',
+        !isPrompt && isBodyRow && 'text-pretty',
+        !isPrompt && isBodyRow && !onAccent && 'text-[color:var(--slide-color-text-soft)]',
+        isPrompt && 'min-h-0 w-full min-w-0 flex-1',
+        tailClassName,
       )}
     >
       {item.text}
@@ -77,7 +80,10 @@ function renderItemText(
   );
 }
 
-/** Presentation node: optional icons, pinned `subtitle`, content `items[]` with `justify` only on items. */
+/**
+ * Presentation node: optional icons, pinned `subtitle`, `items[]`.
+ * When `headerBadge` + leading `overline`/`h2`, `justify: "between"` splits space between that header row and the remaining `items` block; inner body stack can still use `between` when there are multiple tail rows.
+ */
 export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
   const onAccent = card.tone === 'accent';
   const justify = card.justify ?? 'start';
@@ -103,6 +109,67 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
     card.items[1].variant === 'h2';
 
   const itemsBody = headerHasPair ? card.items.slice(2) : card.items;
+  /** `between` applies between header row and body when badge + overline/h2 pattern matches. */
+  const distributeHeaderAndBody =
+    Boolean(headerHasPair && card.headerBadge && justify === 'between');
+  /** Without header/body split, single tail row + `between` still needs `mt-auto`. */
+  const pinBodyTailToBottom = justify === 'between' && itemsBody.length === 1 && !distributeHeaderAndBody;
+
+  const bodyStackJustifyClass = distributeHeaderAndBody
+    ? itemsBody.length <= 1
+      ? 'justify-end'
+      : 'justify-between'
+    : pinBodyTailToBottom
+      ? 'justify-start'
+      : justifyClass[justify];
+
+  const headerPairRow =
+    headerHasPair && card.headerBadge ? (
+      <div className="relative z-10 flex shrink-0 items-start justify-between gap-4">
+        <div className="flex min-w-0 flex-col" style={{ gap: stackGapStyle }}>
+          {renderItemText(
+            card.items[0] as JsonSlideCardItemText,
+            'hdr0',
+            onAccent,
+            compactCard,
+            surface,
+          )}
+          {renderItemText(
+            card.items[1] as JsonSlideCardItemText,
+            'hdr1',
+            onAccent,
+            compactCard,
+            surface,
+          )}
+        </div>
+        {renderHeaderBadge(card.headerBadge)}
+      </div>
+    ) : null;
+
+  const bodyStack = (
+    <div
+      className={cn(
+        'relative z-10 flex min-h-0 flex-col',
+        distributeHeaderAndBody && 'min-w-0 flex-1',
+        !distributeHeaderAndBody && 'flex-1',
+        bodyStackJustifyClass,
+        card.headerBadge && !headerHasPair && 'pr-16',
+      )}
+      style={{ gap: stackGapStyle }}
+    >
+      {itemsBody.map((item, i) =>
+        isJsonSlideCardItemText(item)
+          ? renderItemText(item, `body-${i}`, onAccent, compactCard, surface, pinBodyTailToBottom ? 'mt-auto' : undefined)
+          : pinBodyTailToBottom ? (
+              <div key={`body-${i}-comp`} className="mt-auto min-w-0 w-full">
+                {renderJsonCardComponentItem(card.tone, item, i)}
+              </div>
+            ) : (
+              renderJsonCardComponentItem(card.tone, item, i)
+            ),
+      )}
+    </div>
+  );
 
   const inner = (
     <div className="relative flex h-full min-h-0 flex-col" style={{ gap: stackGapStyle }}>
@@ -151,42 +218,17 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
         </div>
       ) : null}
 
-      {headerHasPair && card.headerBadge ? (
-        <div className="relative z-10 flex shrink-0 items-start justify-between gap-4">
-          <div className="flex min-w-0 flex-col" style={{ gap: stackGapStyle }}>
-            {renderItemText(
-              card.items[0] as JsonSlideCardItemText,
-              'hdr0',
-              onAccent,
-              compactCard,
-              surface,
-            )}
-            {renderItemText(
-              card.items[1] as JsonSlideCardItemText,
-              'hdr1',
-              onAccent,
-              compactCard,
-              surface,
-            )}
-          </div>
-          {renderHeaderBadge(card.headerBadge)}
+      {distributeHeaderAndBody && headerPairRow ? (
+        <div className="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col justify-between">
+          {headerPairRow}
+          {bodyStack}
         </div>
-      ) : null}
-
-      <div
-        className={cn(
-          'relative z-10 flex min-h-0 flex-1 flex-col',
-          justifyClass[justify],
-          card.headerBadge && !headerHasPair && 'pr-16',
-        )}
-        style={{ gap: stackGapStyle }}
-      >
-        {itemsBody.map((item, i) =>
-          isJsonSlideCardItemText(item)
-            ? renderItemText(item, `body-${i}`, onAccent, compactCard, surface)
-            : renderJsonCardComponentItem(card.tone, item, i),
-        )}
-      </div>
+      ) : (
+        <>
+          {headerPairRow}
+          {bodyStack}
+        </>
+      )}
     </div>
   );
 

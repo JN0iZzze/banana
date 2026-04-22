@@ -112,7 +112,7 @@ Rendered by [`JsonTextStackShell.tsx`](./JsonTextStackShell.tsx).
 ```json
 { "type": "text", "variant": "h1", "size": "display", "text": "Title here" }
 ```
-- `variant`: `h1` | `h2` | `h3` | `lead` | `body` | `bodyLg` | `caption` | `overline`
+- `variant`: `h1` | `h2` | `h3` | `lead` | `body` | `bodyLg` | `caption` | `overline` | `prompt`
 - `size?`: `display` | `section` | `compact` — **only allowed when `variant` is `"h1"`**
 - `context?`: `default` | `onAccent`
 - `text`: required string
@@ -273,6 +273,7 @@ Fields:
 - `items`: non-empty array of `{ "type": "image" | "video", ... }` (see `JsonSlideMediaGalleryItem` in types). Image items may include `objectFit?: "contain" | "cover"`.
 - `gap?`: `xs` | `sm` | `md` | `lg`
 - `preset?`: `single` | `pair` | `row` | `column` | `auto` (optional; see below)
+- `verticalAlign?`: `top` | `center` | `bottom` — vertical alignment of media within each gallery cell (default `center`). Does not replace `objectAlign` or `rowJustify`.
 - `rowJustify?`: `start` | `end` — for `pair` and `row` only (default `end`, matches legacy `SlideImagePair`)
 - `cellVariant?`: `panel` | `fill` — `fill` uses legacy-style clipped tiles (`rounded-[var(--slide-radius-inner)]`, image defaults to **cover** in the cell). Omit for the default centered panel look.
 
@@ -289,7 +290,7 @@ Fields:
 Plain text stack without `SurfaceCard` / card padding — use when you need headings or body copy in a `splitLayout` or `stackLayout` pane but **not** a full card. **Not** the same as `imageCover` top/bottom rail items that use `kind: "text"` with `lines` (different template; see [imageCover](#template-imagecover)).
 
 Under `text`:
-- `items` — required non-empty array of text rows: `{ "variant", "text" }` with the same `variant` allowlist as [card `items[]`](#card-items): `overline` | `caption` | `h2` | `h3` | `body` | `bodyLg`. No `type: "component"` rows.
+- `items` — required non-empty array of text rows: `{ "variant", "text" }` with the same `variant` allowlist as [card `items[]`](#card-items): `overline` | `caption` | `h2` | `h3` | `body` | `bodyLg` | `prompt`. No `type: "component"` rows.
 - `stackGap?` — `xs` | `sm` | `md` | `lg` (default `md`)
 - `align?` — `left` | `center` | `right` (default `left`)
 
@@ -351,7 +352,7 @@ Use this contract:
 - `leadingIcon?`: optional **registry** id — small icon in a rounded badge above `subtitle` / content (see [Card icons](#card-icons))
 - `watermarkIcon?`: optional **registry** id — large faded icon in the bottom-right of the card (decorative)
 - `subtitle?`: optional pinned label above the content zone (see below)
-- `justify?`: `start` | `end` | `between` — applies only to `items[]`, not to `subtitle`
+- `justify?`: `start` | `end` | `between` — vertical layout of the **body** `items[]` zone, not `subtitle`. Special case: when `headerBadge` is set and the first two `items[]` are `overline` then `h2`, those two render as a **header row** with the badge; `between` then puts space **between** that row and the remaining `items[]`. If there are several rows after the header, `between` also spreads them inside that lower block.
 - `items`: required, non-empty array — **union** (see [Card `items[]`](#card-items): text rows and optional `type: "component"` rows)
 
 ### Card icons
@@ -383,12 +384,13 @@ Example:
 - Does **not** participate in `justify`; only the content stack (`items[]`) is distributed vertically per `justify`.
 
 ### `justify`
-This controls vertical distribution of the **content** stack (`items[]`) only:
-- `start` -> items stay at the top of the content zone
-- `end` -> items stay at the bottom of the content zone
-- `between` -> items are distributed across the available height of the content zone
+Controls vertical distribution of the card **body** (the `items[]` stack, or the tail of `items[]` after an optional `overline`+`h2`+`headerBadge` header row). `subtitle` stays pinned above and does not participate.
 
-If `subtitle` is present, it stays pinned above this flex behavior.
+- `start` -> body rows stay at the **top** of the body zone
+- `end` -> body rows stay at the **bottom** of the body zone
+- `between` ->
+  - **Without** the `headerBadge` + `overline`+`h2` header pattern: body rows are distributed across the available height of the body zone (with a single body row, the runtime pins it to the bottom of the flex area).
+  - **With** that header pattern: space goes **between** the header row and the block of remaining rows; if there are **two or more** tail rows, `between` also spreads them within that lower block (e.g. `body` vs `tagList` on prompt-structure cards).
 
 ## Card `items[]`
 Each entry is either:
@@ -440,6 +442,32 @@ Shape:
 - `gap` optional: `xs` | `sm` | `md` | `lg` — spacing between rows; default `md`
 - `items` required: non-empty array; `index` must be a non-negative integer and **unique** within the list; `title` and `subtitle` must be non-empty strings
 
+### `featureList`
+Vertical list of comparison/characteristic rows — icon badge, supporting label, and main value per row. Dividers between rows (last row has no divider). Styling follows `card.tone`.
+
+Shape:
+
+```json
+{
+  "type": "component",
+  "component": "featureList",
+  "gap": "sm",
+  "items": [
+    { "icon": "zap",     "label": "Философия",         "value": "Быстрая" },
+    { "icon": "monitor", "label": "Разрешение",        "value": "1K" },
+    { "icon": "image",   "label": "Кол-во референсов", "value": "4 шт" }
+  ]
+}
+```
+
+- `gap` optional: `xs` | `sm` | `md` | `lg` — spacing between rows; default `sm`
+- `items` required: non-empty array; each row must have:
+  - `icon` — one of the ids from `JSON_SLIDE_CARD_ICON_IDS` (includes `zap`, `monitor`, `globe`, `brain`, `image`, `type` and all other card icons; see [`jsonSlideTypes.ts`](../jsonSlideTypes.ts))
+  - `label` — non-empty string; rendered as subdued supporting caption
+  - `value` — non-empty string; rendered as the primary value
+
+Example: [`slide-nano-banana-versions.json`](../schemas/slide-nano-banana-versions.json)
+
 ### How to register a new component item
 1. Add the id to `JSON_SLIDE_CARD_COMPONENT_IDS` in [`jsonSlideTypes.ts`](../jsonSlideTypes.ts) and extend `JsonSlideCardItem` with a **fully typed** branch (no `Record<string, unknown>` props).
 2. Extend [`parseJsonSlideDocument.ts`](../parseJsonSlideDocument.ts): add a dedicated parser (or branch in `parseComponentCardItem`) so `type: "component"` + your id and all fields are validated.
@@ -457,6 +485,7 @@ For **text** items, allowed `card.items[].variant` values are intentionally narr
 - `h3`
 - `body`
 - `bodyLg`
+- `prompt` — monospace, `pre-wrap`, prompt-sized block; rendered as [`Text`](../../ui/slides/Text.tsx) `variant="prompt"` (default element `pre`). Same allowlist applies to `subtitle`, plain `kind: "text"` regions, and `textStack` `type: "text"` rows.
 
 Do not use:
 - `h1`
@@ -467,6 +496,26 @@ Do not use:
 Reason:
 - cards should stay narrow and predictable
 - the document should not become a generic rich text DSL
+
+**Extending typography:** add new JSON-facing modes as new `variant` values in `Text.tsx` and extend the parser allowlists — not `className`, `font`, or other style escape hatches.
+
+**Example — mono prompt in a ghost card** (see [`slide-prompt-order-flex.json`](../schemas/slide-prompt-order-flex.json)):
+
+```json
+{
+  "tone": "standard",
+  "surface": "ghost",
+  "padding": "default",
+  "items": [
+    {
+      "variant": "prompt",
+      "text": "Your long prompt string here; newlines inside the JSON string are preserved (pre-wrap)."
+    }
+  ]
+}
+```
+
+**`textStack` vs layout + card:** use `template: "textStack"` for headerless vertical copy (titles, links, centered stacks). Use `default` + `stackLayout` / `equalColumns` + `kind: "card"` when you need the grid, ghost panels, or mixed regions (as on the prompt-order slide).
 
 ## Card Item Ordering
 Order is defined strictly by the array order.
@@ -494,6 +543,7 @@ If the order should change, change the JSON array order.
 - Prefer `h2` for larger cards and `h3` for compact cards.
 - Use `body` for normal supporting copy.
 - Use `bodyLg` only when the card is sparse and needs larger body text.
+- Use `prompt` inside a card (often `surface: "ghost"`) for long monospace prompt copy; do not fake this with `body` + ad hoc classes.
 - Use `justify: "between"` for tall cards with a title and body in `items[]` (and optional `subtitle` for a fixed label).
 - Use `justify: "end"` for cards whose `items[]` should sit near the bottom.
 - Omit `justify` when normal top stacking is enough.

@@ -62,6 +62,7 @@ function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, 
         context={item.context}
         className={cn(
           item.variant === 'h1' ? 'max-w-[var(--slide-content-wide)] text-pretty tracking-tight' : undefined,
+          item.variant === 'prompt' ? 'max-w-full min-w-0' : undefined,
           textAlign,
         )}
       >

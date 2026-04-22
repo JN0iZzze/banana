@@ -21,7 +21,7 @@ export function SlideAssetImage({ src, alt = '', objectAlign = 'right', classNam
       src={src}
       alt={alt}
       className={cn(
-        'h-full max-h-full w-auto max-w-full rounded-3xl object-contain',
+        'h-full max-h-full w-auto max-w-full object-contain',
         objectAlignClass[objectAlign],
         className,
       )}

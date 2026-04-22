@@ -45,8 +45,11 @@ const TEXT_STACK_REVEAL_PRESETS = new Set<JsonSlideTextStackRevealPreset>([
 ]);
 
 const TEXT_STACK_ITEM_VARIANTS = new Set<JsonSlideTextStackItemVariant>([
-  'h1', 'h2', 'h3', 'lead', 'body', 'bodyLg', 'caption', 'overline',
+  'h1', 'h2', 'h3', 'lead', 'body', 'bodyLg', 'caption', 'overline', 'prompt',
 ]);
+
+const TEXT_STACK_ITEM_VARIANT_HINT =
+  'h1, h2, h3, lead, body, bodyLg, caption, overline, prompt';
 const TEXT_STACK_ITEM_SIZES = new Set<JsonSlideTextStackItemSize>(['display', 'section', 'compact']);
 const TEXT_STACK_ITEM_CONTEXTS = new Set<JsonSlideTextStackItemContext>(['default', 'onAccent']);
 
@@ -129,7 +132,7 @@ function parseStackItem(raw: unknown, index: number): ParseResult<JsonSlideTextS
 
   // type === 'text'
   if (typeof raw.variant !== 'string' || !TEXT_STACK_ITEM_VARIANTS.has(raw.variant as JsonSlideTextStackItemVariant)) {
-    return err(`stack.items[${index}].variant must be one of: h1, h2, h3, lead, body, bodyLg, caption, overline`);
+    return err(`stack.items[${index}].variant must be one of: ${TEXT_STACK_ITEM_VARIANT_HINT}`);
   }
   const variant = raw.variant as JsonSlideTextStackItemVariant;
 

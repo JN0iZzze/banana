@@ -11,7 +11,9 @@ export type SlideTextVariant =
   | 'caption'
   | 'overline'
   | 'tileAccent'
-  | 'meta';
+  | 'meta'
+  /** Monospace prompt-style block (`pre`, pre-wrap); use in cards / text regions / stacks. */
+  | 'prompt';
 
 export type SlideTextH1Size = 'display' | 'section' | 'compact';
 
@@ -40,6 +42,7 @@ const variantClass: Record<SlideTextVariant, string> = {
   overline: 'slide-text-overline',
   tileAccent: 'slide-text-tile-accent',
   meta: 'slide-text-meta',
+  prompt: 'slide-text-prompt',
 };
 
 const h1SizeClass: Record<SlideTextH1Size, string> = {
@@ -56,6 +59,8 @@ function defaultElement(variant: SlideTextVariant): ElementType {
       return 'h2';
     case 'h3':
       return 'h3';
+    case 'prompt':
+      return 'pre';
     case 'meta':
     case 'overline':
     case 'tileAccent':

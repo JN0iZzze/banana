@@ -6,6 +6,7 @@ import type {
   JsonSlideMediaGalleryObjectAlign,
   JsonSlideMediaGalleryObjectFit,
   JsonSlideMediaGalleryPreset,
+  JsonSlideMediaGalleryVerticalAlign,
   JsonSlideMediaRowJustify,
 } from '../jsonSlideTypes';
 import { err, isRecord, parseOptionalString, parseString } from './parseUtils';
@@ -13,10 +14,11 @@ import { err, isRecord, parseOptionalString, parseString } from './parseUtils';
 const MEDIA_GALLERY_PRESETS = new Set<JsonSlideMediaGalleryPreset>(['single', 'pair', 'row', 'column', 'auto']);
 const MEDIA_GALLERY_CELL_VARIANTS = new Set<JsonSlideMediaGalleryCellVariant>(['panel', 'fill']);
 const MEDIA_ROW_JUSTIFIES = new Set<JsonSlideMediaRowJustify>(['start', 'end']);
+const MEDIA_GALLERY_VERTICAL_ALIGNS = new Set<JsonSlideMediaGalleryVerticalAlign>(['top', 'center', 'bottom']);
 const MEDIA_GALLERY_OBJECT_ALIGNS = new Set<JsonSlideMediaGalleryObjectAlign>(['left', 'center', 'right']);
 const MEDIA_GALLERY_OBJECT_FITS = new Set<JsonSlideMediaGalleryObjectFit>(['contain', 'cover']);
 
-export { MEDIA_GALLERY_PRESETS, MEDIA_GALLERY_CELL_VARIANTS, MEDIA_ROW_JUSTIFIES };
+export { MEDIA_GALLERY_PRESETS, MEDIA_GALLERY_CELL_VARIANTS, MEDIA_ROW_JUSTIFIES, MEDIA_GALLERY_VERTICAL_ALIGNS };
 
 export function parseMediaGalleryItems(
   raw: unknown,
