@@ -36,7 +36,7 @@
           "card": {
             "tone": "accent",
             "padding": "default",
-            "leadingIcon": "workflow",
+            "leadingIcon": "zap",
             "headerBadge": { "text": "02", "tone": "onAccent" },
             "justify": "between",
             "items": [

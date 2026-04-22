@@ -1,27 +1,18 @@
 import type { ReactNode } from 'react';
 import type { JsonSlideLayout } from '../../jsonSlideTypes';
-import { JsonBentoLayoutView } from './JsonBentoLayout';
-import { JsonColumnLayout } from './JsonColumnLayouts';
-import { JsonMediaGalleryLayoutView } from './JsonMediaGalleryLayout';
-import { JsonSplitLayoutView } from './JsonSplitLayout';
-import { JsonStackLayoutView } from './JsonStackLayout';
-import { JsonUniformGridLayoutView } from './JsonUniformGridLayout';
+import { JsonLayoutDecorationsOverlay } from '../JsonLayoutDecorationsOverlay';
+import { renderJsonLayoutInner } from './renderJsonLayoutInner';
 
 export function renderJsonLayout(layout: JsonSlideLayout): ReactNode {
-  if (layout.type === 'asymmetricColumns' || layout.type === 'equalColumns') {
-    return <JsonColumnLayout items={layout.items} gap={layout.gap} />;
+  const inner = renderJsonLayoutInner(layout);
+  const decorations = layout.decorations;
+  if (!decorations?.length) {
+    return inner;
   }
-  if (layout.type === 'uniformGrid') {
-    return <JsonUniformGridLayoutView layout={layout} />;
-  }
-  if (layout.type === 'splitLayout') {
-    return <JsonSplitLayoutView layout={layout} />;
-  }
-  if (layout.type === 'stackLayout') {
-    return <JsonStackLayoutView layout={layout} />;
-  }
-  if (layout.type === 'mediaGallery') {
-    return <JsonMediaGalleryLayoutView layout={layout} />;
-  }
-  return <JsonBentoLayoutView layout={layout} />;
+  return (
+    <div className="relative flex min-h-0 w-full flex-1 flex-col">
+      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">{inner}</div>
+      <JsonLayoutDecorationsOverlay decorations={decorations} />
+    </div>
+  );
 }

@@ -19,7 +19,7 @@
             "tone": "accent",
             "padding": "spacious",
             "leadingIcon": "cursor",
-            "watermarkIcon": "workflow",
+            "watermarkIcon": "layers",
             "subtitle": { "variant": "overline", "text": "Максимум контроля" },
             "justify": "between",
             "slots": [

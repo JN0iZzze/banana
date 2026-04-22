@@ -202,7 +202,7 @@ function parseIndexedListComponentItem(
   }
 
   const indicesSeen = new Set<number>();
-  const rows: { index: number; title: string; subtitle: string }[] = [];
+  const rows: { index: number; title: string; subtitle?: string }[] = [];
   for (let j = 0; j < rawList.length; j += 1) {
     const row = rawList[j];
     if (!isRecord(row)) {
@@ -226,13 +226,18 @@ function parseIndexedListComponentItem(
       return err(`${path}.items[${j}].title must be non-empty`);
     }
 
+    if (row.subtitle === undefined) {
+      rows.push({ index: idxRaw, title });
+      continue;
+    }
+
     const subResult = parseString(row.subtitle, `${path}.items[${j}].subtitle`);
     if (typeof subResult === 'object' && 'ok' in subResult && subResult.ok === false) {
       return subResult;
     }
     const subtitle = subResult as string;
     if (subtitle.trim().length === 0) {
-      return err(`${path}.items[${j}].subtitle must be non-empty`);
+      return err(`${path}.items[${j}].subtitle must be non-empty when present`);
     }
 
     rows.push({ index: idxRaw, title, subtitle });

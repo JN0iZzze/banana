@@ -4,7 +4,7 @@
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
     "meta": "Акт II · Выбор инструмента",
-    "title": "Cursor и\u00A0Claude Code — два режима агентной работы",
+    "title": "Cursor vs\u00A0Claude Code",
     "lead": "Полезнее всего сравнивать их по\u00A0стилю взаимодействия: хочешь\u00A0ли ты держать работу в\u00A0постоянном визуальном контроле или\u00A0охотнее делегируешь агенту большие куски задачи."
   },
   "layout": {
@@ -22,7 +22,6 @@
             "subtitle": { "variant": "overline", "text": "Cursor · интерактивный режим" },
             "justify": "start",
             "items": [
-              { "variant": "h2", "text": "Держишь правки перед глазами" },
               {
                 "type": "component",
                 "component": "featureList",
@@ -30,7 +29,7 @@
                 "items": [
                   { "icon": "zap", "label": "Подход", "value": "IDE-first: агент встроен в\u00A0редактор" },
                   { "icon": "monitor", "label": "Интерфейс", "value": "Полноценная IDE на\u00A0базе VS\u00A0Code" },
-                  { "icon": "workflow", "label": "Цикл работы", "value": "Смотришь правки сразу и\u00A0быстро уточняешь следующий шаг" },
+                  { "icon": "share-2", "label": "Цикл работы", "value": "Смотришь правки сразу и\u00A0быстро уточняешь следующий шаг" },
                   { "icon": "brain", "label": "Где особенно удобен", "value": "Когда важно держать в\u00A0фокусе текущий участок проекта" },
                   { "icon": "sparkles", "label": "Сильная сторона", "value": "Интерактивные правки и\u00A0контроль деталей" },
                   { "icon": "bar-chart-3", "label": "Темп", "value": "Короткие циклы и\u00A0быстрый отклик" }
@@ -51,7 +50,6 @@
             "subtitle": { "variant": "overline", "text": "Claude Code · автономный режим" },
             "justify": "start",
             "items": [
-              { "variant": "h2", "text": "Делегируешь большой кусок работы" },
               {
                 "type": "component",
                 "component": "featureList",
@@ -59,7 +57,7 @@
                 "items": [
                   { "icon": "zap", "label": "Подход", "value": "Agent-first: больше работы делегируешь агенту" },
                   { "icon": "monitor", "label": "Интерфейс", "value": "Терминал или\u00A0расширение VS\u00A0Code" },
-                  { "icon": "workflow", "label": "Цикл работы", "value": "Ставишь задачу, агент делает проход и\u00A0возвращает результат" },
+                  { "icon": "share-2", "label": "Цикл работы", "value": "Ставишь задачу, агент делает проход и\u00A0возвращает результат" },
                   { "icon": "brain", "label": "Где особенно удобен", "value": "На\u00A0длинных и\u00A0многофайловых задачах" },
                   { "icon": "sparkles", "label": "Сильная сторона", "value": "Автономность и\u00A0большие проходы по\u00A0проекту" },
                   { "icon": "bar-chart-3", "label": "Темп", "value": "Цикл длиннее, но\u00A0за\u00A0раз проходит больше работы" }

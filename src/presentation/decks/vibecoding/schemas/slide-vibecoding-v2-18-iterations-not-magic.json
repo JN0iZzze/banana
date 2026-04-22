@@ -1,0 +1,151 @@
+{
+  "frame": {
+    "align": "top",
+    "padding": "compact"
+  },
+  "backdrop": {
+    "variant": "grid"
+  },
+  "content": {
+    "width": "wide",
+    "density": "compact",
+    "align": "left"
+  },
+  "header": {
+    "meta": "Акт III · Цикл разработки",
+    "title": "Хороший результат появляется через итерации, а не с первого промпта",
+    "lead": "Первая формулировка почти никогда не даёт финальный результат. Он собирается за несколько кругов, где каждый шаг делает свою часть работы."
+  },
+  "layout": {
+    "type": "uniformGrid",
+    "columns": 2,
+    "gap": "md",
+    "decorations": [
+      {
+        "type": "iconBadge",
+        "anchor": "center",
+        "icon": "repeat",
+        "tone": "surface",
+        "size": "xl"
+      }
+    ],
+    "items": [
+      {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "brain",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Шаг 1"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "variant": "h2",
+                "text": "Намерение"
+              },
+              {
+                "variant": "body",
+                "text": "Формулируешь задачу и критерий хорошего результата."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "zap",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Шаг 2"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "variant": "h2",
+                "text": "Агент работает"
+              },
+              {
+                "variant": "body",
+                "text": "Правит файлы и гоняет команды по этой формулировке."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "bar-chart-3",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Шаг 3"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "variant": "h2",
+                "text": "Критика"
+              },
+              {
+                "variant": "body",
+                "text": "Смотришь, что получилось, отмечаешь баги и слабые места."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tone": "accent",
+        "padding": "default",
+        "leadingIcon": "pen-tool",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Шаг 4"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "variant": "h2",
+                "text": "Новый круг"
+              },
+              {
+                "variant": "body",
+                "text": "Уточняешь задачу с учётом увиденного и уходишь на следующий круг."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

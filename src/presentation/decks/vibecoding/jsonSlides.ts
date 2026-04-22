@@ -12,9 +12,15 @@ import rawThreeFears from './schemas/slide-vibecoding-v2-07-three-fears.json';
 import rawAct2Separator from './schemas/slide-vibecoding-v2-08-act2-separator.json';
 import rawLandscape from './schemas/slide-vibecoding-v2-09-landscape.json';
 import rawSandboxes from './schemas/slide-vibecoding-v2-10-sandboxes.json';
-import rawProTransition from './schemas/slide-vibecoding-v2-11-pro-transition.json';
-import rawAgentVsChat from './schemas/slide-vibecoding-v2-12-agent-vs-chat.json';
+import rawAgentVsChat from './schemas/slide-vibecoding-v2-11-agent-vs-chat.json';
+import rawConstructorVsAgent from './schemas/slide-vibecoding-v2-12-constructor-vs-agent.json';
 import rawCursorVsClaude from './schemas/slide-vibecoding-v2-13-cursor-vs-claude.json';
+import rawPricing from './schemas/slide-vibecoding-v2-14-pricing.json';
+import rawCursorForDesigners from './schemas/slide-vibecoding-v2-15-cursor-for-designers.json';
+import rawClaudeIdeEntry from './schemas/slide-vibecoding-v2-16-claude-ide-entry.json';
+import rawAct3Separator from './schemas/slide-vibecoding-v2-17-act3-separator.json';
+import rawIterationsNotMagic from './schemas/slide-vibecoding-v2-18-iterations-not-magic.json';
+import rawValleyOfDespair from './schemas/slide-vibecoding-v2-19-valley-of-despair.json';
 
 const sid = VIBECODING_DECK_SLIDE_IDS;
 
@@ -104,20 +110,20 @@ export const vibecodingJsonSlides: JsonSlideDefinition[] = [
     notes: 'Акт II · Лёгкий вход. Replit / Lovable / Bolt.new / Figma Make — с чего начать завтра утром без установки.',
   }),
   defineJsonSlide({
-    id: sid.proTransition,
-    title: 'Песочница и границы',
-    theme: 'editorial',
-    raw: rawProTransition,
-    source: 'slide-vibecoding-v2-11-pro-transition.json',
-    notes: 'Акт II · Тропа профессионала. Три симптома «пора уходить из песочницы» + два pro-инструмента (Cursor, Claude Code).',
-  }),
-  defineJsonSlide({
     id: sid.agentVsChat,
-    title: 'Чат в окне, агент в проекте',
+    title: 'Чат vs Агент',
     theme: 'editorial',
     raw: rawAgentVsChat,
-    source: 'slide-vibecoding-v2-12-agent-vs-chat.json',
-    notes: 'Акт II · Встреча с наставником. Отличие чатов (ChatGPT) от агентов (Cursor, Claude Code) — вайбкодинг начинается там, где агент получает доступ к проекту.',
+    source: 'slide-vibecoding-v2-11-agent-vs-chat.json',
+    notes: 'Акт II · Что такое агент. Определение через доступ: у чата только текст, у агента — файлы, терминал и git проекта.',
+  }),
+  defineJsonSlide({
+    id: sid.constructorVsAgent,
+    title: 'Конструктор vs Агент-в-репо',
+    theme: 'editorial',
+    raw: rawConstructorVsAgent,
+    source: 'slide-vibecoding-v2-12-constructor-vs-agent.json',
+    notes: 'Акт II · Две среды для агента. Replit/Lovable (готовая площадка) vs Cursor/Claude Code (твой репозиторий): где живёт код, стек, что делает агент, потолок.',
   }),
   defineJsonSlide({
     id: sid.cursorVsClaude,
@@ -126,5 +132,56 @@ export const vibecodingJsonSlides: JsonSlideDefinition[] = [
     raw: rawCursorVsClaude,
     source: 'slide-vibecoding-v2-13-cursor-vs-claude.json',
     notes: 'Акт II · Сравнение. Хирург и архитектор: философия, интерфейс, модель работы, окно, сила, скорость — на featureList.',
+  }),
+  defineJsonSlide({
+    id: sid.pricing,
+    title: 'Цена и ёмкость',
+    theme: 'editorial',
+    raw: rawPricing,
+    source: 'slide-vibecoding-v2-14-pricing.json',
+    notes: 'Акт II · Цена. $200/мес одинаково, но объём разный: Cursor Ultra ~138 агент-часов + 1× топ-модели; Claude Code Max 20× ~678 агент-часов + ~38× Opus. Перед лекцией сверить актуальные прайсы Anthropic/Cursor.',
+  }),
+  defineJsonSlide({
+    id: sid.cursorForDesigners,
+    title: 'Cursor и дизайнер',
+    theme: 'editorial',
+    raw: rawCursorForDesigners,
+    source: 'slide-vibecoding-v2-15-cursor-for-designers.json',
+    notes: 'План §14 — картинка. Клади ассет в public/vibe/cursor-designers.png или смени src в JSON.',
+    preloadAssets: ['/vibe/cursor-designers.png'],
+  }),
+  defineJsonSlide({
+    id: sid.claudeIdeEntry,
+    title: 'Claude Code и IDE',
+    theme: 'editorial',
+    raw: rawClaudeIdeEntry,
+    source: 'slide-vibecoding-v2-16-claude-ide-entry.json',
+    notes: 'План §15 — картинка. Клади ассет в public/vibe/claude-ide.png или смени src в JSON.',
+    preloadAssets: ['/vibe/claude-ide.png'],
+  }),
+  defineJsonSlide({
+    id: sid.act3Separator,
+    title: 'Акт III · Ключи к мастерству',
+    theme: 'editorial',
+    raw: rawAct3Separator,
+    source: 'slide-vibecoding-v2-17-act3-separator.json',
+    notes: 'Сепаратор Акта III. textStack + mesh, как v2-08. Переход от каталога к механике и дисциплине.',
+  }),
+  defineJsonSlide({
+    id: sid.iterationsNotMagic,
+    title: 'Сильный результат в цикле',
+    theme: 'editorial',
+    raw: rawIterationsNotMagic,
+    source: 'slide-vibecoding-v2-18-iterations-not-magic.json',
+    notes: 'Акт III · Цикл обратной связи: 4 шага (featureList) + манёвр Карпатого — полный stack trace агенту.',
+  }),
+  defineJsonSlide({
+    id: sid.valleyOfDespair,
+    title: 'Долина отчаяния',
+    theme: 'editorial',
+    raw: rawValleyOfDespair,
+    source: 'slide-vibecoding-v2-19-valley-of-despair.json',
+    notes: 'Акт III · Слайд-картинка (кривая / метафора). Ассет: public/vibe/valley-despair.png — при смене файла обнови src в JSON.',
+    preloadAssets: ['/vibe/valley-despair.png'],
   }),
 ];

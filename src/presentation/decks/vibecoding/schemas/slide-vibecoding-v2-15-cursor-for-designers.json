@@ -1,0 +1,19 @@
+{
+  "template": "textStack",
+  "frame": { "align": "center", "padding": "default" },
+  "backdrop": { "variant": "mesh" },
+  "content": { "width": "wide", "align": "center", "density": "comfortable" },
+  "stack": {
+    "align": "center",
+    "justify": "center",
+    "gap": "md",
+    "items": [
+      {
+        "type": "image",
+        "src": "/vibe/cursor-designers.png",
+        "alt": "Слайд 14 · Cursor и дизайнер",
+        "width": 1040
+      }
+    ]
+  }
+}

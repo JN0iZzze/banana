@@ -55,7 +55,7 @@ export interface JsonSlideCardItemIndexedList {
   type: 'component';
   component: 'indexedList';
   gap?: JsonSlideGridGap;
-  items: { index: number; title: string; subtitle: string }[];
+  items: { index: number; title: string; subtitle?: string }[];
 }
 
 export interface JsonSlideCardItemFeatureList {
@@ -149,9 +149,27 @@ export const JSON_SLIDE_CARD_ICON_IDS = [
   'replit',
   'lovable',
   'figma',
+  'repeat',
 ] as const;
 
 export type JsonSlideCardIconId = (typeof JSON_SLIDE_CARD_ICON_IDS)[number];
+
+/** Decorative overlay on the layout area (out of flow); validated allowlist only. */
+export type JsonSlideLayoutDecorationAnchor = 'center';
+
+export type JsonSlideLayoutIconBadgeDecorationTone = 'surface' | 'accent';
+
+export type JsonSlideLayoutIconBadgeDecorationSize = 'md' | 'lg' | 'xl';
+
+export interface JsonSlideLayoutDecorationIconBadge {
+  type: 'iconBadge';
+  anchor: JsonSlideLayoutDecorationAnchor;
+  icon: JsonSlideCardIconId;
+  tone: JsonSlideLayoutIconBadgeDecorationTone;
+  size: JsonSlideLayoutIconBadgeDecorationSize;
+}
+
+export type JsonSlideLayoutDecoration = JsonSlideLayoutDecorationIconBadge;
 
 export interface JsonSlideFrame {
   align?: JsonSlideFrameAlign;
@@ -236,6 +254,7 @@ export type JsonSlideMediaGalleryVerticalAlign = 'top' | 'center' | 'bottom';
 export interface JsonSlideMediaGalleryLayout {
   type: 'mediaGallery';
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   /**
    * Layout mode. Omitted or `auto` keeps count-based columns (1 → 1 col, 2 → 2 col, 3 → 3 col, 4 → 2×2, 5+ → flex strip).
    */
@@ -262,6 +281,7 @@ export interface JsonSlideStackItem {
 export interface JsonSlideStackLayout {
   type: 'stackLayout';
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   items: JsonSlideStackItem[];
 }
 
@@ -297,12 +317,14 @@ export interface JsonSlideColumnItem {
 export interface JsonSlideAsymmetricLayout {
   type: 'asymmetricColumns';
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   items: JsonSlideColumnItem[];
 }
 
 export interface JsonSlideEqualLayout {
   type: 'equalColumns';
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   items: JsonSlideColumnItem[];
 }
 
@@ -319,6 +341,7 @@ export interface JsonSlideBentoLayout {
   columns: number;
   rows: number;
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   items: JsonSlideBentoItem[];
 }
 
@@ -327,6 +350,7 @@ export interface JsonSlideUniformGridLayout {
   type: 'uniformGrid';
   columns: number;
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   items: JsonSlideCard[];
 }
 
@@ -334,6 +358,7 @@ export interface JsonSlideUniformGridLayout {
 export interface JsonSlideSplitLayout {
   type: 'splitLayout';
   gap?: JsonSlideGridGap;
+  decorations?: JsonSlideLayoutDecoration[];
   leftSpan: number;
   rightSpan: number;
   left: JsonSlideRegion;

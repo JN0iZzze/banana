@@ -51,7 +51,7 @@
           "kind": "card",
           "card": {
             "tone": "standard",
-            "leadingIcon": "workflow",
+            "leadingIcon": "pen-tool",
             "watermarkIcon": "layout-template",
             "justify": "between",
             "items": [

@@ -75,7 +75,7 @@
         "rowSpan": 1,
         "card": {
           "tone": "standard",
-          "leadingIcon": "workflow",
+          "leadingIcon": "zap",
           "justify": "between",
           "slots": [
             {

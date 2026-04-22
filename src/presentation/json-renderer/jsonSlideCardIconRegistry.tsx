@@ -22,6 +22,7 @@ import {
   Monitor,
   Palette,
   PenTool,
+  Repeat,
   Share2,
   Sparkles,
   Type,
@@ -64,6 +65,7 @@ export const JSON_SLIDE_CARD_ICON_REGISTRY: Record<JsonSlideCardIconId, JsonSlid
   replit: ReplitIcon,
   lovable: LovableIcon,
   figma: FigmaIcon,
+  repeat: Repeat,
 };
 
 export function getJsonSlideCardIcon(id: JsonSlideCardIconId): JsonSlideCardIconComponent {

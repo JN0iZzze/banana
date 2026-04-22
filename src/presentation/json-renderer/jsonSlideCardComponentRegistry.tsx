@@ -77,7 +77,7 @@ export function JsonCardTagList({ tone, item }: JsonCardTagListProps) {
   );
 }
 
-/** Registry-backed `indexedList`: numbered rows with title + subtitle; follows card tone. */
+/** Registry-backed `indexedList`: numbered rows with title and optional subtitle; follows card tone. */
 export function JsonCardIndexedList({ tone, item }: JsonCardIndexedListProps) {
   const onAccent = tone === 'accent';
   const gap = item.gap ?? 'md';
@@ -114,16 +114,18 @@ export function JsonCardIndexedList({ tone, item }: JsonCardIndexedListProps) {
             >
               {row.title}
             </Text>
-            <Text
-              variant="caption"
-              context={onAccent ? 'onAccent' : 'default'}
-              className={cn(
-                'mt-1 text-pretty',
-                onAccent ? 'text-[color:var(--slide-color-accent-contrast)]/72' : 'text-[color:var(--slide-color-text-soft)]',
-              )}
-            >
-              {row.subtitle}
-            </Text>
+            {row.subtitle ? (
+              <Text
+                variant="caption"
+                context={onAccent ? 'onAccent' : 'default'}
+                className={cn(
+                  'mt-1 text-pretty',
+                  onAccent ? 'text-[color:var(--slide-color-accent-contrast)]/72' : 'text-[color:var(--slide-color-text-soft)]',
+                )}
+              >
+                {row.subtitle}
+              </Text>
+            ) : null}
           </div>
         </div>
       ))}

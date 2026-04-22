@@ -1,9 +1,13 @@
 import type {
   JsonSlideBentoItem,
   JsonSlideCard,
+  JsonSlideCardIconId,
   JsonSlideColumnItem,
   JsonSlideGridGap,
   JsonSlideLayout,
+  JsonSlideLayoutDecoration,
+  JsonSlideLayoutIconBadgeDecorationSize,
+  JsonSlideLayoutIconBadgeDecorationTone,
   JsonSlideMediaGalleryCellVariant,
   JsonSlideMediaGalleryItem,
   JsonSlideMediaGalleryLayout,
@@ -15,6 +19,7 @@ import type {
   JsonSlideStackItem,
   JsonSlideTextRegionPayload,
 } from '../jsonSlideTypes';
+import { JSON_SLIDE_CARD_ICON_IDS } from '../jsonSlideTypes';
 import { parseCard, parseTextRegionPayload } from './parseCard';
 import {
   MEDIA_GALLERY_CELL_VARIANTS,
@@ -26,6 +31,65 @@ import {
 import { err, GRID_GAPS, isRecord, parseOptionalString } from './parseUtils';
 
 export const SPLIT_LAYOUT_MAX_DEPTH = 4;
+
+const CARD_ICON_IDS = new Set<string>(JSON_SLIDE_CARD_ICON_IDS);
+const LAYOUT_DECORATION_ICON_BADGE_ANCHORS = new Set(['center']);
+const LAYOUT_DECORATION_ICON_BADGE_TONES = new Set<JsonSlideLayoutIconBadgeDecorationTone>(['surface', 'accent']);
+const LAYOUT_DECORATION_ICON_BADGE_SIZES = new Set<JsonSlideLayoutIconBadgeDecorationSize>(['md', 'lg', 'xl']);
+
+function parseLayoutDecorations(
+  raw: unknown,
+  path: string,
+): JsonSlideLayoutDecoration[] | { ok: false; error: string } {
+  if (!Array.isArray(raw)) {
+    return err(`${path} must be an array`);
+  }
+  const out: JsonSlideLayoutDecoration[] = [];
+  for (let i = 0; i < raw.length; i += 1) {
+    const el = raw[i];
+    if (!isRecord(el)) {
+      return err(`${path}[${i}] must be an object`);
+    }
+    const dtype = el.type;
+    if (dtype !== 'iconBadge') {
+      return err(`${path}[${i}].type must be iconBadge`);
+    }
+    const anchor = el.anchor;
+    if (typeof anchor !== 'string' || !LAYOUT_DECORATION_ICON_BADGE_ANCHORS.has(anchor)) {
+      return err(`${path}[${i}].anchor must be center`);
+    }
+    const iconRaw = el.icon;
+    if (typeof iconRaw !== 'string' || !CARD_ICON_IDS.has(iconRaw)) {
+      return err(`${path}[${i}].icon must be a known icon id`);
+    }
+    const icon = iconRaw as JsonSlideCardIconId;
+
+    let tone: JsonSlideLayoutIconBadgeDecorationTone = 'surface';
+    if (el.tone !== undefined) {
+      if (typeof el.tone !== 'string' || !LAYOUT_DECORATION_ICON_BADGE_TONES.has(el.tone as JsonSlideLayoutIconBadgeDecorationTone)) {
+        return err(`${path}[${i}].tone must be surface or accent when present`);
+      }
+      tone = el.tone as JsonSlideLayoutIconBadgeDecorationTone;
+    }
+
+    let size: JsonSlideLayoutIconBadgeDecorationSize = 'md';
+    if (el.size !== undefined) {
+      if (typeof el.size !== 'string' || !LAYOUT_DECORATION_ICON_BADGE_SIZES.has(el.size as JsonSlideLayoutIconBadgeDecorationSize)) {
+        return err(`${path}[${i}].size must be md, lg, or xl when present`);
+      }
+      size = el.size as JsonSlideLayoutIconBadgeDecorationSize;
+    }
+
+    out.push({
+      type: 'iconBadge',
+      anchor: 'center',
+      icon,
+      tone,
+      size,
+    });
+  }
+  return out;
+}
 
 function parseUniformGridCardItems(
   raw: unknown,
@@ -286,16 +350,35 @@ export function parseLayout(
     gap = raw.gap as JsonSlideGridGap;
   }
 
+  let decorations: JsonSlideLayoutDecoration[] | undefined;
+  if (raw.decorations !== undefined) {
+    const decParsed = parseLayoutDecorations(raw.decorations, `${pathPrefix}.decorations`);
+    if (typeof decParsed === 'object' && decParsed !== null && 'ok' in decParsed && decParsed.ok === false) {
+      return decParsed;
+    }
+    const decList = decParsed as JsonSlideLayoutDecoration[];
+    if (decList.length > 0) {
+      decorations = decList;
+    }
+  }
+
+  function finalize<L extends JsonSlideLayout>(layout: L): L {
+    if (!decorations?.length) {
+      return layout;
+    }
+    return { ...layout, decorations };
+  }
+
   if (type === 'stackLayout') {
     const items = parseStackItems(raw.items, `${pathPrefix}.items`, splitNestRemaining);
     if ('ok' in items && items.ok === false) {
       return items;
     }
-    return {
+    return finalize({
       type: 'stackLayout',
       ...(gap !== undefined ? { gap } : {}),
       items: items as JsonSlideStackItem[],
-    };
+    });
   }
 
   if (type === 'splitLayout') {
@@ -322,14 +405,14 @@ export function parseLayout(
     if ('ok' in right && right.ok === false) {
       return right;
     }
-    return {
+    return finalize({
       type: 'splitLayout',
-      gap,
+      ...(gap !== undefined ? { gap } : {}),
       leftSpan,
       rightSpan,
       left: left as JsonSlideRegion,
       right: right as JsonSlideRegion,
-    };
+    });
   }
 
   if (type === 'asymmetricColumns' || type === 'equalColumns') {
@@ -350,9 +433,17 @@ export function parseLayout(
       }
     }
     if (type === 'asymmetricColumns') {
-      return { type: 'asymmetricColumns', gap, items: list };
+      return finalize({
+        type: 'asymmetricColumns',
+        ...(gap !== undefined ? { gap } : {}),
+        items: list,
+      });
     }
-    return { type: 'equalColumns', gap, items: list };
+    return finalize({
+      type: 'equalColumns',
+      ...(gap !== undefined ? { gap } : {}),
+      items: list,
+    });
   }
 
   if (type === 'uniformGrid') {
@@ -364,12 +455,12 @@ export function parseLayout(
     if ('ok' in items && items.ok === false) {
       return items;
     }
-    return {
+    return finalize({
       type: 'uniformGrid',
       columns,
-      gap,
+      ...(gap !== undefined ? { gap } : {}),
       items: items as JsonSlideCard[],
-    };
+    });
   }
 
   if (type === 'mediaGallery') {
@@ -456,7 +547,7 @@ export function parseLayout(
     if (verticalAlign !== undefined) {
       layout.verticalAlign = verticalAlign;
     }
-    return layout;
+    return finalize(layout);
   }
 
   const columns = raw.columns;
@@ -473,11 +564,11 @@ export function parseLayout(
     return items;
   }
 
-  return {
+  return finalize({
     type: 'bentoGrid',
     columns,
     rows,
-    gap,
+    ...(gap !== undefined ? { gap } : {}),
     items: items as JsonSlideBentoItem[],
-  };
+  });
 }

@@ -19,7 +19,7 @@
             "tone": "accent",
             "padding": "default",
             "leadingIcon": "layers",
-            "watermarkIcon": "workflow",
+            "watermarkIcon": "bar-chart-3",
             "justify": "between",
             "items": [
               { "variant": "overline", "text": "Урок I" },

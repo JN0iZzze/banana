@@ -1,0 +1,91 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Цена и ёмкость",
+    "title": "Один считает месяц, другой — сессию",
+    "lead": "За одинаковые $200 — разные счётчики. Cursor живёт на едином месячном бюджете, распределённом по моделям. Claude Code работает скользящими окнами: сессия (~4 ч) и неделя сбрасываются независимо, единого потолка на месяц нет."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "cursor",
+            "subtitle": { "variant": "overline", "text": "Cursor Ultra · $200/мес" },
+            "justify": "between",
+            "slots": [
+              {
+                "gap": "sm",
+                "items": [
+                  { "variant": "h2", "text": "Месячный бюджет" },
+                  {
+                    "type": "component",
+                    "component": "featureList",
+                    "gap": "sm",
+                    "items": [
+                      { "icon": "zap", "label": "Composer (проприетарный)", "value": "Основной пул, оптимизирован под скорость" },
+                      { "icon": "layers", "label": "Claude / GPT-4o / Gemini", "value": "Отдельный пул, расходуется быстрее" },
+                      { "icon": "calendar", "label": "Сброс лимитов", "value": "Раз в месяц" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "caption", "text": "~138 агент-часов в месяц · 1× доступ к SOTA-моделям" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "claude-code",
+            "subtitle": { "variant": "overline", "text": "Claude Code Max 20× · $200/мес" },
+            "justify": "between",
+            "slots": [
+              {
+                "gap": "sm",
+                "items": [
+                  { "variant": "h2", "text": "Скользящие окна" },
+                  {
+                    "type": "component",
+                    "component": "featureList",
+                    "gap": "sm",
+                    "items": [
+                      { "icon": "clock", "label": "Квота сессии", "value": "Сбрасывается каждые ~4 часа" },
+                      { "icon": "calendar-days", "label": "Квота недели", "value": "Отдельный независимый счётчик" },
+                      { "icon": "sparkles", "label": "Claude Design", "value": "Отдельная квота" },
+                      { "icon": "ban", "label": "Месячный потолок", "value": "Отсутствует" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "caption", "text": "~678 агент-часов в месяц · ~38× доступ к Opus vs Cursor Ultra" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

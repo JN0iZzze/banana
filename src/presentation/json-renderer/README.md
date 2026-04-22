@@ -19,7 +19,7 @@ The rendering pipeline is:
 2. `JsonSlideRenderer` reads `slide.jsonDocument` (no global registry)
 3. If `template` is `imageCover`, [`JsonImageCoverShell.tsx`](./JsonImageCoverShell.tsx) draws the full-bleed cover (image, overlay, frame, rails, headline) and returns — no `JsonSlideShell`, no `layout` dispatch
 4. Otherwise `JsonSlideShell` renders frame, backdrop, content, and header, then
-5. `renderJsonLayout()` dispatches to one supported layout renderer
+5. `renderJsonLayout()` dispatches to one supported layout renderer (optional `layout.decorations[]` draws a non-interactive overlay on the **layout area only**, below the header — see [Layout decorations](#layout-decorations-all-presets))
 6. layout renderers render cards through [`nodes/JsonCardNode.tsx`](./nodes/JsonCardNode.tsx)
 
 Hybrid decks may also list slides with a normal React `component` and no `jsonDocument`; those never go through this JSON pipeline.
@@ -237,6 +237,44 @@ With **chunks** (example: strikethrough first word, rest normal):
 Demo schemas: [`demo-text-stack-minimal-title.json`](../decks/main/schemas/demo-text-stack-minimal-title.json), [`demo-text-stack-about-me.json`](../decks/main/schemas/demo-text-stack-about-me.json)
 
 ## Supported Layout Presets
+
+### Layout decorations (all presets)
+
+Optional **`decorations`** on any layout object: out-of-flow, **pointer-events none** overlays on the **same box as the layout** (not the slide header). Use for small decorative badges (e.g. a centered cycle icon on a `uniformGrid`).
+
+- `decorations?`: non-empty array of decoration objects (omit the key or use `[]` for none)
+- Each item is strictly validated — no coordinates, no `className`, no arbitrary CSS
+
+**`type: "iconBadge"`**
+
+- `anchor`: `"center"` (only value for now)
+- `icon`: any id from the same allowlist as `leadingIcon` / `watermarkIcon` (see [`jsonSlideCardIconRegistry.tsx`](./jsonSlideCardIconRegistry.tsx))
+- `tone`: `"surface"` | `"accent"` (optional in JSON; defaults to `"surface"`)
+- `size`: `"md"` | `"lg"` | `"xl"` (optional in JSON; defaults to `"md"`; `xl` — крупный центральный badge)
+
+Example — centered repeat icon on a 2×2 card grid:
+
+```json
+{
+  "layout": {
+    "type": "uniformGrid",
+    "columns": 2,
+    "gap": "md",
+    "decorations": [
+      {
+        "type": "iconBadge",
+        "anchor": "center",
+        "icon": "repeat",
+        "tone": "surface",
+        "size": "xl"
+      }
+    ],
+    "items": []
+  }
+}
+```
+
+Implementation: types in [`jsonSlideTypes.ts`](../jsonSlideTypes.ts), parsing in [`parseRegionLayout.ts`](../json-slide-parser/parseRegionLayout.ts), overlay in [`JsonLayoutDecorationsOverlay.tsx`](./JsonLayoutDecorationsOverlay.tsx) via [`renderJsonLayout.tsx`](./layouts/renderJsonLayout.tsx).
 
 ### `asymmetricColumns`
 Use when column widths are intentionally different. Each column is a full **`JsonSlideRegion`**, same as `splitLayout` / `stackLayout` (not a bare card only): `card`, `text`, `quote`, or nested `layout` (e.g. `stackLayout` + `mediaGallery`).
@@ -544,7 +582,7 @@ Shape:
 Example (abbreviated): [`src/presentation/decks/main/schemas/slide-midjourney-vs-nano-banana.json`](../decks/main/schemas/slide-midjourney-vs-nano-banana.json)
 
 ### `indexedList`
-Numbered vertical list (index + title + subtitle per row). Styling follows `card.tone` (`accent` rows use the same on-accent treatment as the hero card on [`slide-prompt-structure.json`](../decks/main/schemas/slide-prompt-structure.json)).
+Numbered vertical list (index + title, with optional subtitle per row). Styling follows `card.tone` (`accent` rows use the same on-accent treatment as the hero card on [`slide-prompt-structure.json`](../decks/main/schemas/slide-prompt-structure.json)).
 
 Shape:
 
@@ -554,13 +592,14 @@ Shape:
   "component": "indexedList",
   "gap": "md",
   "items": [
-    { "index": 1, "title": "Row title", "subtitle": "Row subtitle" }
+    { "index": 1, "title": "Row title", "subtitle": "Row subtitle" },
+    { "index": 2, "title": "Title only row" }
   ]
 }
 ```
 
 - `gap` optional: `xs` | `sm` | `md` | `lg` — spacing between rows; default `md`
-- `items` required: non-empty array; `index` must be a non-negative integer and **unique** within the list; `title` and `subtitle` must be non-empty strings
+- `items` required: non-empty array; `index` must be a non-negative integer and **unique** within the list; `title` must be a non-empty string; `subtitle` is optional, but when present must be a non-empty string
 
 ### `featureList`
 Vertical list of comparison/characteristic rows — icon badge, supporting label, and main value per row. Dividers between rows (last row has no divider). Styling follows `card.tone`.

@@ -12,10 +12,11 @@ export function JsonUniformGridLayoutView({ layout }: JsonUniformGridLayoutProps
 
   return (
     <div
-      className="grid min-h-0 w-full flex-1 auto-rows-fr"
+      className="grid h-full min-h-0 w-full flex-1 items-stretch auto-rows-fr"
       style={{
         gap: gapVar,
         gridTemplateColumns: `repeat(${layout.columns}, minmax(0, 1fr))`,
+        gridAutoRows: 'minmax(0, 1fr)',
       }}
     >
       {layout.items.map((card, i) => {
@@ -23,7 +24,7 @@ export function JsonUniformGridLayoutView({ layout }: JsonUniformGridLayoutProps
         const firstText = allItems.find((it): it is JsonSlideCardItemText => isJsonSlideCardItemText(it));
         const keySeed = firstText?.text.slice(0, 12) ?? `card-${i}`;
         return (
-        <div key={`uniform-${i}-${keySeed}`} className="min-h-0">
+        <div key={`uniform-${i}-${keySeed}`} className="flex min-h-0 h-full min-w-0 flex-col">
           <JsonCardNode card={card} delay={0.2 + i * 0.07} />
         </div>
         );

@@ -1,0 +1,70 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Две среды для агента",
+    "title": "Готовая площадка или твой репозиторий",
+    "lead": "Агент один и тот же — меняется территория, на которой он работает. От этого зависит, что получается на выходе и насколько код твой."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "layers",
+            "subtitle": { "variant": "overline", "text": "Конструктор · Replit, Lovable, Figma Make" },
+            "justify": "start",
+            "items": [
+              { "variant": "h2", "text": "Стек, хостинг и БД уже собраны" },
+              {
+                "type": "component",
+                "component": "featureList",
+                "gap": "sm",
+                "items": [
+                  { "icon": "globe", "label": "Где живёт код", "value": "На платформе, в браузере" },
+                  { "icon": "layers", "label": "Стек", "value": "Задан конструктором, выбора почти нет" },
+                  { "icon": "pen-tool", "label": "Что делает агент", "value": "Правит проект внутри платформы" },
+                  { "icon": "bar-chart-3", "label": "Потолок", "value": "Прототип и MVP — дальше упираешься в рамки" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "claude-code",
+            "subtitle": { "variant": "overline", "text": "Агент-в-репо · Cursor, Claude Code" },
+            "justify": "start",
+            "items": [
+              { "variant": "h2", "text": "Работает у тебя на машине, в твоём git" },
+              {
+                "type": "component",
+                "component": "featureList",
+                "gap": "sm",
+                "items": [
+                  { "icon": "monitor", "label": "Где живёт код", "value": "В твоём репозитории на диске" },
+                  { "icon": "layers", "label": "Стек", "value": "Любой, какой выберешь сам" },
+                  { "icon": "pen-tool", "label": "Что делает агент", "value": "Файлы, терминал, git, тесты" },
+                  { "icon": "bar-chart-3", "label": "Потолок", "value": "Упирается в твою инженерию, а не в платформу" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

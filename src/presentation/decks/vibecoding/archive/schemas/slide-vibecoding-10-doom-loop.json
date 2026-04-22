@@ -18,7 +18,7 @@
           "card": {
             "tone": "accent",
             "padding": "default",
-            "leadingIcon": "workflow",
+            "leadingIcon": "share-2",
             "watermarkIcon": "layers",
             "justify": "between",
             "items": [

@@ -45,7 +45,7 @@
           "kind": "card",
           "card": {
             "tone": "accent",
-            "leadingIcon": "workflow",
+            "leadingIcon": "globe",
             "watermarkIcon": "share-2",
             "justify": "between",
             "items": [
