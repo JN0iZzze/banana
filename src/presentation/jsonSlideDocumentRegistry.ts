@@ -29,6 +29,18 @@ import rawImageCoverJsonPrompting from './schemas/slide-image-cover-json-prompti
 import rawReferenceAnalysis from './schemas/slide-reference-analysis.json';
 import rawAnglesLighting from './schemas/slide-angles-lighting.json';
 import rawPhotorealismModelPicks from './schemas/slide-photorealism-model-picks.json';
+import rawAboutMe from './schemas/slide-about-me.json';
+import rawProContradictions from './schemas/slide-pro-contradictions.json';
+import rawLessObviousUseCases from './schemas/slide-less-obvious-use-cases.json';
+import rawPhotorealismSectionTitle from './schemas/slide-photorealism-section-title.json';
+import rawNanoBananaConnection from './schemas/slide-nano-banana-connection.json';
+import rawLessObviousSectionTitle from './schemas/slide-less-obvious-section-title.json';
+import rawThreeDWorkflowLink from './schemas/slide-three-d-workflow-link.json';
+import rawCompositionPhotoLink from './schemas/slide-composition-photo-link.json';
+import rawGrokImagineBento from './schemas/slide-grok-imagine-bento.json';
+import rawRecraftV4Bento from './schemas/slide-recraft-v4-bento.json';
+import rawMidjorneyBento from './schemas/slide-midjorney-bento.json';
+import rawJsonImagesTriptych from './schemas/slide-json-images-triptych.json';
 
 export const DEMO_JSON_SLIDE_IDS = {
   asymmetric: 'demo-json-grid-asymmetric',
@@ -64,6 +76,18 @@ export const MIGRATED_JSON_SLIDE_IDS = {
   referenceAnalysis: 'reference-analysis',
   anglesLighting: 'angles-lighting',
   photorealismModelPicks: 'photorealism-model-picks',
+  aboutMe: 'about-me',
+  proContradictions: 'pro-contradictions',
+  lessObviousUseCases: 'less-obvious-use-cases',
+  photorealismSectionTitle: 'photorealism-section-title',
+  nanoBananaConnection: 'nano-banana-connection',
+  lessObviousSectionTitle: 'less-obvious-section-title',
+  threeDWorkflowLink: 'three-d-workflow-link',
+  compositionPhotoLink: 'composition-photo-link',
+  grokImagineBento: 'grok-imagine-bento',
+  recraftV4Bento: 'recraft-v4-bento',
+  midjorneyBento: 'midjorney-bento',
+  jsonImagesTriptych: 'json-images-triptych',
 } as const;
 
 function loadDocument(raw: unknown, label: string): JsonSlideDocument {
@@ -121,6 +145,18 @@ const docImageCoverJsonPrompting = loadDocument(
 const docReferenceAnalysis = loadDocument(rawReferenceAnalysis, 'slide-reference-analysis.json');
 const docAnglesLighting = loadDocument(rawAnglesLighting, 'slide-angles-lighting.json');
 const docPhotorealismModelPicks = loadDocument(rawPhotorealismModelPicks, 'slide-photorealism-model-picks.json');
+const docAboutMe = loadDocument(rawAboutMe, 'slide-about-me.json');
+const docProContradictions = loadDocument(rawProContradictions, 'slide-pro-contradictions.json');
+const docLessObviousUseCases = loadDocument(rawLessObviousUseCases, 'slide-less-obvious-use-cases.json');
+const docPhotorealismSectionTitle = loadDocument(rawPhotorealismSectionTitle, 'slide-photorealism-section-title.json');
+const docNanoBananaConnection = loadDocument(rawNanoBananaConnection, 'slide-nano-banana-connection.json');
+const docLessObviousSectionTitle = loadDocument(rawLessObviousSectionTitle, 'slide-less-obvious-section-title.json');
+const docThreeDWorkflowLink = loadDocument(rawThreeDWorkflowLink, 'slide-three-d-workflow-link.json');
+const docCompositionPhotoLink = loadDocument(rawCompositionPhotoLink, 'slide-composition-photo-link.json');
+const docGrokImagineBento = loadDocument(rawGrokImagineBento, 'slide-grok-imagine-bento.json');
+const docRecraftV4Bento = loadDocument(rawRecraftV4Bento, 'slide-recraft-v4-bento.json');
+const docMidjorneyBento = loadDocument(rawMidjorneyBento, 'slide-midjorney-bento.json');
+const docJsonImagesTriptych = loadDocument(rawJsonImagesTriptych, 'slide-json-images-triptych.json');
 
 /** Pre-validated schemas keyed by `SlideDefinition.id`. */
 export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
@@ -153,6 +189,18 @@ export const jsonSlideDocumentBySlideId: Record<string, JsonSlideDocument> = {
   [MIGRATED_JSON_SLIDE_IDS.referenceAnalysis]: docReferenceAnalysis,
   [MIGRATED_JSON_SLIDE_IDS.anglesLighting]: docAnglesLighting,
   [MIGRATED_JSON_SLIDE_IDS.photorealismModelPicks]: docPhotorealismModelPicks,
+  [MIGRATED_JSON_SLIDE_IDS.aboutMe]: docAboutMe,
+  [MIGRATED_JSON_SLIDE_IDS.proContradictions]: docProContradictions,
+  [MIGRATED_JSON_SLIDE_IDS.lessObviousUseCases]: docLessObviousUseCases,
+  [MIGRATED_JSON_SLIDE_IDS.photorealismSectionTitle]: docPhotorealismSectionTitle,
+  [MIGRATED_JSON_SLIDE_IDS.nanoBananaConnection]: docNanoBananaConnection,
+  [MIGRATED_JSON_SLIDE_IDS.lessObviousSectionTitle]: docLessObviousSectionTitle,
+  [MIGRATED_JSON_SLIDE_IDS.threeDWorkflowLink]: docThreeDWorkflowLink,
+  [MIGRATED_JSON_SLIDE_IDS.compositionPhotoLink]: docCompositionPhotoLink,
+  [MIGRATED_JSON_SLIDE_IDS.grokImagineBento]: docGrokImagineBento,
+  [MIGRATED_JSON_SLIDE_IDS.recraftV4Bento]: docRecraftV4Bento,
+  [MIGRATED_JSON_SLIDE_IDS.midjorneyBento]: docMidjorneyBento,
+  [MIGRATED_JSON_SLIDE_IDS.jsonImagesTriptych]: docJsonImagesTriptych,
 };
 
 export function getJsonSlideDocumentForSlideId(id: string): JsonSlideDocument | undefined {

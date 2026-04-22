@@ -13,26 +13,32 @@
     "items": [
       {
         "span": 7,
-        "card": {
-          "tone": "standard",
-          "subtitle": { "variant": "overline", "text": "Основной блок" },
-          "justify": "between",
-          "items": [
-            { "variant": "h2", "text": "Семь колонок" },
-            { "variant": "body", "text": "Больше воздуха для лида, списков или длинного текста без сжатия в узкую колонку." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "subtitle": { "variant": "overline", "text": "Основной блок" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Семь колонок" },
+              { "variant": "body", "text": "Больше воздуха для лида, списков или длинного текста без сжатия в узкую колонку." }
+            ]
+          }
         }
       },
       {
         "span": 5,
-        "card": {
-          "tone": "accent",
-          "subtitle": { "variant": "overline", "text": "Вторичный блок" },
-          "justify": "between",
-          "items": [
-            { "variant": "h2", "text": "Пять колонок" },
-            { "variant": "body", "text": "Акцентная панель для вывода, итога или короткого набора тезисов рядом с основным контентом." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "subtitle": { "variant": "overline", "text": "Вторичный блок" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Пять колонок" },
+              { "variant": "body", "text": "Акцентная панель для вывода, итога или короткого набора тезисов рядом с основным контентом." }
+            ]
+          }
         }
       }
     ]

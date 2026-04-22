@@ -86,34 +86,124 @@ Notes:
 - `meta` is passed through `formatSlideMeta()`, so supply the semantic label, not the full `01 / 57` string.
 - The shell currently fixes the `h1` style and lead style. Do not try to style header text from JSON.
 
+### `template: "textStack"`
+Headerless centred slide: a vertical stack of `text` and `link` items without `SlideHeader` or layout dispatch. Use this for minimal title slides, multi-link slides, and about-me style slides.
+
+**Do not** set `header` or `layout` — the parser rejects them. All positioning is controlled by `stack`.
+
+Rendered by [`JsonTextStackShell.tsx`](./JsonTextStackShell.tsx).
+
+**Top-level fields:**
+- `template: "textStack"` — required
+- `theme?`, `frame?`, `backdrop?`, `content?` — same vocabulary as `default` (see above)
+- `stack` — required; see below
+
+**`stack` fields:**
+- `align`: `left` | `center` | `right` — cross-axis alignment of items and text
+- `justify`: `start` | `center` | `end` — main-axis distribution of the stack inside the slide
+- `gap?`: `xs` | `sm` | `md` | `lg` — spacing between items (default `lg` ≈ `gap-8`)
+- `reveal?`: `{ preset, baseDelay?, step? }` — per-item reveal animation
+  - `preset`: `soft` | `hero` | `scale-in` | `enter-up` | `none` — `scale-in` is opacity + scale (no vertical slide); see [`Reveal.tsx`](../ui/slides/Reveal.tsx)
+  - `baseDelay?`: number (seconds) for the first item (default `0`)
+  - `step?`: number (seconds) added per item (default `0.08`)
+- `items`: non-empty array of `text` or `link` objects
+
+**`type: "text"` item:**
+```json
+{ "type": "text", "variant": "h1", "size": "display", "text": "Title here" }
+```
+- `variant`: `h1` | `h2` | `h3` | `lead` | `body` | `bodyLg` | `caption` | `overline`
+- `size?`: `display` | `section` | `compact` — **only allowed when `variant` is `"h1"`**
+- `context?`: `default` | `onAccent`
+- `text`: required string
+
+**`type: "link"` item:**
+```json
+{ "type": "link", "href": "https://example.com", "label": "example.com" }
+```
+- `href`: required URL string
+- `label`: required display string
+- Link style matches legacy `MinimalTitleSlide` / `MinimalTitleMultiLinkSlide` (monospace, accent colour, underline). Style is hardcoded in the renderer — not configurable from JSON.
+
+**Restrictions (first iteration):**
+- No inline rich text / partial accents within a line
+- No arbitrary `className`
+- `size` is only valid for `variant: "h1"`
+
+**Minimal example — title + link:**
+```json
+{
+  "template": "textStack",
+  "backdrop": { "variant": "none", "borderFrame": true },
+  "stack": {
+    "align": "center",
+    "justify": "center",
+    "gap": "lg",
+    "reveal": { "preset": "soft", "baseDelay": 0, "step": 0.08 },
+    "items": [
+      { "type": "text", "variant": "h1", "size": "display", "text": "GEN AI 2026" },
+      { "type": "link", "href": "https://example.com", "label": "example.com/deck" }
+    ]
+  }
+}
+```
+
+**About-me example — overline + name + lead + links:**
+```json
+{
+  "template": "textStack",
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "stack": {
+    "align": "center",
+    "justify": "center",
+    "gap": "md",
+    "reveal": { "preset": "soft", "step": 0.1 },
+    "items": [
+      { "type": "text", "variant": "overline", "text": "About me" },
+      { "type": "text", "variant": "h1", "size": "section", "text": "Ivan Petrov" },
+      { "type": "text", "variant": "lead", "text": "AI researcher & generative art practitioner" },
+      { "type": "link", "href": "https://example.com/ivan", "label": "example.com/ivan" }
+    ]
+  }
+}
+```
+
+Demo schemas: [`demo-text-stack-minimal-title.json`](../schemas/demo-text-stack-minimal-title.json), [`demo-text-stack-about-me.json`](../schemas/demo-text-stack-about-me.json)
+
 ## Supported Layout Presets
 
 ### `asymmetricColumns`
-Use when column widths are intentionally different.
+Use when column widths are intentionally different. Each column is a full **`JsonSlideRegion`**, same as `splitLayout` / `stackLayout` (not a bare card only): `card`, `text`, `quote`, or nested `layout` (e.g. `stackLayout` + `mediaGallery`).
 
 Fields:
 - `type: "asymmetricColumns"`
 - `gap?: "xs" | "sm" | "md" | "lg"`
-- `items: JsonSlideColumnItem[]`
+- `items: JsonSlideColumnItem[]` — each item is `{ "span", "region" }` where `region` is `JsonSlideRegion`
 
 Rules:
-- each item must have `span`
+- each item must have `span` and `region`
 - all spans must sum to `12`
 - use for patterns like `7+5`, `8+4`, `3+9`
 
+**Example (two columns, card regions):** [`demo-grid-asymmetric.json`](../schemas/demo-grid-asymmetric.json)
+
 ### `equalColumns`
-Use when all columns should have equal visual weight.
+Use when all columns should have equal visual weight. Same as `asymmetricColumns`, but all `span` values must be **identical** (e.g. `4+4+4`).
 
 Fields:
 - `type: "equalColumns"`
 - `gap?: "xs" | "sm" | "md" | "lg"`
-- `items: JsonSlideColumnItem[]`
+- `items: JsonSlideColumnItem[]` — `{ "span", "region" }` per column
 
 Rules:
-- each item must have `span`
+- each item must have `span` and `region`
 - all spans must sum to `12`
 - all spans must be identical
 - use for `6+6`, `4+4+4`, `3+3+3+3`
+
+**Examples:**
+- three equal card columns: [`demo-grid-equal.json`](../schemas/demo-grid-equal.json)
+- `4+4+4` with per-column `stackLayout` (title + image): [`slide-json-images-triptych.json`](../schemas/slide-json-images-triptych.json)
 
 ### `bentoGrid`
 Use when cells need explicit coordinates and varying spans.
@@ -185,6 +275,8 @@ Fields:
 - `preset?`: `single` | `pair` | `row` | `column` | `auto` (optional; see below)
 - `rowJustify?`: `start` | `end` — for `pair` and `row` only (default `end`, matches legacy `SlideImagePair`)
 - `cellVariant?`: `panel` | `fill` — `fill` uses legacy-style clipped tiles (`rounded-[var(--slide-radius-inner)]`, image defaults to **cover** in the cell). Omit for the default centered panel look.
+
+**Animation:** per-item `Reveal` in [`JsonMediaGalleryLayout.tsx`](./layouts/JsonMediaGalleryLayout.tsx) uses the `scale-in` preset (opacity + scale, no vertical offset). This is not configurable from JSON; change the preset in the layout renderer if needed.
 
 **Preset rules**
 - omit or `auto`: keep the **count-based** layout (1 → 1 col, 2 → 2 col, 3 → 3 col, 4 → 2×2, 5+ → flex row at ~20% width each) — this is the behavior used by already migrated JSON slides
@@ -431,24 +523,30 @@ Switch to a dedicated `.tsx` slide instead of forcing JSON if the slide needs:
     "items": [
       {
         "span": 7,
-        "card": {
-          "tone": "standard",
-          "subtitle": { "variant": "overline", "text": "Main block" },
-          "justify": "between",
-          "items": [
-            { "variant": "h2", "text": "Seven columns" },
-            { "variant": "body", "text": "Primary content area." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "subtitle": { "variant": "overline", "text": "Main block" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Seven columns" },
+              { "variant": "body", "text": "Primary content area." }
+            ]
+          }
         }
       },
       {
         "span": 5,
-        "card": {
-          "tone": "accent",
-          "items": [
-            { "variant": "h2", "text": "Side panel" },
-            { "variant": "body", "text": "Secondary content." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "items": [
+              { "variant": "h2", "text": "Side panel" },
+              { "variant": "body", "text": "Secondary content." }
+            ]
+          }
         }
       }
     ]
@@ -462,9 +560,18 @@ Switch to a dedicated `.tsx` slide instead of forcing JSON if the slide needs:
   "layout": {
     "type": "equalColumns",
     "items": [
-      { "span": 4, "card": { "tone": "standard", "items": [{ "variant": "h3", "text": "A" }] } },
-      { "span": 4, "card": { "tone": "standard", "items": [{ "variant": "h3", "text": "B" }] } },
-      { "span": 4, "card": { "tone": "accent", "items": [{ "variant": "h3", "text": "C" }] } }
+      {
+        "span": 4,
+        "region": { "kind": "card", "card": { "tone": "standard", "items": [{ "variant": "h3", "text": "A" }] } }
+      },
+      {
+        "span": 4,
+        "region": { "kind": "card", "card": { "tone": "standard", "items": [{ "variant": "h3", "text": "B" }] } }
+      },
+      {
+        "span": 4,
+        "region": { "kind": "card", "card": { "tone": "accent", "items": [{ "variant": "h3", "text": "C" }] } }
+      }
     ]
   }
 }

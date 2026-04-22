@@ -1,8 +1,9 @@
-import { isJsonSlideImageCoverDocument } from '../jsonSlideTypes';
+import { isJsonSlideImageCoverDocument, isJsonSlideTextStackDocument } from '../jsonSlideTypes';
 import type { SlideRenderProps } from '../types';
 import { getJsonSlideDocumentForSlideId } from '../jsonSlideDocumentRegistry';
 import { JsonRendererMissingDocument } from './JsonRendererErrorState';
 import { JsonImageCoverShell } from './JsonImageCoverShell';
+import { JsonTextStackShell } from './JsonTextStackShell';
 import { JsonSlideShell } from './JsonSlideShell';
 import { renderJsonLayout } from './layouts/renderJsonLayout';
 
@@ -22,6 +23,15 @@ export function JsonSlideRenderer({ slide, index, totalSlides }: SlideRenderProp
       <JsonImageCoverShell
         key={`json-slide-image-cover-${slide.id}-${index}`}
         cover={doc.cover}
+      />
+    );
+  }
+
+  if (isJsonSlideTextStackDocument(doc)) {
+    return (
+      <JsonTextStackShell
+        key={`json-slide-text-stack-${slide.id}-${index}`}
+        doc={doc}
       />
     );
   }

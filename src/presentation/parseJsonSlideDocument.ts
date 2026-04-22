@@ -18,6 +18,7 @@ import type {
 import { err, isRecord, parseOptionalString, parseString } from './json-slide-parser/parseUtils';
 import { parseImageCoverDocument } from './json-slide-parser/parseImageCover';
 import { parseLayout, SPLIT_LAYOUT_MAX_DEPTH } from './json-slide-parser/parseRegionLayout';
+import { parseTextStackDocument } from './json-slide-parser/parseTextStack';
 
 export { SPLIT_LAYOUT_MAX_DEPTH };
 
@@ -56,6 +57,10 @@ export function parseJsonSlideDocument(raw: unknown): ParseJsonSlideResult {
       return err('imageCover document must not include content');
     }
     return parseImageCoverDocument(raw);
+  }
+
+  if (raw.template === 'textStack') {
+    return parseTextStackDocument(raw);
   }
 
   if (raw.template !== undefined && raw.template !== 'default') {

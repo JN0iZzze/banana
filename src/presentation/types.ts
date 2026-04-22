@@ -2,7 +2,14 @@ import type { ComponentType } from 'react';
 
 export type SlideTheme = 'editorial' | 'signal' | 'cinema';
 
-export type RevealPreset = 'hero' | 'soft' | 'enter-up' | 'enter-left' | 'enter-right' | 'none';
+export type RevealPreset =
+  | 'hero'
+  | 'soft'
+  | 'scale-in'
+  | 'enter-up'
+  | 'enter-left'
+  | 'enter-right'
+  | 'none';
 
 export type SlideTransition = RevealPreset;
 

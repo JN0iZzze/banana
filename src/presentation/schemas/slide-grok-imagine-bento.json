@@ -1,0 +1,100 @@
+{
+  "theme": "cinema",
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Grok Imagine",
+    "title": "Grok Imagine"
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 5,
+    "rightSpan": 7,
+    "left": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "cellVariant": "fill",
+        "gap": "md",
+        "items": [
+          {
+            "type": "image",
+            "src": "/images/grok/g1.jpg",
+            "alt": "Grok Imagine — кадр 1",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "stackLayout",
+        "gap": "md",
+        "items": [
+          {
+            "span": 6,
+            "region": {
+              "kind": "layout",
+              "layout": {
+                "type": "mediaGallery",
+                "preset": "pair",
+                "cellVariant": "fill",
+                "gap": "md",
+                "items": [
+                  {
+                    "type": "image",
+                    "src": "/images/grok/g2.jpg",
+                    "alt": "Grok Imagine — кадр 2",
+                    "objectFit": "cover"
+                  },
+                  {
+                    "type": "image",
+                    "src": "/images/grok/g3.jpg",
+                    "alt": "Grok Imagine — кадр 3",
+                    "objectFit": "cover"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "span": 6,
+            "region": {
+              "kind": "layout",
+              "layout": {
+                "type": "mediaGallery",
+                "preset": "row",
+                "cellVariant": "fill",
+                "gap": "md",
+                "items": [
+                  {
+                    "type": "image",
+                    "src": "/images/grok/g4.jpg",
+                    "alt": "Grok Imagine — кадр 4",
+                    "objectFit": "cover"
+                  },
+                  {
+                    "type": "image",
+                    "src": "/images/grok/g5.jpg",
+                    "alt": "Grok Imagine — кадр 5",
+                    "objectFit": "cover"
+                  },
+                  {
+                    "type": "image",
+                    "src": "/images/grok/g6.jpg",
+                    "alt": "Grok Imagine — кадр 6",
+                    "objectFit": "cover"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

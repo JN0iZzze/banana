@@ -69,7 +69,7 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel' }: 
 
   if (cellMode === 'fill') {
     return (
-      <Reveal preset="soft" delay={delay} className="flex h-full min-h-0 w-full min-w-0 flex-col">
+      <Reveal preset="scale-in" delay={delay} className="flex h-full min-h-0 w-full min-w-0 flex-col">
         <div className="relative min-h-0 min-w-0 flex-1 overflow-hidden rounded-[var(--slide-radius-inner)]">
           {item.type === 'image' ? renderImageFillCell(item) : renderVideoFillCell(item)}
         </div>
@@ -84,7 +84,7 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel' }: 
 
   return (
     <Reveal
-      preset="soft"
+      preset="scale-in"
       delay={delay}
       className={
         isPairStrip
@@ -292,7 +292,7 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
           {items.map((item, i) => (
             <Reveal
               key={`mgallery-${i}`}
-              preset="soft"
+              preset="scale-in"
               delay={0.2 + i * 0.08}
               className="flex h-full min-h-0 shrink-0"
             >

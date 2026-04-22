@@ -1,0 +1,94 @@
+{
+  "theme": "cinema",
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Recraft V4",
+    "title": "Recraft V4"
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 5,
+    "rightSpan": 7,
+    "left": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "cellVariant": "fill",
+        "gap": "md",
+        "items": [
+          {
+            "type": "image",
+            "src": "/images/recraft/001.jpg",
+            "alt": "Recraft V4 — кадр 1",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "stackLayout",
+        "gap": "md",
+        "items": [
+          {
+            "span": 6,
+            "region": {
+              "kind": "layout",
+              "layout": {
+                "type": "mediaGallery",
+                "preset": "pair",
+                "cellVariant": "fill",
+                "gap": "md",
+                "items": [
+                  {
+                    "type": "image",
+                    "src": "/images/recraft/002.jpg",
+                    "alt": "Recraft V4 — кадр 2",
+                    "objectFit": "cover"
+                  },
+                  {
+                    "type": "image",
+                    "src": "/images/recraft/003.jpg",
+                    "alt": "Recraft V4 — кадр 3",
+                    "objectFit": "cover"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "span": 6,
+            "region": {
+              "kind": "layout",
+              "layout": {
+                "type": "mediaGallery",
+                "preset": "pair",
+                "cellVariant": "fill",
+                "gap": "md",
+                "items": [
+                  {
+                    "type": "image",
+                    "src": "/images/recraft/004.jpg",
+                    "alt": "Recraft V4 — кадр 4",
+                    "objectFit": "cover"
+                  },
+                  {
+                    "type": "image",
+                    "src": "/images/recraft/005.jpg",
+                    "alt": "Recraft V4 — кадр 5",
+                    "objectFit": "cover"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

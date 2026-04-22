@@ -43,10 +43,15 @@ function parseUniformGridCardItems(
   return cards;
 }
 
-function parseColumnItems(raw: unknown, path: string): JsonSlideColumnItem[] | { ok: false; error: string } {
+function parseColumnItems(
+  raw: unknown,
+  path: string,
+  splitNestRemaining: number,
+): JsonSlideColumnItem[] | { ok: false; error: string } {
   if (!Array.isArray(raw) || raw.length === 0) {
     return err(`${path} must be a non-empty array`);
   }
+  const nextNest = splitNestRemaining - 1;
   const items: JsonSlideColumnItem[] = [];
   for (let i = 0; i < raw.length; i += 1) {
     const el = raw[i];
@@ -56,11 +61,11 @@ function parseColumnItems(raw: unknown, path: string): JsonSlideColumnItem[] | {
     if (typeof el.span !== 'number' || !Number.isInteger(el.span) || el.span < 1 || el.span > 12) {
       return err(`${path}[${i}].span must be an integer 1–12`);
     }
-    const card = parseCard(el.card, `${path}[${i}].card`);
-    if ('ok' in card && card.ok === false) {
-      return card;
+    const region = parseRegion(el.region, `${path}[${i}].region`, nextNest);
+    if ('ok' in region && region.ok === false) {
+      return region;
     }
-    items.push({ span: el.span, card: card as JsonSlideCard });
+    items.push({ span: el.span, region: region as JsonSlideRegion });
   }
   return items;
 }
@@ -326,7 +331,7 @@ export function parseLayout(
   }
 
   if (type === 'asymmetricColumns' || type === 'equalColumns') {
-    const items = parseColumnItems(raw.items, `${pathPrefix}.items`);
+    const items = parseColumnItems(raw.items, `${pathPrefix}.items`, splitNestRemaining);
     if ('ok' in items && items.ok === false) {
       return items;
     }

@@ -1,0 +1,142 @@
+{
+  "theme": "editorial",
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": { "meta": "JSON и изображения" },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "stackLayout",
+            "gap": "sm",
+            "items": [
+              {
+                "span": 1,
+                "region": {
+                  "kind": "text",
+                  "text": {
+                    "align": "center",
+                    "stackGap": "sm",
+                    "items": [{ "variant": "h2", "text": "Оригинал" }]
+                  }
+                }
+              },
+              {
+                "span": 11,
+                "region": {
+                  "kind": "layout",
+                  "layout": {
+                    "type": "mediaGallery",
+                    "preset": "single",
+                    "cellVariant": "fill",
+                    "gap": "md",
+                    "items": [
+                      {
+                        "type": "image",
+                        "src": "/images/composition/ref.jpg",
+                        "alt": "Оригинал",
+                        "objectFit": "cover"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "stackLayout",
+            "gap": "sm",
+            "items": [
+              {
+                "span": 1,
+                "region": {
+                  "kind": "text",
+                  "text": {
+                    "align": "center",
+                    "stackGap": "sm",
+                    "items": [{ "variant": "h2", "text": "По референсу" }]
+                  }
+                }
+              },
+              {
+                "span": 11,
+                "region": {
+                  "kind": "layout",
+                  "layout": {
+                    "type": "mediaGallery",
+                    "preset": "single",
+                    "cellVariant": "fill",
+                    "gap": "md",
+                    "items": [
+                      {
+                        "type": "image",
+                        "src": "/images/json/via_ref.png",
+                        "alt": "По референсу",
+                        "objectFit": "cover"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "stackLayout",
+            "gap": "sm",
+            "items": [
+              {
+                "span": 1,
+                "region": {
+                  "kind": "text",
+                  "text": {
+                    "align": "center",
+                    "stackGap": "sm",
+                    "items": [{ "variant": "h2", "text": "По JSON-промпту" }]
+                  }
+                }
+              },
+              {
+                "span": 11,
+                "region": {
+                  "kind": "layout",
+                  "layout": {
+                    "type": "mediaGallery",
+                    "preset": "single",
+                    "cellVariant": "fill",
+                    "gap": "md",
+                    "items": [
+                      {
+                        "type": "image",
+                        "src": "/images/json/001.png",
+                        "alt": "По JSON-промпту",
+                        "objectFit": "cover"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

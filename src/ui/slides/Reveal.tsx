@@ -18,6 +18,11 @@ const revealStates: Record<RevealPreset, { initial: Record<string, number>; anim
     initial: { opacity: 0, y: 18 },
     animate: { opacity: 1, y: 0 },
   },
+  /** No translation — scale + opacity only (e.g. media galleries). */
+  'scale-in': {
+    initial: { opacity: 0, scale: 0.94 },
+    animate: { opacity: 1, scale: 1 },
+  },
   'enter-up': {
     initial: { opacity: 0, y: 28 },
     animate: { opacity: 1, y: 0 },

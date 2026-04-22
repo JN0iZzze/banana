@@ -1,5 +1,4 @@
 import type { DeckDefinition } from '../types';
-import { AboutMeSlide } from '../slides/AboutMeSlide';
 import { DemoFoundationSlide } from '../slides/DemoFoundationSlide';
 import { DemoSpotlightStackSlide } from '../slides/DemoSpotlightStackSlide';
 import { DemoTriptychSlide } from '../slides/DemoTriptychSlide';
@@ -11,20 +10,15 @@ import { PhotorealismSlideCopy } from '../slides/PhotorealismSlideCopy';
 import { LeoFluxVsGptSlide } from '../slides/LeoFluxVsGptSlide';
 import { ThreeDRefsSlide } from '../slides/ThreeDRefsSlide';
 import { CompositionSlide } from '../slides/CompositionSlide';
-import { RecraftV4BentoSlide } from '../slides/RecraftV4BentoSlide';
 import { SpeakerChannelGridSlide } from '../slides/SpeakerChannelGridSlide';
 import { GamepadStyleTransferSlide } from '../slides/GamepadStyleTransferSlide';
-import { GrokImagineBentoSlide } from '../slides/GrokImagineBentoSlide';
 import { ToolsGrowthSlide } from '../slides/ToolsGrowthSlide';
 import { Early2025Slide } from '../slides/Early2025Slide';
 import { CombGripSlide } from '../slides/CombGripSlide';
 import { StructuredPromptsSlide } from '../slides/StructuredPromptsSlide';
 import { JsonPromptingDefinitionSlide } from '../slides/JsonPromptingDefinitionSlide';
-import { JsonImagesSlide } from '../slides/JsonImagesSlide';
 import { PromptOrderFlexSlide } from '../slides/PromptOrderFlexSlide';
-import { MinimalTitleSlide } from '../slides/MinimalTitleSlide';
 import { MinimalTitleMultiLinkSlide } from '../slides/MinimalTitleMultiLinkSlide';
-import { MidjorneyBentoSlide } from '../slides/MidjorneyBentoSlide';
 import { WorkflowComparisonSlide } from '../slides/WorkflowComparisonSlide';
 import { TextureWorkflowSlide } from '../slides/TextureWorkflowSlide';
 import { ThankYouSlide } from '../slides/ThankYouSlide';
@@ -45,10 +39,10 @@ export const mainDeck: DeckDefinition = {
         'JSON: bentoGrid 4×3 с разными span, slide-demo-hero-journey-bento.json; этапы мономифа Кэмпбелла сгруппированы в крупные, высокие, мини- и широкие ячейки.',
     },
     {
-      id: 'about-me',
+      id: MIGRATED_JSON_SLIDE_IDS.aboutMe,
       title: 'Евсеичев Антон',
       theme: 'editorial',
-      component: AboutMeSlide,
+      component: JsonSlideRenderer,
       notes: 'Из 20Feb AboutMe: имя, роли, Floux.pro founder; без изображений.',
     },
     {
@@ -232,11 +226,10 @@ export const mainDeck: DeckDefinition = {
       preloadAssets: ['/images/prompt/001.png', '/images/prompt/002.png'],
     },
     {
-      id: 'pro-contradictions',
+      id: MIGRATED_JSON_SLIDE_IDS.proContradictions,
       title: 'про противоречия',
-      link: 'https://app.floux.pro/w/hmBz7keW9FdS',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Чёрный минималистичный титул: одна строка по центру, без декора и мета.',
     },
     // Идея для следующего слайда: пример про отсутствие противоречий (девушка заказывает кофе).
@@ -406,11 +399,10 @@ export const mainDeck: DeckDefinition = {
       preloadAssets: ['/images/fashion/person.png', '/images/fashion/ref.png', '/images/fashion/out.png'],
     },
     {
-      id: 'less-obvious-use-cases',
+      id: MIGRATED_JSON_SLIDE_IDS.lessObviousUseCases,
       title: 'Ссылка на пример',
-      link: 'https://app.floux.pro/templates/wYGwU6CDVWK9',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
@@ -422,18 +414,19 @@ export const mainDeck: DeckDefinition = {
         'JSON: bentoGrid 12×2 (4+4+4 / 6+6), slide-photorealism-model-picks.json; только названия моделей снизу, watermark; Nano Banana accent.',
     },
     {
-      id: 'photorealism-section-title',
+      id: MIGRATED_JSON_SLIDE_IDS.photorealismSectionTitle,
       title: 'Где Nano Banana не лучший выбор',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
-      id: 'grok-imagine-bento',
+      id: MIGRATED_JSON_SLIDE_IDS.grokImagineBento,
       title: 'Grok Imagine',
       theme: 'cinema',
-      component: GrokImagineBentoSlide,
-      notes: 'Бенто-сетка из шести кадров /images/grok/g1.jpg … g6.jpg; spotlight как у cinema.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 5+7 + mediaGallery, slide-grok-imagine-bento.json; слева g1, справа 2+3 кадра; spotlight.',
       preloadAssets: [
         '/images/grok/g1.jpg',
         '/images/grok/g2.jpg',
@@ -444,11 +437,12 @@ export const mainDeck: DeckDefinition = {
       ],
     },
     {
-      id: 'recraft-v4-bento',
+      id: MIGRATED_JSON_SLIDE_IDS.recraftV4Bento,
       title: 'Recraft V4',
       theme: 'cinema',
-      component: RecraftV4BentoSlide,
-      notes: 'Как Grok Imagine bento: слева квадрат 001, справа два ряда 2+2 из /images/recraft/002…005.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 5+7, slide-recraft-v4-bento.json; слева 001, справа два ряда 2+2; spotlight.',
       preloadAssets: [
         '/images/recraft/001.jpg',
         '/images/recraft/002.jpg',
@@ -458,11 +452,12 @@ export const mainDeck: DeckDefinition = {
       ],
     },
     {
-      id: 'midjorney-bento',
+      id: MIGRATED_JSON_SLIDE_IDS.midjorneyBento,
       title: 'Midjorney',
       theme: 'cinema',
-      component: MidjorneyBentoSlide,
-      notes: 'Как bento Grok/Recraft: слева 001, справа 2+4 из /images/midjorney (jpg+png); заголовок Midjorney.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 5+7, slide-midjorney-bento.json; слева 001, справа 2+4; jpg+png; spotlight.',
       preloadAssets: [
         '/images/midjorney/001.jpg',
         '/images/midjorney/002.jpg',
@@ -474,17 +469,17 @@ export const mainDeck: DeckDefinition = {
       ],
     },
     {
-      id: 'less-obvious-use-cases',
+      id: MIGRATED_JSON_SLIDE_IDS.nanoBananaConnection,
       title: 'Про связку с Nano Banana',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
-      id: 'less-obvious-use-cases',
+      id: MIGRATED_JSON_SLIDE_IDS.lessObviousSectionTitle,
       title: 'Менее очевидные сценарии использования',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
@@ -527,11 +522,10 @@ export const mainDeck: DeckDefinition = {
       preloadAssets: ['/images/workflow/extra-v.mp4', '/images/workflow/extra1.png', '/images/workflow/extra2.png'],
     },
     {
-      id: 'less-obvious-use-cases',
+      id: MIGRATED_JSON_SLIDE_IDS.threeDWorkflowLink,
       title: 'Ссылка на пример',
-      link: 'https://app.floux.pro/w/3D2nLFZOr7L9',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
@@ -575,22 +569,20 @@ export const mainDeck: DeckDefinition = {
         'Из 20Feb StructuredPrompts: псевдо-окно редактора с примером JSON; переиспользуемый SlideCodeWindow.',
     },
     {
-      id: 'json-images-triptych',
+      id: MIGRATED_JSON_SLIDE_IDS.jsonImagesTriptych,
       title: 'JSON и изображения',
       theme: 'editorial',
-      component: JsonImagesSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Из 20Feb JsonImagesSlide: три колонки, равный gap; у каждого кадра свой заголовок (JSON_IMAGE_PANELS.title); без VS.',
-      preloadAssets: ['/images/json/001.jpg', '/images/json/002.jpg', '/images/composition/ref.jpg'],
+        'JSON: equalColumns 4+4+4, stackLayout h2 + mediaGallery; slide-json-images-triptych.json; grid.',
+      preloadAssets: ['/images/json/via_ref.png', '/images/json/001.png', '/images/composition/ref.jpg'],
     },
     {
-      id: 'less-obvious-use-cases',
+      id: MIGRATED_JSON_SLIDE_IDS.compositionPhotoLink,
       title: 'Ссылка на пример',
       theme: 'cinema',
-      component: MinimalTitleSlide,
+      component: JsonSlideRenderer,
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
-      link: 'https://app.floux.pro/templates/pEpa2FeYuOSx',
-      linkLabel: 'Floux — копирование композиции фото',
     },
     {
       id: 'other-examples-floux-projects',

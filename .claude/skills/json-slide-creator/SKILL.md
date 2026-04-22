@@ -107,7 +107,6 @@ description: Создаёт новые слайды и редактирует с
 
 Правила выбора:
 
-- `asymmetricColumns` / `equalColumns` — в каждой ячейке `items[]` укажи `span` и `region` (`JsonSlideRegion`, как в `splitLayout`), не голый `card` на корне элемента
 - `asymmetricColumns` для явной разницы ширин, например `7+5` или `8+4`
 - `equalColumns` для равных колонок, например `6+6` или `4+4+4`
 - `bentoGrid` для ручного позиционирования ячеек с `colStart`, `rowStart`, `colSpan`, `rowSpan`

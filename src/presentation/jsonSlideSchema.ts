@@ -5,6 +5,18 @@
  */
 
 export type {
+  JsonSlideTextStack,
+  JsonSlideTextStackAlign,
+  JsonSlideTextStackDocument,
+  JsonSlideTextStackItem,
+  JsonSlideTextStackItemContext,
+  JsonSlideTextStackItemLink,
+  JsonSlideTextStackItemSize,
+  JsonSlideTextStackItemText,
+  JsonSlideTextStackItemVariant,
+  JsonSlideTextStackJustify,
+  JsonSlideTextStackReveal,
+  JsonSlideTextStackRevealPreset,
   JsonSlideAsymmetricLayout,
   JsonSlideBackdrop,
   JsonSlideBackdropVariant,
@@ -63,6 +75,7 @@ export type {
 
 export {
   isJsonSlideImageCoverDocument,
+  isJsonSlideTextStackDocument,
   isJsonSlideCardItemIndexedList,
   isJsonSlideCardItemTagList,
   isJsonSlideCardItemText,

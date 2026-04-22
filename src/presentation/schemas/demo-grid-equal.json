@@ -13,38 +13,47 @@
     "items": [
       {
         "span": 4,
-        "card": {
-          "tone": "standard",
-          "subtitle": { "variant": "overline", "text": "Колонка A" },
-          "justify": "end",
-          "items": [
-            { "variant": "h2", "text": "Первый вариант" },
-            { "variant": "body", "text": "Одинаковая ширина с колонками B и C — визуальный паритет без ручной подгонки процентов." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "subtitle": { "variant": "overline", "text": "Колонка A" },
+            "justify": "end",
+            "items": [
+              { "variant": "h2", "text": "Первый вариант" },
+              { "variant": "body", "text": "Одинаковая ширина с колонками B и C — визуальный паритет без ручной подгонки процентов." }
+            ]
+          }
         }
       },
       {
         "span": 4,
-        "card": {
-          "tone": "standard",
-          "subtitle": { "variant": "overline", "text": "Колонка B" },
-          "justify": "end",
-          "items": [
-            { "variant": "h2", "text": "Второй вариант" },
-            { "variant": "body", "text": "Схема в JSON задаёт только текст и tone; сетку и отступы фиксирует движок рендера." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "subtitle": { "variant": "overline", "text": "Колонка B" },
+            "justify": "end",
+            "items": [
+              { "variant": "h2", "text": "Второй вариант" },
+              { "variant": "body", "text": "Схема в JSON задаёт только текст и tone; сетку и отступы фиксирует движок рендера." }
+            ]
+          }
         }
       },
       {
         "span": 4,
-        "card": {
-          "tone": "accent",
-          "subtitle": { "variant": "overline", "text": "Колонка C" },
-          "justify": "end",
-          "items": [
-            { "variant": "h2", "text": "Акцент" },
-            { "variant": "body", "text": "Одна колонка может быть accent, остальные standard — контраст без смены layout preset." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "subtitle": { "variant": "overline", "text": "Колонка C" },
+            "justify": "end",
+            "items": [
+              { "variant": "h2", "text": "Акцент" },
+              { "variant": "body", "text": "Одна колонка может быть accent, остальные standard — контраст без смены layout preset." }
+            ]
+          }
         }
       }
     ]

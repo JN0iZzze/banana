@@ -235,7 +235,8 @@ export interface JsonSlideCard {
 
 export interface JsonSlideColumnItem {
   span: number;
-  card: JsonSlideCard;
+  /** Same `JsonSlideRegion` as `splitLayout` / `stackLayout`: card, text, quote, or nested layout. */
+  region: JsonSlideRegion;
 }
 
 export interface JsonSlideAsymmetricLayout {
@@ -415,10 +416,73 @@ export interface JsonSlideImageCoverDocument {
   cover: JsonImageCover;
 }
 
-export type JsonSlideDocument = JsonSlideDefaultDocument | JsonSlideImageCoverDocument;
+// --- textStack template ---
+
+/** Text variant allowlist for textStack items (wider than card items; covers h1/lead for title slides). */
+export type JsonSlideTextStackItemVariant =
+  | 'h1' | 'h2' | 'h3' | 'lead' | 'body' | 'bodyLg' | 'caption' | 'overline';
+
+/** Only applies when variant is "h1". */
+export type JsonSlideTextStackItemSize = 'display' | 'section' | 'compact';
+
+export type JsonSlideTextStackItemContext = 'default' | 'onAccent';
+
+export interface JsonSlideTextStackItemText {
+  type: 'text';
+  variant: JsonSlideTextStackItemVariant;
+  text: string;
+  /** Only allowed when variant is "h1". */
+  size?: JsonSlideTextStackItemSize;
+  context?: JsonSlideTextStackItemContext;
+}
+
+export interface JsonSlideTextStackItemLink {
+  type: 'link';
+  href: string;
+  label: string;
+}
+
+export type JsonSlideTextStackItem = JsonSlideTextStackItemText | JsonSlideTextStackItemLink;
+
+export type JsonSlideTextStackAlign = 'left' | 'center' | 'right';
+export type JsonSlideTextStackJustify = 'start' | 'center' | 'end';
+
+export type JsonSlideTextStackRevealPreset = 'soft' | 'hero' | 'scale-in' | 'enter-up' | 'none';
+
+export interface JsonSlideTextStackReveal {
+  preset: JsonSlideTextStackRevealPreset;
+  baseDelay?: number;
+  step?: number;
+}
+
+export interface JsonSlideTextStack {
+  align: JsonSlideTextStackAlign;
+  justify: JsonSlideTextStackJustify;
+  gap?: JsonSlideGridGap;
+  reveal?: JsonSlideTextStackReveal;
+  items: [JsonSlideTextStackItem, ...JsonSlideTextStackItem[]];
+}
+
+/** Headerless text-stack slide: vertical list of text/link items, no layout dispatch. */
+export interface JsonSlideTextStackDocument {
+  template: 'textStack';
+  theme?: SlideTheme;
+  frame?: JsonSlideFrame;
+  backdrop?: JsonSlideBackdrop;
+  content?: JsonSlideContent;
+  stack: JsonSlideTextStack;
+}
+
+export type JsonSlideDocument = JsonSlideDefaultDocument | JsonSlideImageCoverDocument | JsonSlideTextStackDocument;
 
 export function isJsonSlideImageCoverDocument(
   doc: JsonSlideDocument,
 ): doc is JsonSlideImageCoverDocument {
   return doc.template === 'imageCover';
+}
+
+export function isJsonSlideTextStackDocument(
+  doc: JsonSlideDocument,
+): doc is JsonSlideTextStackDocument {
+  return doc.template === 'textStack';
 }
