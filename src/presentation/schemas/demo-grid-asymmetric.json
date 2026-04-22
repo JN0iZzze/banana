@@ -1,0 +1,40 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "JSON renderer · asymmetric",
+    "title": "Неравные колонки",
+    "lead": "Layout preset asymmetricColumns: сетка 12 колонок, сумма span всегда 12. Подходит для главного блока и боковой колонки."
+  },
+  "layout": {
+    "type": "asymmetricColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 7,
+        "card": {
+          "tone": "standard",
+          "subtitle": { "variant": "overline", "text": "Основной блок" },
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "Семь колонок" },
+            { "variant": "body", "text": "Больше воздуха для лида, списков или длинного текста без сжатия в узкую колонку." }
+          ]
+        }
+      },
+      {
+        "span": 5,
+        "card": {
+          "tone": "accent",
+          "subtitle": { "variant": "overline", "text": "Вторичный блок" },
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "Пять колонок" },
+            { "variant": "body", "text": "Акцентная панель для вывода, итога или короткого набора тезисов рядом с основным контентом." }
+          ]
+        }
+      }
+    ]
+  }
+}

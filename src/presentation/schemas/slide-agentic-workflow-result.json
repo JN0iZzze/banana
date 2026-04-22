@@ -1,0 +1,35 @@
+{
+  "frame": { "padding": "compact", "align": "center" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Результат агента" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Промпт",
+        "text": "«Нарисуй инфографику с кратким содержанием первой части 5-го сезона Stranger Things»"
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "gap": "md",
+        "items": [
+          {
+            "type": "image",
+            "src": "/images/stranger.jpg",
+            "alt": "Инфографика по первой части 5-го сезона Stranger Things",
+            "objectAlign": "center"
+          }
+        ]
+      }
+    }
+  }
+}

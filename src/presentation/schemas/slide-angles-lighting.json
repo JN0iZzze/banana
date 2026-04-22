@@ -1,0 +1,35 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Углы камеры и освещение" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 2,
+    "rightSpan": 10,
+    "left": {
+      "kind": "text",
+      "text": {
+        "align": "left",
+        "stackGap": "md",
+        "items": [
+          { "variant": "h2", "text": "Ракурс камеры и освещение" }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "pair",
+        "gap": "md",
+        "rowJustify": "end",
+        "items": [
+          { "type": "image", "src": "/images/angles/001.png", "objectAlign": "right" },
+          { "type": "image", "src": "/images/angles/002.png", "objectAlign": "right" }
+        ]
+      }
+    }
+  }
+}

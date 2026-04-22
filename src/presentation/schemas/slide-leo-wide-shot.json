@@ -1,0 +1,55 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Фотореализм" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Промпт",
+        "text": "A cat [Image 1] sits on a man's [Image 2] lap, and [Image 3] sleep on the sofa wide shot"
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "splitLayout",
+        "gap": "md",
+        "leftSpan": 5,
+        "rightSpan": 7,
+        "left": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "column",
+            "cellVariant": "fill",
+            "gap": "md",
+            "items": [
+              { "type": "image", "src": "/images/leo/ref1.png", "objectFit": "cover" },
+              { "type": "image", "src": "/images/leo/ref2.jpg", "objectFit": "cover" },
+              { "type": "image", "src": "/images/leo/ref3.jpg", "objectFit": "cover" }
+            ]
+          }
+        },
+        "right": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "column",
+            "cellVariant": "fill",
+            "gap": "md",
+            "items": [
+              { "type": "image", "src": "/images/leo/result1.png", "objectFit": "cover" },
+              { "type": "image", "src": "/images/leo/result2.png", "objectFit": "cover" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

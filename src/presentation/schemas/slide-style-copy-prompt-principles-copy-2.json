@@ -1,0 +1,32 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Точечное редактирование" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Копирование стиля",
+        "text": "Удали вторую лишнюю ракетку из указанной области"
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "pair",
+        "gap": "md",
+        "rowJustify": "end",
+        "items": [
+          { "type": "image", "src": "/images/editing/wrong.png", "objectAlign": "right" },
+          { "type": "image", "src": "/images/editing/output.png", "objectAlign": "right" }
+        ]
+      }
+    }
+  }
+}

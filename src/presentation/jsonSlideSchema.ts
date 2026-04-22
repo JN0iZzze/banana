@@ -1,0 +1,74 @@
+/**
+ * Barrel: JSON slide contract types + runtime parser.
+ * Prefer importing from here for backward compatibility; new code may import from
+ * `jsonSlideTypes` / `parseJsonSlideDocument` directly.
+ */
+
+export type {
+  JsonSlideAsymmetricLayout,
+  JsonSlideBackdrop,
+  JsonSlideBackdropVariant,
+  JsonSlideBentoItem,
+  JsonSlideBentoLayout,
+  JsonSlideCard,
+  JsonSlideCardComponentId,
+  JsonSlideCardHeaderBadge,
+  JsonSlideCardIconId,
+  JsonSlideCardItem,
+  JsonSlideCardItemIndexedList,
+  JsonSlideCardItemTagList,
+  JsonSlideCardItemText,
+  JsonSlideCardItemVariant,
+  JsonSlideCardHeaderBadgeTone,
+  JsonSlideCardSurface,
+  JsonSlideCardTagListDirection,
+  JsonSlideCardTagListVariant,
+  JsonSlideCardJustify,
+  JsonSlideCardPadding,
+  JsonSlideCardSubtitle,
+  JsonSlideCardTone,
+  JsonSlideColumnItem,
+  JsonSlideContent,
+  JsonSlideContentAlign,
+  JsonSlideContentDensity,
+  JsonSlideContentWidth,
+  JsonImageCover,
+  JsonImageCoverBackground,
+  JsonSlideDefaultDocument,
+  JsonSlideDocument,
+  JsonSlideImageCoverDocument,
+  JsonSlideEqualLayout,
+  JsonSlideFrame,
+  JsonSlideFrameAlign,
+  JsonSlideFramePadding,
+  JsonSlideGridGap,
+  JsonSlideHeader,
+  JsonSlideHeaderAlign,
+  JsonSlideLayout,
+  JsonSlideMediaGalleryCellVariant,
+  JsonSlideMediaGalleryItem,
+  JsonSlideMediaGalleryItemImage,
+  JsonSlideMediaGalleryItemVideo,
+  JsonSlideMediaGalleryLayout,
+  JsonSlideMediaGalleryObjectAlign,
+  JsonSlideMediaGalleryObjectFit,
+  JsonSlideRegion,
+  JsonSlideSplitLayout,
+  JsonSlideStackItem,
+  JsonSlideStackLayout,
+  JsonSlideTextRegionAlign,
+  JsonSlideTextRegionPayload,
+  JsonSlideUniformGridLayout,
+} from './jsonSlideTypes';
+
+export {
+  isJsonSlideImageCoverDocument,
+  isJsonSlideCardItemIndexedList,
+  isJsonSlideCardItemTagList,
+  isJsonSlideCardItemText,
+  JSON_SLIDE_CARD_COMPONENT_IDS,
+  JSON_SLIDE_CARD_ICON_IDS,
+} from './jsonSlideTypes';
+
+export type { ParseJsonSlideResult } from './parseJsonSlideDocument';
+export { parseJsonSlideDocument } from './parseJsonSlideDocument';

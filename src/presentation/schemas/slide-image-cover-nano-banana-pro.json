@@ -1,0 +1,35 @@
+{
+  "template": "imageCover",
+  "theme": "signal",
+  "cover": {
+    "background": {
+      "src": "/bg/banana.png",
+      "overlay": "gradientPinkBottom"
+    },
+    "frame": true,
+    "topRail": {
+      "variant": "two",
+      "items": [
+        { "kind": "text", "lines": ["Gemini · Nano Banana"], "style": "plain" },
+        { "kind": "text", "lines": ["2026"], "style": "plain", "textAlign": "right" }
+      ]
+    },
+    "headline": {
+      "align": "center",
+      "offsetYPx": 100,
+      "stack": "br",
+      "blocks": [
+        { "text": "  Nano Banana", "font": "display", "size": "jumbo", "color": "gold" },
+        { "text": "flash, pro, v2", "font": "serif", "size": "mega", "color": "gold" }
+      ]
+    },
+    "bottomRail": {
+      "variant": "three",
+      "items": [
+        { "kind": "text", "lines": ["Flash · Pro · 2", "Model tiers"], "style": "label" },
+        { "kind": "text", "lines": ["Moscow, 105120", "UX/UI 2026"], "style": "label", "textAlign": "center" },
+        { "kind": "text", "lines": ["Edit · composite", "Multimodal image"], "style": "label", "textAlign": "right" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Higgsfield",
+    "title": "Higgsfield",
+    "align": "center"
+  },
+  "layout": {
+    "type": "mediaGallery",
+    "gap": "md",
+    "items": [
+      {
+        "type": "image",
+        "src": "/images/higgsfield.png",
+        "alt": "Higgsfield",
+        "objectAlign": "center",
+        "showCaption": false
+      }
+    ]
+  }
+}

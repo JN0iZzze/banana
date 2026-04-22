@@ -1,0 +1,120 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Демо · bentoGrid · мономиф",
+    "title": "Путь героя",
+    "lead": "Те же двенадцать этапов Кэмпбелла, но ячейки разного размера: крупный блок, столбец, мини-карточки и широкий финиш."
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 3,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "subtitle": { "variant": "overline", "text": "Этапы 01–04" },
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "От зова к наставнику" },
+            {
+              "variant": "body",
+              "text": "Обычный мир, зов к приключению, отказ и встреча с наставником — герой ещё в старом мире, но уже получает ориентир и ресурс."
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "subtitle": { "variant": "overline", "text": "Этапы 05–07" },
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "В особом мире" },
+            {
+              "variant": "body",
+              "text": "Первый порог, испытания с союзниками и врагами, подход к сокровенному месту — новые правила и нарастающее напряжение."
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "subtitle": { "variant": "overline", "text": "08" },
+          "items": [
+            { "variant": "h3", "text": "Испытание" },
+            { "variant": "body", "text": "Кризис: старые способы ломаются." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "subtitle": { "variant": "overline", "text": "09" },
+          "items": [
+            { "variant": "h3", "text": "Награда" },
+            { "variant": "body", "text": "Урок, сила или артефакт после кризиса." }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 2,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "subtitle": { "variant": "overline", "text": "Этапы 10–11" },
+          "items": [
+            { "variant": "h3", "text": "Обратный путь и воскрешение" },
+            {
+              "variant": "body",
+              "text": "Возвращение с добытым под давлением и финальная проверка — новое «я» закрепляется."
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 3,
+        "colSpan": 2,
+        "rowSpan": 1,
+        "card": {
+          "tone": "accent",
+          "padding": "compact",
+          "subtitle": { "variant": "overline", "text": "12" },
+          "items": [
+            { "variant": "h3", "text": "Эликсир" },
+            {
+              "variant": "body",
+              "text": "Дар для мира, в который герой возвращается: история замыкается смыслом для других."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

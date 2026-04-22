@@ -1,0 +1,126 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Структура промпта",
+    "title": "Структура промпта",
+    "lead": "Промпт проще собирать по слоям: субъект, сцена, стиль, подача."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 4,
+    "rightSpan": 8,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "surface": "accentGradient",
+        "subtitle": { "variant": "overline", "text": "Prompt Formula" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Четыре слоя одного кадра" },
+          {
+            "type": "component",
+            "component": "indexedList",
+            "gap": "sm",
+            "items": [
+              { "index": 1, "title": "Кто в кадре", "subtitle": "Subject" },
+              { "index": 2, "title": "Где это происходит", "subtitle": "Scene" },
+              { "index": 3, "title": "Какой нужен вайб", "subtitle": "Style" },
+              { "index": 4, "title": "Как это показать", "subtitle": "Camera" }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "uniformGrid",
+        "columns": 2,
+        "gap": "md",
+        "items": [
+          {
+            "tone": "standard",
+            "surface": "ghost",
+            "justify": "between",
+            "headerBadge": { "text": "01", "tone": "accent" },
+            "items": [
+              { "variant": "overline", "text": "Subject" },
+              { "variant": "h2", "text": "Кто в кадре" },
+              { "variant": "body", "text": "Главный объект сцены." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "xs",
+                "items": [
+                  { "label": "герой" },
+                  { "label": "детали" },
+                  { "label": "эмоция" },
+                  { "label": "действие" }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "surface": "ghost",
+            "justify": "between",
+            "headerBadge": { "text": "02", "tone": "accent" },
+            "items": [
+              { "variant": "overline", "text": "Scene" },
+              { "variant": "h2", "text": "Где это происходит" },
+              { "variant": "body", "text": "Контекст и среда." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "xs",
+                "items": [{ "label": "место" }, { "label": "фон" }, { "label": "окружение" }]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "surface": "ghost",
+            "justify": "between",
+            "headerBadge": { "text": "03", "tone": "accent" },
+            "items": [
+              { "variant": "overline", "text": "Style" },
+              { "variant": "h2", "text": "Какой нужен вайб" },
+              { "variant": "body", "text": "Характер изображения." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "xs",
+                "items": [{ "label": "стиль" }, { "label": "палитра" }, { "label": "фактура" }, { "label": "настроение" }]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "surface": "ghost",
+            "justify": "between",
+            "headerBadge": { "text": "04", "tone": "accent" },
+            "items": [
+              { "variant": "overline", "text": "Camera" },
+              { "variant": "h2", "text": "Как это показать" },
+              { "variant": "body", "text": "Подача кадра." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "xs",
+                "items": [{ "label": "ракурс" }, { "label": "план" }, { "label": "свет" }, { "label": "композиция" }]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

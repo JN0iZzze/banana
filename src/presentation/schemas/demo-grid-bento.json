@@ -1,0 +1,150 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "JSON renderer · bento",
+    "title": "Вариативная сетка",
+    "lead": "Layout preset bentoGrid: явные colStart, rowStart, colSpan, rowSpan. Один движок — разная плотность карточек без фиксированного «всегда 4×3» в данных."
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 3,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "subtitle": { "variant": "overline", "text": "Высокая ячейка" },
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Колонка 1" },
+            { "variant": "body", "text": "Две строки по вертикали — как у крупных платформенных карточек." }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "subtitle": { "variant": "overline", "text": "Высокая ячейка" },
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "Колонка 2" },
+            { "variant": "body", "text": "Та же высота, другой tone: схема отделяет контент от оформления." }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "subtitle": { "variant": "overline", "text": "Высокая ячейка" },
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "Колонка 3" },
+            { "variant": "body", "text": "Три равных столбца занимают основную площадь слайда." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "items": [
+            { "variant": "caption", "text": "Мини" },
+            { "variant": "h3", "text": "Ячейка 4a" },
+            { "variant": "body", "text": "Компактный блок в правом верху." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "items": [
+            { "variant": "caption", "text": "Мини" },
+            { "variant": "h3", "text": "Ячейка 4b" },
+            { "variant": "body", "text": "Второй мини-блок под первым." }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "justify": "end",
+          "items": [
+            { "variant": "h3", "text": "Низ 1" },
+            { "variant": "body", "text": "Нижний ряд из четырёх равных карточек." }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "items": [
+            { "variant": "h3", "text": "Низ 2" },
+            { "variant": "body", "text": "Одинаковая высота строки." }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "items": [
+            { "variant": "h3", "text": "Низ 3" },
+            { "variant": "body", "text": "Явные координаты в JSON, без ручного JSX для каждого слайда." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "accent",
+          "padding": "compact",
+          "items": [
+            { "variant": "h3", "text": "Низ 4" },
+            { "variant": "body", "text": "Акцент в углу — проверка смешения span и tone в одной bento-сетке." }
+          ]
+        }
+      }
+    ]
+  }
+}

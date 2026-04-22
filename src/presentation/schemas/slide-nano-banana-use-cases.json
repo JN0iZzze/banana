@@ -1,0 +1,162 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Nano Banana · кейсы",
+    "title": "Сценарии использования",
+    "lead": "Задачи, с которыми Nano Banana справится лучше хорошо"
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 3,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "leadingIcon": "image",
+          "watermarkIcon": "image",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Фотореализм" },
+            { "variant": "body", "text": "Генерация объектов и персонажей с сохранением идентичности референса" }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "leadingIcon": "palette",
+          "watermarkIcon": "palette",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Перенос стиля" },
+            { "variant": "body", "text": "Перенос стиля, материалов и текстур из референса на другие объекты" }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "leadingIcon": "layout-template",
+          "watermarkIcon": "layout-template",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Мокапы" },
+            { "variant": "body", "text": "Упаковка, интерфейсы и предметы в готовой сцене" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "pen-tool",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Иллюстрации" },
+            { "variant": "body", "text": "Стилизация, плоскости и выразительный рисунок" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "sparkles",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Точечные правки" },
+            { "variant": "body", "text": "Меняем зону или деталь, остальное держим как есть" }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "bar-chart-3",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Инфографика" },
+            { "variant": "body", "text": "Схемы, диаграммы и наглядная подача данных" }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "type",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Готовая типографика" },
+            { "variant": "body", "text": "Текст как часть макета, читаемость в кадре" }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "layers",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Стилизация" },
+            { "variant": "body", "text": "Генерация изображений по референсу в новой стилистике" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "share-2",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Креативы для соцсетей" },
+            { "variant": "body", "text": "Обложки, карусели и баннеры под формат площадки" }
+          ]
+        }
+      }
+    ]
+  }
+}

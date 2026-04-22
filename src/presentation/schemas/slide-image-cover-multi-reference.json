@@ -1,0 +1,34 @@
+{
+  "template": "imageCover",
+  "theme": "cinema",
+  "cover": {
+    "background": {
+      "src": "/images/riding.png",
+      "overlay": "gradientBg55"
+    },
+    "frame": true,
+    "topRail": {
+      "variant": "two",
+      "items": [
+        { "kind": "text", "lines": ["Generative AI"], "style": "plain" },
+        { "kind": "text", "lines": ["2026"], "style": "plain", "textAlign": "right" }
+      ]
+    },
+    "headline": {
+      "align": "center",
+      "offsetYPx": 280,
+      "stack": "none",
+      "blocks": [
+        { "text": "  Мульти\nреференсность", "font": "display", "size": "hero", "color": "textSoft" }
+      ]
+    },
+    "bottomRail": {
+      "variant": "three",
+      "items": [
+        { "kind": "text", "lines": ["Style & Character", "Consistency"], "style": "label" },
+        { "kind": "text", "lines": ["Moscow, 105120", "UX/UI 2026"], "style": "label" },
+        { "kind": "text", "lines": ["Complex Composition", "Control"], "style": "label", "textAlign": "right" }
+      ]
+    }
+  }
+}

@@ -3,61 +3,47 @@ import { AboutMeSlide } from '../slides/AboutMeSlide';
 import { DemoFoundationSlide } from '../slides/DemoFoundationSlide';
 import { DemoSpotlightStackSlide } from '../slides/DemoSpotlightStackSlide';
 import { DemoTriptychSlide } from '../slides/DemoTriptychSlide';
-import { CameraAnglesSlide } from '../slides/CameraAnglesSlide';
-import { ReferenceAnalysisSlide } from '../slides/ReferenceAnalysisSlide';
-import { PlaceholderMidjourneyVsNanoBananaSlide } from '../slides/PlaceholderMidjourneyVsNanoBananaSlide';
 import { AgenticWorkflowSlide } from '../slides/AgenticWorkflowSlide';
-import { MultiReferenceCoverSlide } from '../slides/MultiReferenceCoverSlide';
 import { ReferenceCountsSlide } from '../slides/ReferenceCountsSlide';
 import { PlaceholderNanoBananaVersionsSlide } from '../slides/PlaceholderNanoBananaVersionsSlide';
-import { NanoBananaUseCasesSlide } from '../slides/NanoBananaUseCasesSlide';
-import { NanoBananaProSlide } from '../slides/NanoBananaProSlide';
-import { EditingPromptPrinciplesSlide } from '../slides/EditingPromptPrinciplesSlide';
-import { StyleCopyPromptPrinciplesSlide } from '../slides/StyleCopyPromptPrinciplesSlide';
-import { StyleCopyPromptPrinciplesSlideCopy2 } from '../slides/StyleCopyPromptPrinciplesSlideCopy2';
-import { StyleCopyPromptPrinciplesSlideCopy3 } from '../slides/StyleCopyPromptPrinciplesSlideCopy3';
-import { StyleCopyPromptPrinciplesSlideCopy4 } from '../slides/StyleCopyPromptPrinciplesSlideCopy4';
 import { PhotorealismSlide } from '../slides/PhotorealismSlide';
 import { PhotorealismSlideCopy } from '../slides/PhotorealismSlideCopy';
-import { LeoWideShotSlide } from '../slides/LeoWideShotSlide';
 import { LeoFluxVsGptSlide } from '../slides/LeoFluxVsGptSlide';
 import { ThreeDRefsSlide } from '../slides/ThreeDRefsSlide';
 import { CompositionSlide } from '../slides/CompositionSlide';
 import { RecraftV4BentoSlide } from '../slides/RecraftV4BentoSlide';
-import { ReferenceRolesSlide } from '../slides/ReferenceRolesSlide';
 import { SpeakerChannelGridSlide } from '../slides/SpeakerChannelGridSlide';
 import { GamepadStyleTransferSlide } from '../slides/GamepadStyleTransferSlide';
 import { GrokImagineBentoSlide } from '../slides/GrokImagineBentoSlide';
 import { ToolsGrowthSlide } from '../slides/ToolsGrowthSlide';
-import { AttentionModels2026Slide } from '../slides/AttentionModels2026Slide';
-import { PhotorealismPipelineModelsSlide } from '../slides/PhotorealismPipelineModelsSlide';
-import { PlatformsEcosystemBentoSlide } from '../slides/PlatformsEcosystemBentoSlide';
 import { Early2025Slide } from '../slides/Early2025Slide';
-import { AgenticWorkflowResultSlide } from '../slides/AgenticWorkflowResultSlide';
 import { CombGripSlide } from '../slides/CombGripSlide';
-import { PromptStructureSlide } from '../slides/PromptStructureSlide';
 import { StructuredPromptsSlide } from '../slides/StructuredPromptsSlide';
-import { JsonPromptingCoverSlide } from '../slides/JsonPromptingCoverSlide';
 import { JsonPromptingDefinitionSlide } from '../slides/JsonPromptingDefinitionSlide';
 import { JsonImagesSlide } from '../slides/JsonImagesSlide';
 import { PromptOrderFlexSlide } from '../slides/PromptOrderFlexSlide';
-import { PromptOrderPairImagesSlide } from '../slides/PromptOrderPairImagesSlide';
 import { MinimalTitleSlide } from '../slides/MinimalTitleSlide';
 import { MinimalTitleMultiLinkSlide } from '../slides/MinimalTitleMultiLinkSlide';
 import { MidjorneyBentoSlide } from '../slides/MidjorneyBentoSlide';
-import { EditingPromptStructureSlide } from '../slides/EditingPromptStructureSlide';
-import { NodeBasedSlide } from '../slides/NodeBasedSlide';
-import { FlouxDemoSlide } from '../slides/FlouxDemoSlide';
 import { WorkflowComparisonSlide } from '../slides/WorkflowComparisonSlide';
 import { TextureWorkflowSlide } from '../slides/TextureWorkflowSlide';
-import { TexturingModelingCoverSlide } from '../slides/TexturingModelingCoverSlide';
-import { HiggsfieldSlide } from '../slides/HiggsfieldSlide';
 import { ThankYouSlide } from '../slides/ThankYouSlide';
+import { JsonSlideRenderer } from '../json-renderer/JsonSlideRenderer';
+import { DEMO_JSON_SLIDE_IDS, MIGRATED_JSON_SLIDE_IDS } from '../jsonSlideDocumentRegistry';
 
 export const mainDeck: DeckDefinition = {
   id: 'main',
   title: 'GEN AI 2026',
   slides: [
+    {
+      id: DEMO_JSON_SLIDE_IDS.heroJourneyBento,
+      title: 'Демо: путь героя (bento)',
+      theme: 'editorial',
+      component: JsonSlideRenderer,
+      hidden: true,
+      notes:
+        'JSON: bentoGrid 4×3 с разными span, slide-demo-hero-journey-bento.json; этапы мономифа Кэмпбелла сгруппированы в крупные, высокие, мини- и широкие ячейки.',
+    },
     {
       id: 'about-me',
       title: 'Евсеичев Антон',
@@ -90,6 +76,30 @@ export const mainDeck: DeckDefinition = {
       notes: 'Узкий центрированный столбик и SlideSection вместо боковой сетки.',
     },
     {
+      id: DEMO_JSON_SLIDE_IDS.asymmetric,
+      title: 'JSON renderer: неравные колонки',
+      theme: 'editorial',
+      component: JsonSlideRenderer,
+      hidden: true,
+      notes: 'MVP schema-driven slide: layout asymmetricColumns (7+5), данные в demo-grid-asymmetric.json.',
+    },
+    {
+      id: DEMO_JSON_SLIDE_IDS.equal,
+      title: 'JSON renderer: три равные колонки',
+      theme: 'signal',
+      component: JsonSlideRenderer,
+      hidden: true,
+      notes: 'MVP schema-driven slide: layout equalColumns (4+4+4), данные в demo-grid-equal.json.',
+    },
+    {
+      id: DEMO_JSON_SLIDE_IDS.bento,
+      title: 'JSON renderer: bento-сетка',
+      theme: 'editorial',
+      component: JsonSlideRenderer,
+      hidden: true,
+      notes: 'MVP schema-driven slide: layout bentoGrid 4×3, данные в demo-grid-bento.json.',
+    },
+    {
       id: 'tools-growth',
       title: 'Популярные ИИ-модели',
       theme: 'signal',
@@ -104,66 +114,66 @@ export const mainDeck: DeckDefinition = {
       notes: 'Из 20Feb Early2025: тема cinema как spotlight-demo; три компактные панели в ряд, водяной PastGen; без изображений.',
     },
     {
-      id: 'platforms-ecosystem-bento',
+      id: MIGRATED_JSON_SLIDE_IDS.platformsEcosystem,
       title: 'Платформы и модели',
       theme: 'editorial',
-      component: PlatformsEcosystemBentoSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Сетка 4×3 из 20Feb BigFour: три высоких столбца + колонка из двух компактных + нижний ряд из четырёх; @lobehub/icons и lucide; без статики из public.',
+        'JSON: bentoGrid 4×3, slide-platforms-ecosystem.json; leadingIcon + watermarkIcon через registry.',
     },
     {
-      id: 'higgsfield',
+      id: MIGRATED_JSON_SLIDE_IDS.higgsfield,
       title: 'Higgsfield',
       theme: 'editorial',
-      component: HiggsfieldSlide,
-      notes: 'Из 20Feb HiigsfieldSlide: один скриншот; как NodeBasedSlide, одна колонка на всю ширину.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: mediaGallery 1 image, center header; slide-higgsfield.json.',
       preloadAssets: ['/images/higgsfield.png'],
     },
     {
-      id: 'node-based-systems',
+      id: MIGRATED_JSON_SLIDE_IDS.nodeBasedSystems,
       title: 'Нодовые системы',
       theme: 'editorial',
-      component: NodeBasedSlide,
-      notes: 'Из 20Feb NodeBasedSlide: три скриншота nodes; сетка 4+4+4, SlideAssetImage.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: mediaGallery 3 images с captions, center header; slide-node-based-systems.json.',
       preloadAssets: ['/images/nodes/freepik.png', '/images/nodes/krea.png', '/images/nodes/weavy.png'],
     },
     {
-      id: 'floux-demo',
+      id: MIGRATED_JSON_SLIDE_IDS.flouxDemo,
       title: 'Floux.pro',
       theme: 'signal',
-      component: FlouxDemoSlide,
-      notes: 'Из 20Feb FlouxDemoSlide: тема signal (синий), mesh backdrop; заголовок + видео /flow.mp4 (object-contain).',
+      component: JsonSlideRenderer,
+      notes: 'JSON: mediaGallery 1 video, mesh backdrop, тема signal; slide-floux-demo.json.',
       preloadAssets: ['/flow.mp4'],
     },
     {
-      id: 'attention-models-2026',
+      id: MIGRATED_JSON_SLIDE_IDS.attentionModels2026,
       title: 'Что актуально сейчас',
       theme: 'editorial',
-      component: AttentionModels2026Slide,
-      notes: 'Как foundation: grid backdrop, сетка 3×2 карточек (gap sm); иконки @lobehub/icons; первая карточка — акцент.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: uniformGrid 3 колонки × 6 карточек, slide-attention-models-2026.json; watermarkIcon.',
     },
     {
-      id: 'nano-banana-pro',
+      id: MIGRATED_JSON_SLIDE_IDS.nanoBananaProCover,
       title: 'Nano Banana — flash, pro, v2',
       theme: 'signal',
-      component: NanoBananaProSlide,
-      notes: 'Фон /bg/banana.png, градиент вниз розовый, заголовок по центру.',
+      component: JsonSlideRenderer,
+      notes: 'JSON template imageCover, slide-image-cover-nano-banana-pro.json; фон, рамка, rails, two-block display headline.',
       preloadAssets: ['/bg/banana.png'],
     },
     {
-      id: 'nano-banana-use-cases',
+      id: MIGRATED_JSON_SLIDE_IDS.nanoBananaUseCases,
       title: 'Сценарии использования',
       theme: 'editorial',
-      component: NanoBananaUseCasesSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Бенто 4×3 как platforms-ecosystem: три высоких + шесть компактных; кейсы NB + коллажи и соцкреативы; grid, Box accent/standard.',
+        'JSON: bentoGrid 4×3, slide-nano-banana-use-cases.json; lucide icons через registry.',
     },
     {
-      id: 'midjourney-vs-nano-banana',
+      id: MIGRATED_JSON_SLIDE_IDS.midjourneyVsNanoBanana,
       title: 'Midjourney vs Nano Banana',
       theme: 'editorial',
-      component: PlaceholderMidjourneyVsNanoBananaSlide,
-      notes: 'Заглушка: сравнение двух инструментов, сетка 6+6.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: equalColumns 6+6, component tagList; slide-midjourney-vs-nano-banana.json.',
     },
     {
       id: 'agentic-workflow',
@@ -180,11 +190,12 @@ export const mainDeck: DeckDefinition = {
       notes: 'Из 20Feb NanoBananaComparisonSlide: Flash / Pro / 2, строки параметров в колонках без таблицы; Pro — акцентный Box.',
     },
     {
-      id: 'agentic-workflow-result',
+      id: MIGRATED_JSON_SLIDE_IDS.agenticWorkflowResult,
       title: 'Результат агента',
       theme: 'cinema',
-      component: AgenticWorkflowResultSlide,
-      notes: 'Из 20Feb AgenticWorkflowResult: промпт слева, инфографика Stranger Things справа; тема cinema.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery single; slide-agentic-workflow-result.json; spotlight + borderFrame.',
       preloadAssets: ['/images/stranger.jpg'],
     },
     {
@@ -196,11 +207,12 @@ export const mainDeck: DeckDefinition = {
       preloadAssets: ['/images/comb-surf.jpg'],
     },
     {
-      id: 'prompt-structure',
+      id: MIGRATED_JSON_SLIDE_IDS.promptStructure,
       title: 'Структура промпта',
       theme: 'cinema',
-      component: PromptStructureSlide,
-      notes: 'Чёрный фон, сетка 2×2: Что / Где / В каком стиле / Как снято; цветные шапки и тёмные списки.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 4+8, accentGradient + indexedList слева, uniformGrid 2×2 ghost cards + headerBadge + tagList; slide-prompt-structure.json; spotlight + borderFrame.',
     },
     {
       id: 'prompt-order-flex',
@@ -211,11 +223,12 @@ export const mainDeck: DeckDefinition = {
         'Из 20Feb PromptOrderFlexSlide: два варианта одного промпта (A/B), вывод про полноту и приоритеты; без изображений.',
     },
     {
-      id: 'prompt-order-pair-images',
+      id: MIGRATED_JSON_SLIDE_IDS.promptOrderPairImages,
       title: 'Промпт: порядок',
       theme: 'cinema',
-      component: PromptOrderPairImagesSlide,
-      notes: 'Продолжение prompt-order-flex: сетка как у editing-prompt-principles, два рендера /images/prompt/001.png и 002.png.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery pair; slide-prompt-order-pair-images.json; spotlight dimmed + borderFrame.',
       preloadAssets: ['/images/prompt/001.png', '/images/prompt/002.png'],
     },
     {
@@ -228,61 +241,66 @@ export const mainDeck: DeckDefinition = {
     },
     // Идея для следующего слайда: пример про отсутствие противоречий (девушка заказывает кофе).
     {
-      id: 'editing-prompt-structure',
+      id: MIGRATED_JSON_SLIDE_IDS.editingPromptStructure,
       title: 'Промпт на редактирование',
       theme: 'cinema',
-      component: EditingPromptStructureSlide,
-      notes: 'Как prompt-structure, но 2 колонки: что правим / что сохраняем; слева акцентный блок Edit prompt.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 4+8, accentGradient + indexedList слева, uniformGrid 2×1 ghost cards; slide-editing-prompt-structure.json; spotlight + borderFrame.',
     },
     {
-      id: 'editing-prompt-principles',
+      id: MIGRATED_JSON_SLIDE_IDS.editingPromptPrinciples,
       title: 'Промпт на изменение',
       theme: 'editorial',
-      component: EditingPromptPrinciplesSlide,
-      notes: 'Промпт слева, input/output справа; декор ®©.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: splitLayout 3+9, quote + mediaGallery pair; slide-editing-prompt-principles.json; grid backdrop.',
       preloadAssets: ['/images/editing/input.png', '/images/editing/output.png'],
     },
     {
-      id: 'style-copy-prompt-principles',
+      id: MIGRATED_JSON_SLIDE_IDS.styleCopyPromptPrinciples,
       title: 'Копирование стиля',
       theme: 'editorial',
-      component: StyleCopyPromptPrinciplesSlide,
-      notes: 'Как editing-prompt-principles: промпт слева, input/output справа.',
-      preloadAssets: ['/images/editing/input.png', '/images/editing/output.png'],
-    },
-    {
-      id: 'style-copy-prompt-principles-copy-4',
-      title: 'Копирование стиля',
-      theme: 'editorial',
-      component: StyleCopyPromptPrinciplesSlideCopy4,
-      notes: 'Копия layout style-copy; править текст и пути картинок в компоненте Copy4.',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery pair; slide-style-copy-prompt-principles.json; grid backdrop.',
       preloadAssets: ['/images/editing/ref.jpg', '/images/editing/input.png'],
     },
     {
-      id: 'style-copy-prompt-principles-copy-2',
-      title: 'Точечное редактирование',
+      id: MIGRATED_JSON_SLIDE_IDS.styleCopyPromptPrinciplesCopy4,
+      title: 'Копирование стиля',
       theme: 'editorial',
-      component: StyleCopyPromptPrinciplesSlideCopy2,
-      notes: 'Копия layout style-copy; править текст и пути картинок в компоненте Copy2.',
-      preloadAssets: ['/images/editing/input.png', '/images/editing/output.png'],
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery pair; slide-style-copy-prompt-principles-copy-4.json; grid backdrop.',
+      preloadAssets: ['/images/editing/var2.png', '/images/editing/var3.png'],
     },
     {
-      id: 'style-copy-prompt-principles-copy-3',
+      id: MIGRATED_JSON_SLIDE_IDS.styleCopyPromptPrinciplesCopy2,
       title: 'Точечное редактирование',
       theme: 'editorial',
-      component: StyleCopyPromptPrinciplesSlideCopy3,
-      notes: 'Копия layout style-copy; править текст и пути картинок в компоненте Copy3.',
-      preloadAssets: ['/images/editing/input.png', '/images/editing/output.png'],
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery pair; slide-style-copy-prompt-principles-copy-2.json; grid backdrop.',
+      preloadAssets: ['/images/editing/wrong.png', '/images/editing/output.png'],
+    },
+    {
+      id: MIGRATED_JSON_SLIDE_IDS.styleCopyPromptPrinciplesCopy3,
+      title: 'Точечное редактирование',
+      theme: 'editorial',
+      component: JsonSlideRenderer,
+      notes:
+        'JSON: splitLayout 3+9, quote + mediaGallery pair; slide-style-copy-prompt-principles-copy-3.json; grid backdrop.',
+      preloadAssets: ['/images/editing/inpainting.png', '/images/editing/result2.png'],
     },
     // Фотореалистичность
     // Мокапы
     // Точечное редактирование
     {
-      id: 'multi-reference',
+      id: MIGRATED_JSON_SLIDE_IDS.multiReferenceCover,
       title: 'Мульти референсность',
       theme: 'cinema',
-      component: MultiReferenceCoverSlide,
-      notes: 'Обложка: riding.png, типографика как в 20Feb MultireferenceCover.',
+      component: JsonSlideRenderer,
+      notes: 'JSON imageCover, slide-image-cover-multi-reference.json; обложка riding.png, hero display headline.',
       preloadAssets: ['/images/riding.png'],
     },
     {
@@ -293,12 +311,12 @@ export const mainDeck: DeckDefinition = {
       notes: 'Из 20Feb ReferenceCounts: таблица лимитов; без сетки иконок слева.',
     },
     {
-      id: 'reference-roles',
+      id: MIGRATED_JSON_SLIDE_IDS.referenceRoles,
       title: 'Роли референсов',
       theme: 'editorial',
-      component: ReferenceRolesSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Из 20Feb ReferenceRolesSlide: тот же бенто-layout, что CompositionSlide; Character/Horse/Clothes + result в /images/multiref/.',
+        'JSON: splitLayout 3+9 quote + nested split 4+8; stackLayout 3+9 pair+single fill + single result; slide-reference-roles.json.',
       preloadAssets: [
         '/images/multiref/Character.png',
         '/images/multiref/Horse.jpg',
@@ -307,12 +325,12 @@ export const mainDeck: DeckDefinition = {
       ],
     },
     {
-      id: 'leo-wide-shot',
+      id: MIGRATED_JSON_SLIDE_IDS.leoWideShot,
       title: 'Фотореализм',
       theme: 'editorial',
-      component: LeoWideShotSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Промпт 3 колонки; слева три референса 16∶9; справа два результата 16∶9; у всех явный aspect-ratio.',
+        'JSON: splitLayout 3+9 quote + nested split 5+7; mediaGallery column fill refs/results; slide-leo-wide-shot.json.',
       preloadAssets: [
         '/images/leo/ref1.png',
         '/images/leo/ref2.jpg',
@@ -355,20 +373,20 @@ export const mainDeck: DeckDefinition = {
       ],
     },
     {
-      id: 'reference-analysis',
+      id: MIGRATED_JSON_SLIDE_IDS.referenceAnalysis,
       title: 'Анализ референса',
       theme: 'editorial',
-      component: ReferenceAnalysisSlide,
-      notes: 'Два референса face/001–002, сравнение в колонках 6+6.',
+      component: JsonSlideRenderer,
+      notes: 'JSON: mediaGallery (2), caption + showCaption; slide-reference-analysis.json; face/001–002.',
       preloadAssets: ['/images/face/001.jpg', '/images/face/002.jpg'],
     },
     {
-      id: 'angles-lighting',
+      id: MIGRATED_JSON_SLIDE_IDS.anglesLighting,
       title: 'Ракурс камеры и освещение',
       theme: 'signal',
-      component: CameraAnglesSlide,
-      notes: 'Ракурсы и освещение: два референс-изображения, декор comb.png.',
-      preloadAssets: ['/images/angles/001.png', '/images/angles/002.png', '/comb.png'],
+      component: JsonSlideRenderer,
+      notes: 'JSON: splitLayout 2+10, text region + mediaGallery pair; slide-angles-lighting.json; angles/001–002.',
+      preloadAssets: ['/images/angles/001.png', '/images/angles/002.png'],
     },
     {
       id: 'gamepad-style-transfer',
@@ -396,12 +414,12 @@ export const mainDeck: DeckDefinition = {
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
-      id: 'photorealism-model-picks',
+      id: MIGRATED_JSON_SLIDE_IDS.photorealismModelPicks,
       title: 'Редактирование и перенос стиля',
       theme: 'editorial',
-      component: PhotorealismPipelineModelsSlide,
+      component: JsonSlideRenderer,
       notes:
-        'Как attention-models-2026: grid, пять карточек 3+2, только названия моделей; заголовок в карточке снизу; Nano Banana с акцентом.',
+        'JSON: bentoGrid 12×2 (4+4+4 / 6+6), slide-photorealism-model-picks.json; только названия моделей снизу, watermark; Nano Banana accent.',
     },
     {
       id: 'photorealism-section-title',
@@ -470,11 +488,11 @@ export const mainDeck: DeckDefinition = {
       notes: 'Минималистичный титул-секция перед блоком текстур/моделинга.',
     },
     {
-      id: 'texturing-modeling-cover',
+      id: MIGRATED_JSON_SLIDE_IDS.texturingModelingCover,
       title: 'Текстурирование и моделинг',
       theme: 'cinema',
-      component: TexturingModelingCoverSlide,
-      notes: 'Обложка из 20Feb TexturingModeling: фон /images/creme.png, верх/низ мета, розовый display-заголовок.',
+      component: JsonSlideRenderer,
+      notes: 'JSON imageCover, slide-image-cover-texturing-modeling.json; creme, inverted rails, center rule, white display title.',
       preloadAssets: ['/images/creme.png'],
     },
     {
@@ -533,11 +551,11 @@ export const mainDeck: DeckDefinition = {
     },
     // Пример на практике
     {
-      id: 'json-prompting-cover',
+      id: MIGRATED_JSON_SLIDE_IDS.jsonPromptingCover,
       title: 'JSON промптинг',
       theme: 'cinema',
-      component: JsonPromptingCoverSlide,
-      notes: 'Обложка из 20Feb JsonPrompting: /bg/bg2.png, верх/низ мета как в оригинале.',
+      component: JsonSlideRenderer,
+      notes: 'JSON imageCover, slide-image-cover-json-prompting.json; /bg/bg2.png, triple top rail, displayTight headline.',
       preloadAssets: ['/bg/bg2.png'],
     },
     {

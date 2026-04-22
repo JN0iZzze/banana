@@ -1,0 +1,162 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Экосистема генерации",
+    "title": "Платформы и модели",
+    "lead": "Кто задаёт тон в генерации изображений, видео и сборке воркфлоу в 2026"
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 3,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "leadingIcon": "gemini",
+          "watermarkIcon": "gemini",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Nano Banana Pro (2)" },
+            { "variant": "bodyLg", "text": "Главный сдвиг в генерации и редактировании" }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "leadingIcon": "clapperboard",
+          "watermarkIcon": "clapperboard",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Higgsfield" },
+            { "variant": "bodyLg", "text": "Cinema Studio 2.0, AI Influencer и новые motion-сценарии" }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "leadingIcon": "workflow",
+          "watermarkIcon": "workflow",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Weavy.ai и др." },
+            { "variant": "bodyLg", "text": "Нодовая платформа для сборки рабочих процессов" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "palette",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Recraft V4" },
+            { "variant": "body", "text": "Векторные иллюстрации и типографика" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "openai",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "GPT Image 1.5" },
+            { "variant": "body", "text": "Обновленная флагманская модель" }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "video",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Kling 3.0 · Seedance 2.0" },
+            { "variant": "body", "text": "Реалистичная генерация видео с поддержкой мультисцен" }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "grok",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Grok Imagine" },
+            { "variant": "body", "text": "Новый игрок" }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "byte-dance",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Seedream 4.5" },
+            { "variant": "body", "text": "Типографика и 4K" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "midjourney",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Midjourney v8" },
+            { "variant": "body", "text": "Эстетика и Omni Ref" }
+          ]
+        }
+      }
+    ]
+  }
+}

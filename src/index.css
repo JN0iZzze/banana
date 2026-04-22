@@ -19,10 +19,12 @@
     --slide-content-main: 1480px;
     --slide-content-reading: 1140px;
 
-    --slide-stack-gap-sm: 18px;
-    --slide-stack-gap-md: 30px;
-    --slide-stack-gap-lg: 48px;
+    --slide-stack-gap-xs: 8px;
+    --slide-stack-gap-sm: 16px;
+    --slide-stack-gap-md: 24px;
+    --slide-stack-gap-lg: 32px;
 
+    --slide-grid-gap-xs: 12px;
     --slide-grid-gap-sm: 18px;
     --slide-grid-gap-md: 28px;
     --slide-grid-gap-lg: 40px;

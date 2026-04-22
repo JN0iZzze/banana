@@ -1,0 +1,93 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "spotlight", "borderFrame": true },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Промпт на редактирование",
+    "title": "Промпт на редактирование",
+    "lead": "Две части: что меняем — и что оставляем без изменений."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 4,
+    "rightSpan": 8,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "surface": "accentGradient",
+        "subtitle": { "variant": "overline", "text": "Edit prompt" },
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Изменить и зафиксировать" },
+          {
+            "type": "component",
+            "component": "indexedList",
+            "gap": "sm",
+            "items": [
+              { "index": 1, "title": "Что правим", "subtitle": "Change" },
+              { "index": 2, "title": "Что сохраняем", "subtitle": "Keep" }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "uniformGrid",
+        "columns": 2,
+        "gap": "md",
+        "items": [
+          {
+            "tone": "standard",
+            "surface": "ghost",
+            "justify": "between",
+            "headerBadge": { "text": "01", "tone": "accent" },
+            "items": [
+              { "variant": "overline", "text": "Change" },
+              { "variant": "h2", "text": "Что правим" },
+              { "variant": "body", "text": "Зона изменения и желаемый результат — одной фразой." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "xs",
+                "items": [
+                  { "label": "объект или деталь" },
+                  { "label": "цвет / материал" },
+                  { "label": "выражение / поза" },
+                  { "label": "замена элемента" }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "surface": "ghost",
+            "justify": "between",
+            "headerBadge": { "text": "02", "tone": "accent" },
+            "items": [
+              { "variant": "overline", "text": "Keep" },
+              { "variant": "h2", "text": "Что сохраняем" },
+              { "variant": "body", "text": "Якоря кадра: чтобы не «уплыл» стиль и композиция." },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "xs",
+                "items": [
+                  { "label": "композиция и кадрирование" },
+                  { "label": "свет и тени" },
+                  { "label": "фон и атмосфера" },
+                  { "label": "общий стиль" }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

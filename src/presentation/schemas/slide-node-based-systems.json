@@ -1,0 +1,40 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Нодовые системы",
+    "title": "Нодовые системы",
+    "align": "center"
+  },
+  "layout": {
+    "type": "mediaGallery",
+    "gap": "md",
+    "items": [
+      {
+        "type": "image",
+        "src": "/images/nodes/freepik.png",
+        "alt": "Freepik Spaces",
+        "objectAlign": "center",
+        "caption": "Freepik Spaces",
+        "showCaption": true
+      },
+      {
+        "type": "image",
+        "src": "/images/nodes/krea.png",
+        "alt": "Krea Nodes",
+        "objectAlign": "center",
+        "caption": "Krea Nodes",
+        "showCaption": true
+      },
+      {
+        "type": "image",
+        "src": "/images/nodes/weavy.png",
+        "alt": "Weavy.ai",
+        "objectAlign": "center",
+        "caption": "Weavy.ai",
+        "showCaption": true
+      }
+    ]
+  }
+}

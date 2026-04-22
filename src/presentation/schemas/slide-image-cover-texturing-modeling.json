@@ -1,0 +1,46 @@
+{
+  "template": "imageCover",
+  "theme": "cinema",
+  "cover": {
+    "background": {
+      "src": "/images/creme.png",
+      "overlay": "gradientBg80"
+    },
+    "frame": true,
+    "topRail": {
+      "variant": "three",
+      "tone": "inverted",
+      "items": [
+        { "kind": "text", "lines": ["AI 3D"] },
+        {
+          "kind": "cluster",
+          "gap": "lg",
+          "items": [{ "lines": ["Моделинг"] }, { "lines": ["Материалы", "Генерация"] }]
+        },
+        { "kind": "text", "lines": ["Нейросети"], "textAlign": "right" }
+      ]
+    },
+    "headline": {
+      "align": "center",
+      "offsetYPx": 220,
+      "stack": "none",
+      "blocks": [
+        {
+          "text": "Текстурирование\nи моделинг",
+          "font": "display",
+          "size": "display",
+          "color": "white"
+        }
+      ]
+    },
+    "bottomRail": {
+      "variant": "three",
+      "centerAccent": { "type": "rule" },
+      "items": [
+        { "kind": "text", "lines": ["Промпты", "Параметры"], "style": "inverted" },
+        { "kind": "text", "lines": ["Текстуры и геометрия"], "style": "inverted" },
+        { "kind": "text", "lines": ["Диффузия", "Текст"], "style": "inverted" }
+      ]
+    }
+  }
+}

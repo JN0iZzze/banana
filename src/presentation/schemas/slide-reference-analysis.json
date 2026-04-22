@@ -1,0 +1,28 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "comfortable" },
+  "header": { "meta": "Анализ референса" },
+  "layout": {
+    "type": "mediaGallery",
+    "gap": "md",
+    "items": [
+      {
+        "type": "image",
+        "src": "/images/face/001.jpg",
+        "alt": "Первый референс",
+        "objectAlign": "center",
+        "caption": "Недостаточно данных для точной геометрии",
+        "showCaption": true
+      },
+      {
+        "type": "image",
+        "src": "/images/face/002.jpg",
+        "alt": "Второй референс",
+        "objectAlign": "center",
+        "caption": "Достаточно данных",
+        "showCaption": true
+      }
+    ]
+  }
+}

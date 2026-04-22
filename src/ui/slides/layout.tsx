@@ -3,13 +3,13 @@ import { cn } from './cn';
 import { Text } from './Text';
 
 type FrameAlign = 'top' | 'center' | 'bottom';
-type FramePadding = 'compact' | 'default' | 'spacious';
+type FramePadding = 'none' | 'compact' | 'default' | 'spacious';
 type SectionPadding = 'compact' | 'default' | 'spacious';
 type ContentWidth = 'full' | 'wide' | 'content' | 'narrow';
 type ContentDensity = 'compact' | 'comfortable' | 'relaxed';
 type ContentAlign = 'left' | 'center';
 type SectionVariant = 'stack' | 'panel' | 'quiet';
-type GridGap = 'sm' | 'md' | 'lg';
+type GridGap = 'xs' | 'sm' | 'md' | 'lg';
 type ColumnAlign = 'start' | 'center' | 'end' | 'stretch';
 
 interface SlideFrameProps extends PropsWithChildren {
@@ -84,6 +84,8 @@ const frameAlignClasses: Record<FrameAlign, string> = {
 };
 
 const framePaddingClasses: Record<FramePadding, string> = {
+  /** Full-bleed underlays: no section padding; position children with `*-tight` / `*` tokens yourself. */
+  none: '',
   compact: 'px-[var(--slide-safe-x-tight)] py-[var(--slide-safe-y-tight)]',
   default: 'px-[var(--slide-safe-x)] py-[var(--slide-safe-y)]',
   spacious: 'px-[var(--slide-safe-x-loose)] py-[var(--slide-safe-y-loose)]',
@@ -128,6 +130,7 @@ const gridColumnsClasses: Record<SlideGridProps['columns'] & number, string> = {
 };
 
 const gridGapClasses: Record<GridGap, string> = {
+  xs: 'gap-[var(--slide-grid-gap-xs)]',
   sm: 'gap-[var(--slide-grid-gap-sm)]',
   md: 'gap-[var(--slide-grid-gap-md)]',
   lg: 'gap-[var(--slide-grid-gap-lg)]',

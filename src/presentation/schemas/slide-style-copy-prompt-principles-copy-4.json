@@ -1,0 +1,32 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Копирование стиля" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Копирование стиля",
+        "text": "Create a new brand character in this style: a tennis player on the court, wearing blue jacket on yellow background"
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "pair",
+        "gap": "md",
+        "rowJustify": "end",
+        "items": [
+          { "type": "image", "src": "/images/editing/var2.png", "objectAlign": "right" },
+          { "type": "image", "src": "/images/editing/var3.png", "objectAlign": "right" }
+        ]
+      }
+    }
+  }
+}

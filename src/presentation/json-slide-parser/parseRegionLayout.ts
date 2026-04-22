@@ -1,0 +1,462 @@
+import type {
+  JsonSlideBentoItem,
+  JsonSlideCard,
+  JsonSlideColumnItem,
+  JsonSlideGridGap,
+  JsonSlideLayout,
+  JsonSlideMediaGalleryCellVariant,
+  JsonSlideMediaGalleryItem,
+  JsonSlideMediaGalleryLayout,
+  JsonSlideMediaGalleryPreset,
+  JsonSlideMediaRowJustify,
+  JsonSlideQuote,
+  JsonSlideRegion,
+  JsonSlideStackItem,
+  JsonSlideTextRegionPayload,
+} from '../jsonSlideTypes';
+import { parseCard, parseTextRegionPayload } from './parseCard';
+import {
+  MEDIA_GALLERY_CELL_VARIANTS,
+  MEDIA_GALLERY_PRESETS,
+  MEDIA_ROW_JUSTIFIES,
+  parseMediaGalleryItems,
+} from './parseMediaGallery';
+import { err, GRID_GAPS, isRecord, parseOptionalString } from './parseUtils';
+
+export const SPLIT_LAYOUT_MAX_DEPTH = 4;
+
+function parseUniformGridCardItems(
+  raw: unknown,
+  path: string,
+): JsonSlideCard[] | { ok: false; error: string } {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return err(`${path} must be a non-empty array`);
+  }
+  const cards: JsonSlideCard[] = [];
+  for (let i = 0; i < raw.length; i += 1) {
+    const card = parseCard(raw[i], `${path}[${i}]`);
+    if ('ok' in card && card.ok === false) {
+      return card;
+    }
+    cards.push(card as JsonSlideCard);
+  }
+  return cards;
+}
+
+function parseColumnItems(raw: unknown, path: string): JsonSlideColumnItem[] | { ok: false; error: string } {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return err(`${path} must be a non-empty array`);
+  }
+  const items: JsonSlideColumnItem[] = [];
+  for (let i = 0; i < raw.length; i += 1) {
+    const el = raw[i];
+    if (!isRecord(el)) {
+      return err(`${path}[${i}] must be an object`);
+    }
+    if (typeof el.span !== 'number' || !Number.isInteger(el.span) || el.span < 1 || el.span > 12) {
+      return err(`${path}[${i}].span must be an integer 1–12`);
+    }
+    const card = parseCard(el.card, `${path}[${i}].card`);
+    if ('ok' in card && card.ok === false) {
+      return card;
+    }
+    items.push({ span: el.span, card: card as JsonSlideCard });
+  }
+  return items;
+}
+
+function parseBentoItems(
+  raw: unknown,
+  path: string,
+  columns: number,
+  rows: number,
+): JsonSlideBentoItem[] | { ok: false; error: string } {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return err(`${path} must be a non-empty array`);
+  }
+  const items: JsonSlideBentoItem[] = [];
+  for (let i = 0; i < raw.length; i += 1) {
+    const el = raw[i];
+    if (!isRecord(el)) {
+      return err(`${path}[${i}] must be an object`);
+    }
+    const { colStart, rowStart, colSpan, rowSpan } = el;
+    if (typeof colStart !== 'number' || !Number.isInteger(colStart) || colStart < 1) {
+      return err(`${path}[${i}].colStart must be a positive integer`);
+    }
+    if (typeof rowStart !== 'number' || !Number.isInteger(rowStart) || rowStart < 1) {
+      return err(`${path}[${i}].rowStart must be a positive integer`);
+    }
+    if (typeof colSpan !== 'number' || !Number.isInteger(colSpan) || colSpan < 1) {
+      return err(`${path}[${i}].colSpan must be a positive integer`);
+    }
+    if (typeof rowSpan !== 'number' || !Number.isInteger(rowSpan) || rowSpan < 1) {
+      return err(`${path}[${i}].rowSpan must be a positive integer`);
+    }
+    if (colStart + colSpan - 1 > columns) {
+      return err(`${path}[${i}] overflows grid columns (${colStart}+${colSpan - 1} > ${columns})`);
+    }
+    if (rowStart + rowSpan - 1 > rows) {
+      return err(`${path}[${i}] overflows grid rows (${rowStart}+${rowSpan - 1} > ${rows})`);
+    }
+    const card = parseCard(el.card, `${path}[${i}].card`);
+    if ('ok' in card && card.ok === false) {
+      return card;
+    }
+    items.push({
+      colStart,
+      rowStart,
+      colSpan,
+      rowSpan,
+      card: card as JsonSlideCard,
+    });
+  }
+  return items;
+}
+
+function parseStackItems(
+  raw: unknown,
+  path: string,
+  splitNestRemaining: number,
+): JsonSlideStackItem[] | { ok: false; error: string } {
+  if (!Array.isArray(raw) || raw.length === 0) {
+    return err(`${path} must be a non-empty array`);
+  }
+  const items: JsonSlideStackItem[] = [];
+  let sum = 0;
+  for (let i = 0; i < raw.length; i += 1) {
+    const el = raw[i];
+    if (!isRecord(el)) {
+      return err(`${path}[${i}] must be an object`);
+    }
+    const span = el.span;
+    if (typeof span !== 'number' || !Number.isInteger(span) || span < 1 || span > 12) {
+      return err(`${path}[${i}].span must be an integer 1–12`);
+    }
+    sum += span;
+    const region = parseRegion(el.region, `${path}[${i}].region`, splitNestRemaining);
+    if ('ok' in region && region.ok === false) {
+      return region;
+    }
+    items.push({ span, region: region as JsonSlideRegion });
+  }
+  if (sum !== 12) {
+    return err(`${path} stack spans must sum to 12 (got ${sum})`);
+  }
+  return items;
+}
+
+function parseQuote(raw: unknown, path: string): JsonSlideQuote | { ok: false; error: string } {
+  if (!isRecord(raw)) {
+    return err(`${path} must be an object`);
+  }
+  const labelResult = parseOptionalString(raw.label, `${path}.label`);
+  if (typeof labelResult === 'object' && labelResult !== null && 'ok' in labelResult && labelResult.ok === false) {
+    return labelResult;
+  }
+  const subtitleResult = parseOptionalString(raw.subtitle, `${path}.subtitle`);
+  if (
+    typeof subtitleResult === 'object' &&
+    subtitleResult !== null &&
+    'ok' in subtitleResult &&
+    subtitleResult.ok === false
+  ) {
+    return subtitleResult;
+  }
+  const textResult = parseOptionalString(raw.text, `${path}.text`);
+  if (typeof textResult === 'object' && textResult !== null && 'ok' in textResult && textResult.ok === false) {
+    return textResult;
+  }
+
+  let paragraphs: string[] | undefined;
+  if (raw.paragraphs !== undefined) {
+    if (!Array.isArray(raw.paragraphs)) {
+      return err(`${path}.paragraphs must be an array of strings when present`);
+    }
+    paragraphs = [];
+    for (let i = 0; i < raw.paragraphs.length; i += 1) {
+      const el = raw.paragraphs[i];
+      if (typeof el !== 'string') {
+        return err(`${path}.paragraphs[${i}] must be a string`);
+      }
+      paragraphs.push(el);
+    }
+    if (paragraphs.length === 0) {
+      return err(`${path}.paragraphs must be non-empty when present`);
+    }
+  }
+
+  const textTrimmed =
+    (textResult as string | undefined) != null && (textResult as string).trim().length > 0
+      ? (textResult as string)
+      : undefined;
+  const hasBody =
+    textTrimmed != null ? true : paragraphs != null && paragraphs.some((p) => p.trim().length > 0);
+  if (!hasBody) {
+    return err(`${path} must include non-empty text or paragraphs`);
+  }
+
+  return {
+    ...(labelResult != null && (labelResult as string).trim().length > 0
+      ? { label: (labelResult as string).trim() }
+      : {}),
+    ...(subtitleResult != null && (subtitleResult as string).trim().length > 0
+      ? { subtitle: (subtitleResult as string).trim() }
+      : {}),
+    ...(textTrimmed != null ? { text: textTrimmed } : {}),
+    ...(paragraphs !== undefined ? { paragraphs } : {}),
+  };
+}
+
+function parseRegion(
+  raw: unknown,
+  path: string,
+  splitNestRemaining: number,
+): JsonSlideRegion | { ok: false; error: string } {
+  if (!isRecord(raw)) {
+    return err(`${path} must be an object`);
+  }
+  const kind = raw.kind;
+  if (kind === 'card') {
+    const card = parseCard(raw.card, `${path}.card`);
+    if ('ok' in card && card.ok === false) {
+      return card;
+    }
+    return { kind: 'card', card: card as JsonSlideCard };
+  }
+  if (kind === 'layout') {
+    const layout = parseLayout(raw.layout, splitNestRemaining, `${path}.layout`);
+    if ('ok' in layout && layout.ok === false) {
+      return layout;
+    }
+    return { kind: 'layout', layout: layout as JsonSlideLayout };
+  }
+  if (kind === 'quote') {
+    const quote = parseQuote(raw.quote, `${path}.quote`);
+    if (typeof quote === 'object' && quote !== null && 'ok' in quote && quote.ok === false) {
+      return quote;
+    }
+    return { kind: 'quote', quote: quote as JsonSlideQuote };
+  }
+  if (kind === 'text') {
+    const textPayload = parseTextRegionPayload(raw.text, `${path}.text`);
+    if (typeof textPayload === 'object' && textPayload !== null && 'ok' in textPayload && textPayload.ok === false) {
+      return textPayload;
+    }
+    return { kind: 'text', text: textPayload as JsonSlideTextRegionPayload };
+  }
+  return err(`${path}.kind must be card, layout, quote, or text`);
+}
+
+export function parseLayout(
+  raw: unknown,
+  splitNestRemaining: number = SPLIT_LAYOUT_MAX_DEPTH,
+  pathPrefix: string = 'layout',
+): JsonSlideLayout | { ok: false; error: string } {
+  if (!isRecord(raw)) {
+    return err(`${pathPrefix} must be an object`);
+  }
+  const type = raw.type;
+  if (
+    type !== 'asymmetricColumns' &&
+    type !== 'equalColumns' &&
+    type !== 'bentoGrid' &&
+    type !== 'uniformGrid' &&
+    type !== 'splitLayout' &&
+    type !== 'stackLayout' &&
+    type !== 'mediaGallery'
+  ) {
+    return err(
+      `${pathPrefix}.type must be asymmetricColumns, equalColumns, bentoGrid, uniformGrid, splitLayout, stackLayout, or mediaGallery`,
+    );
+  }
+
+  let gap: JsonSlideGridGap | undefined;
+  if (raw.gap !== undefined) {
+    if (typeof raw.gap !== 'string' || !GRID_GAPS.has(raw.gap as JsonSlideGridGap)) {
+      return err(`${pathPrefix}.gap must be xs, sm, md, or lg`);
+    }
+    gap = raw.gap as JsonSlideGridGap;
+  }
+
+  if (type === 'stackLayout') {
+    const items = parseStackItems(raw.items, `${pathPrefix}.items`, splitNestRemaining);
+    if ('ok' in items && items.ok === false) {
+      return items;
+    }
+    return {
+      type: 'stackLayout',
+      ...(gap !== undefined ? { gap } : {}),
+      items: items as JsonSlideStackItem[],
+    };
+  }
+
+  if (type === 'splitLayout') {
+    if (splitNestRemaining <= 0) {
+      return err(`${pathPrefix}: splitLayout exceeds maximum nesting depth (${SPLIT_LAYOUT_MAX_DEPTH})`);
+    }
+    const leftSpan = raw.leftSpan;
+    const rightSpan = raw.rightSpan;
+    if (typeof leftSpan !== 'number' || !Number.isInteger(leftSpan) || leftSpan < 1 || leftSpan > 11) {
+      return err(`${pathPrefix}.leftSpan must be an integer 1–11`);
+    }
+    if (typeof rightSpan !== 'number' || !Number.isInteger(rightSpan) || rightSpan < 1 || rightSpan > 11) {
+      return err(`${pathPrefix}.rightSpan must be an integer 1–11`);
+    }
+    if (leftSpan + rightSpan !== 12) {
+      return err(`${pathPrefix}.leftSpan + rightSpan must equal 12 (got ${leftSpan + rightSpan})`);
+    }
+    const nextNest = splitNestRemaining - 1;
+    const left = parseRegion(raw.left, `${pathPrefix}.left`, nextNest);
+    if ('ok' in left && left.ok === false) {
+      return left;
+    }
+    const right = parseRegion(raw.right, `${pathPrefix}.right`, nextNest);
+    if ('ok' in right && right.ok === false) {
+      return right;
+    }
+    return {
+      type: 'splitLayout',
+      gap,
+      leftSpan,
+      rightSpan,
+      left: left as JsonSlideRegion,
+      right: right as JsonSlideRegion,
+    };
+  }
+
+  if (type === 'asymmetricColumns' || type === 'equalColumns') {
+    const items = parseColumnItems(raw.items, `${pathPrefix}.items`);
+    if ('ok' in items && items.ok === false) {
+      return items;
+    }
+    const list = items as JsonSlideColumnItem[];
+    const sum = list.reduce((s, it) => s + it.span, 0);
+    if (sum !== 12) {
+      return err(`layout column spans must sum to 12 (got ${sum})`);
+    }
+    if (type === 'equalColumns') {
+      const first = list[0].span;
+      const allEqual = list.every((it) => it.span === first);
+      if (!allEqual) {
+        return err('equalColumns requires all items to have the same span');
+      }
+    }
+    if (type === 'asymmetricColumns') {
+      return { type: 'asymmetricColumns', gap, items: list };
+    }
+    return { type: 'equalColumns', gap, items: list };
+  }
+
+  if (type === 'uniformGrid') {
+    const columns = raw.columns;
+    if (typeof columns !== 'number' || !Number.isInteger(columns) || columns < 2 || columns > 12) {
+      return err(`${pathPrefix}.columns must be an integer 2–12`);
+    }
+    const items = parseUniformGridCardItems(raw.items, `${pathPrefix}.items`);
+    if ('ok' in items && items.ok === false) {
+      return items;
+    }
+    return {
+      type: 'uniformGrid',
+      columns,
+      gap,
+      items: items as JsonSlideCard[],
+    };
+  }
+
+  if (type === 'mediaGallery') {
+    const items = parseMediaGalleryItems(raw.items, `${pathPrefix}.items`);
+    if ('ok' in items && items.ok === false) {
+      return items;
+    }
+    const list = items as JsonSlideMediaGalleryItem[];
+    const count = list.length;
+
+    let preset: JsonSlideMediaGalleryPreset | undefined;
+    if (raw.preset !== undefined) {
+      if (typeof raw.preset !== 'string' || !MEDIA_GALLERY_PRESETS.has(raw.preset as JsonSlideMediaGalleryPreset)) {
+        return err(`${pathPrefix}.preset must be single, pair, row, column, or auto when present`);
+      }
+      preset = raw.preset as JsonSlideMediaGalleryPreset;
+    }
+
+    let rowJustify: JsonSlideMediaRowJustify | undefined;
+    if (raw.rowJustify !== undefined) {
+      if (
+        typeof raw.rowJustify !== 'string' ||
+        !MEDIA_ROW_JUSTIFIES.has(raw.rowJustify as JsonSlideMediaRowJustify)
+      ) {
+        return err(`${pathPrefix}.rowJustify must be start or end when present`);
+      }
+      rowJustify = raw.rowJustify as JsonSlideMediaRowJustify;
+    }
+
+    let cellVariant: JsonSlideMediaGalleryCellVariant | undefined;
+    if (raw.cellVariant !== undefined) {
+      if (
+        typeof raw.cellVariant !== 'string' ||
+        !MEDIA_GALLERY_CELL_VARIANTS.has(raw.cellVariant as JsonSlideMediaGalleryCellVariant)
+      ) {
+        return err(`${pathPrefix}.cellVariant must be panel or fill when present`);
+      }
+      cellVariant = raw.cellVariant as JsonSlideMediaGalleryCellVariant;
+    }
+
+    const effectivePreset: JsonSlideMediaGalleryPreset | 'auto' = preset ?? 'auto';
+    if (effectivePreset === 'single' && count !== 1) {
+      return err(`${pathPrefix} with preset "single" requires exactly 1 media item (got ${count})`);
+    }
+    if (effectivePreset === 'pair' && count !== 2) {
+      return err(`${pathPrefix} with preset "pair" requires exactly 2 media items (got ${count})`);
+    }
+    if (effectivePreset === 'row' && count < 1) {
+      return err(`${pathPrefix} with preset "row" requires at least 1 media item`);
+    }
+    if (effectivePreset === 'column' && count < 1) {
+      return err(`${pathPrefix} with preset "column" requires at least 1 media item`);
+    }
+
+    if (rowJustify !== undefined && (effectivePreset === 'single' || effectivePreset === 'column')) {
+      return err(`${pathPrefix}.rowJustify is only used with preset "pair" or "row"`);
+    }
+
+    const layout: JsonSlideMediaGalleryLayout = {
+      type: 'mediaGallery',
+      ...(gap !== undefined ? { gap } : {}),
+      items: list,
+    };
+    if (preset !== undefined && preset !== 'auto') {
+      layout.preset = preset;
+    }
+    if (rowJustify !== undefined) {
+      layout.rowJustify = rowJustify;
+    }
+    if (cellVariant !== undefined) {
+      layout.cellVariant = cellVariant;
+    }
+    return layout;
+  }
+
+  const columns = raw.columns;
+  const rows = raw.rows;
+  if (typeof columns !== 'number' || !Number.isInteger(columns) || columns < 2 || columns > 12) {
+    return err(`${pathPrefix}.columns must be an integer 2–12`);
+  }
+  if (typeof rows !== 'number' || !Number.isInteger(rows) || rows < 2 || rows > 6) {
+    return err(`${pathPrefix}.rows must be an integer 2–6`);
+  }
+
+  const items = parseBentoItems(raw.items, `${pathPrefix}.items`, columns, rows);
+  if ('ok' in items && items.ok === false) {
+    return items;
+  }
+
+  return {
+    type: 'bentoGrid',
+    columns,
+    rows,
+    gap,
+    items: items as JsonSlideBentoItem[],
+  };
+}

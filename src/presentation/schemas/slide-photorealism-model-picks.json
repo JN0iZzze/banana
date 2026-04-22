@@ -1,0 +1,79 @@
+{
+  "theme": "editorial",
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Фотореализм · модели",
+    "title": "Редактирование и перенос стиля",
+    "lead": "Короткий ориентир: какую модель тянуть первой под тип задачи"
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 12,
+    "rows": 2,
+    "gap": "sm",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "accent",
+          "watermarkIcon": "gemini",
+          "justify": "end",
+          "items": [{ "variant": "h2", "text": "Nano Banana Pro (v2)" }]
+        }
+      },
+      {
+        "colStart": 5,
+        "rowStart": 1,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "watermarkIcon": "openai",
+          "justify": "end",
+          "items": [{ "variant": "h2", "text": "GPT Images 1.5" }]
+        }
+      },
+      {
+        "colStart": 9,
+        "rowStart": 1,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "watermarkIcon": "byte-dance",
+          "justify": "end",
+          "items": [{ "variant": "h2", "text": "Seedream 4.5 (5 Lite)" }]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 2,
+        "colSpan": 6,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "watermarkIcon": "volcengine",
+          "justify": "end",
+          "items": [{ "variant": "h2", "text": "Wan 2.7" }]
+        }
+      },
+      {
+        "colStart": 7,
+        "rowStart": 2,
+        "colSpan": 6,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "watermarkIcon": "flux",
+          "justify": "end",
+          "items": [{ "variant": "h2", "text": "Flux 2" }]
+        }
+      }
+    ]
+  }
+}

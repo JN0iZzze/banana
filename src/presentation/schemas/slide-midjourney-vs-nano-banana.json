@@ -1,0 +1,63 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Midjourney и Nano Banana",
+    "title": "Midjourney vs Nano Banana",
+    "lead": "Различие подхода к генерации изображений"
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "card": {
+          "tone": "standard",
+          "items": [
+            { "variant": "h2", "text": "Midjourney V7(8)" },
+            {
+              "variant": "bodyLg",
+              "text": "«свободный художник», который может игнорировать часть инструкций ради создания эстетически безупречного «вайба»"
+            },
+            {
+              "type": "component",
+              "component": "tagList",
+              "items": [
+                { "label": "Художественный интеллект" },
+                { "label": "Кинематографичность" },
+                { "label": "«Счастливые случайности»" },
+                { "label": "Стили (sref)" }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "span": 6,
+        "card": {
+          "tone": "accent",
+          "items": [
+            { "variant": "h2", "text": "Nano Banana Pro (2)" },
+            {
+              "variant": "bodyLg",
+              "text": "«точный проектировщик», использующий архитектуру «Plan-Evaluate-Improve» для строгого логического планирования композиции и точного следования брифу."
+            },
+            {
+              "type": "component",
+              "component": "tagList",
+              "items": [
+                { "label": "Инженерная точность" },
+                { "label": "Сохранение идентичности" },
+                { "label": "Точечные правки" },
+                { "label": "Search Grounding" },
+                { "label": "Нативное 4K" }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

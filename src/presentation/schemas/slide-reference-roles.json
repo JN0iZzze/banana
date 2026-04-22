@@ -1,0 +1,99 @@
+{
+  "frame": { "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Роли референсов" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Роли референсов",
+        "paragraphs": [
+          "Cinematic shot. The girl from [Image 1] on the horse from [Image 2], wearing outfit from [Image 3]. Riding in yorkshire dales.",
+          "Medium close up shot, film grain"
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "splitLayout",
+        "gap": "md",
+        "leftSpan": 4,
+        "rightSpan": 8,
+        "left": {
+          "kind": "layout",
+          "layout": {
+            "type": "stackLayout",
+            "gap": "md",
+            "items": [
+              {
+                "span": 3,
+                "region": {
+                  "kind": "layout",
+                  "layout": {
+                    "type": "mediaGallery",
+                    "preset": "pair",
+                    "cellVariant": "fill",
+                    "gap": "md",
+                    "items": [
+                      {
+                        "type": "image",
+                        "src": "/images/multiref/Character.png",
+                        "objectFit": "cover"
+                      },
+                      {
+                        "type": "image",
+                        "src": "/images/multiref/Horse.jpg",
+                        "objectFit": "cover"
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "span": 9,
+                "region": {
+                  "kind": "layout",
+                  "layout": {
+                    "type": "mediaGallery",
+                    "preset": "single",
+                    "cellVariant": "fill",
+                    "gap": "md",
+                    "items": [
+                      {
+                        "type": "image",
+                        "src": "/images/multiref/Clothes.jpg",
+                        "objectFit": "cover"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "right": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "single",
+            "cellVariant": "fill",
+            "gap": "md",
+            "items": [
+              {
+                "type": "image",
+                "src": "/images/multiref/result.jpg",
+                "objectFit": "cover"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

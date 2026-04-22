@@ -1,0 +1,32 @@
+{
+  "frame": { "padding": "compact", "align": "top" },
+  "backdrop": { "variant": "spotlight", "dimmed": true, "borderFrame": true },
+  "content": { "width": "wide", "density": "compact" },
+  "header": { "meta": "Промпт: порядок" },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 3,
+    "rightSpan": 9,
+    "left": {
+      "kind": "quote",
+      "quote": {
+        "label": "Результат",
+        "text": "Два сгенерированных кадра по английской и русской формулировке с предыдущего слайда — одна сцена, разный порядок и акценты в тексте."
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "pair",
+        "gap": "md",
+        "rowJustify": "end",
+        "items": [
+          { "type": "image", "src": "/images/prompt/001.png", "objectAlign": "right" },
+          { "type": "image", "src": "/images/prompt/002.png", "objectAlign": "right" }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "template": "imageCover",
+  "theme": "cinema",
+  "cover": {
+    "background": {
+      "src": "/bg/bg2.png",
+      "overlay": "gradientBg80"
+    },
+    "frame": true,
+    "topRail": {
+      "variant": "three",
+      "items": [
+        { "kind": "text", "lines": ["Generative AI"], "style": "plain" },
+        {
+          "kind": "cluster",
+          "gap": "lg",
+          "items": [{ "lines": ["Moscow"] }, { "lines": ["Artplay", "Design Center"] }]
+        },
+        { "kind": "text", "lines": ["2026"], "style": "plain", "textAlign": "right" }
+      ]
+    },
+    "headline": {
+      "align": "center",
+      "offsetYPx": 220,
+      "stack": "none",
+      "blocks": [
+        { "text": "JSON\nпромптинг", "font": "display", "size": "displayTight", "color": "textSoft" }
+      ]
+    },
+    "bottomRail": {
+      "variant": "three",
+      "items": [
+        { "kind": "text", "lines": ["Structured Data", "JSON Format"], "style": "label" },
+        { "kind": "text", "lines": ["Moscow, 105120", "UX/UI 2026"], "style": "label" },
+        { "kind": "text", "lines": ["High Fidelity", "Parameter Control"], "style": "label", "textAlign": "right" }
+      ]
+    }
+  }
+}

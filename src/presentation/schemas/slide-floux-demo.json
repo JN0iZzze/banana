@@ -1,0 +1,27 @@
+{
+  "theme": "signal",
+  "frame": { "padding": "default" },
+  "backdrop": { "variant": "mesh" },
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Floux.pro",
+    "title": "Floux.pro",
+    "align": "center"
+  },
+  "layout": {
+    "type": "mediaGallery",
+    "gap": "md",
+    "items": [
+      {
+        "type": "video",
+        "src": "/flow.mp4",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "playsInline": true,
+        "objectFit": "contain",
+        "showCaption": false
+      }
+    ]
+  }
+}

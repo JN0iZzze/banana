@@ -1,0 +1,71 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Актуальные модели 2026",
+    "title": "Что актуально сейчас",
+    "lead": "Краткая карта моделей, которые уже полезны в ежедневной работе"
+  },
+  "layout": {
+    "type": "uniformGrid",
+    "columns": 3,
+    "gap": "md",
+    "items": [
+      {
+        "tone": "accent",
+        "watermarkIcon": "gemini",
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Nano Banana Pro (v2)" },
+          { "variant": "body", "text": "Редактирование, последовательные правки и точное удержание сцены." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "watermarkIcon": "byte-dance",
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Seedream 4.5 (5 Lite)" },
+          { "variant": "body", "text": "Типографика, высокое разрешение и коммерческая чистота картинки." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "watermarkIcon": "midjourney",
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Midjourney v7(v8)" },
+          { "variant": "body", "text": "Стилизация, эстетика и сильная работа с Omni Ref." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "watermarkIcon": "openai",
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "GPT Image 1.5" },
+          { "variant": "body", "text": "Текст в кадре, инструктивность и повседневные рабочие задачи." }
+        ]
+      },
+      {
+        "tone": "standard",
+        "watermarkIcon": "flux",
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Recraft V4" },
+          { "variant": "body", "text": "Стильные продуктовые иллюстрации и типографика" }
+        ]
+      },
+      {
+        "tone": "standard",
+        "watermarkIcon": "grok",
+        "justify": "between",
+        "items": [
+          { "variant": "h2", "text": "Grok Imagine" },
+          { "variant": "body", "text": "Быстрые вариации, сильная стилизация и свежая альтернатива Midjourney." }
+        ]
+      }
+    ]
+  }
+}
