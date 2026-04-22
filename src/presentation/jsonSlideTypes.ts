@@ -148,6 +148,7 @@ export const JSON_SLIDE_CARD_ICON_IDS = [
   'claude-code',
   'replit',
   'lovable',
+  'figma',
 ] as const;
 
 export type JsonSlideCardIconId = (typeof JSON_SLIDE_CARD_ICON_IDS)[number];

@@ -1,0 +1,98 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Карта дорог",
+    "title": "Три трека: агент в\u00A0репо, конструктор и\u00A0вход с\u00A0макета",
+    "lead": "Дальше в\u00A0лекции — не «что круче», а где ты держишь репозиторий, а\u00A0где отдаёшь скорость платформе или\u00A0макету."
+  },
+  "layout": {
+    "type": "asymmetricColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 7,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "spacious",
+            "leadingIcon": "cursor",
+            "watermarkIcon": "workflow",
+            "subtitle": { "variant": "overline", "text": "Максимум контроля" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h2", "text": "ИИ-IDE и терминальные агенты" },
+                  { "variant": "body", "text": "Cursor, Claude Code, Antigravity. Репозиторий, Git и\u00A0окружение —\u00A0твои; агент пишет в\u00A0редакторе или\u00A0в\u00A0терминале. В\u00A0фокусе лекции —\u00A0как\u00A0раз этот путь." }
+                ]
+              },
+              {
+                "items": [
+                  {
+                    "type": "component",
+                    "component": "tagList",
+                    "gap": "sm",
+                    "items": [
+                      { "label": "Cursor" },
+                      { "label": "Claude Code" },
+                      { "label": "Antigravity" }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 5,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "stackLayout",
+            "gap": "md",
+            "items": [
+              {
+                "span": 6,
+                "region": {
+                  "kind": "card",
+                  "card": {
+                    "tone": "standard",
+                    "padding": "default",
+                    "leadingIcon": "layout-template",
+                    "subtitle": { "variant": "overline", "text": "Всё в одном окне" },
+                    "justify": "between",
+                    "items": [
+                      { "variant": "h2", "text": "ИИ-конструкторы" },
+                      { "variant": "body", "text": "Lovable, Bolt, Replit. Быстрый запуск, хостинг и\u00A0БД внутри площадки" }
+                    ]
+                  }
+                }
+              },
+              {
+                "span": 6,
+                "region": {
+                  "kind": "card",
+                  "card": {
+                    "tone": "standard",
+                    "padding": "default",
+                    "leadingIcon": "pen-tool",
+                    "subtitle": { "variant": "overline", "text": "Из макета в код" },
+                    "justify": "between",
+                    "items": [
+                      { "variant": "h2", "text": "UI-генераторы" },
+                      { "variant": "body", "text": "v0, Framer AI, Figma Make. Старт с\u00A0макета, компонентов и\u00A0токенов, а\u00A0не с\u00A0пустого файла." }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

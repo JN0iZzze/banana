@@ -14,4 +14,9 @@ export const VIBECODING_DECK_SLIDE_IDS = {
   hero: 'vibecoding-v2-06-hero',
   threeFears: 'vibecoding-v2-07-three-fears',
   act2Separator: 'vibecoding-v2-08-act2-separator',
+  landscape: 'vibecoding-v2-09-landscape',
+  sandboxes: 'vibecoding-v2-10-sandboxes',
+  proTransition: 'vibecoding-v2-11-pro-transition',
+  agentVsChat: 'vibecoding-v2-12-agent-vs-chat',
+  cursorVsClaude: 'vibecoding-v2-13-cursor-vs-claude',
 } as const;

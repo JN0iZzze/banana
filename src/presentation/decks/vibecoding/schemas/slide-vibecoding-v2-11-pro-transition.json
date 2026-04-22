@@ -1,0 +1,98 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Первые испытания",
+    "title": "Когда нужен контроль и длинная жизнь, пора выходить из\u00A0песочницы",
+    "lead": "Песочница выигрывает старт, но\u00A0проигрывает там, где проекту нужны кастомный стек, Git-дисциплина и\u00A0полное владение кодовой базой."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 5,
+    "rightSpan": 7,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "zap",
+          "subtitle": { "variant": "overline", "text": "Три сигнала перехода" },
+        "justify": "between",
+        "items": [
+            { "variant": "h2", "text": "Песочница начинает мешать в\u00A0трёх случаях" },
+          {
+            "type": "component",
+            "component": "indexedList",
+            "gap": "md",
+            "items": [
+              { "index": 1, "title": "Платформа не\u00A0даёт нужный стек", "subtitle": "Нужна библиотека, драйвер или\u00A0часть инфраструктуры, которой в\u00A0среде просто нет." },
+              { "index": 2, "title": "Упёрся в\u00A0лимиты", "subtitle": "Квоты, память, билд-минуты или\u00A0ограничения модели тормозят проект." },
+              { "index": 3, "title": "Нужно полное владение кодом и\u00A0Git", "subtitle": "Свои ветки, ревью, CI и\u00A0окружение уже важнее, чем скорость старта." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "equalColumns",
+        "gap": "md",
+        "items": [
+          {
+            "span": 6,
+            "region": {
+              "kind": "card",
+              "card": {
+                "tone": "accent",
+                "padding": "default",
+                "leadingIcon": "cursor",
+                "justify": "between",
+                "slots": [
+                  {
+                    "items": [
+                      { "variant": "overline", "text": "Cursor" },
+                      { "variant": "h2", "text": "Агент встроен в\u00A0IDE" }
+                    ]
+                  },
+                  {
+                    "items": [
+                      { "variant": "body", "text": "Редактор, файлы и\u00A0Git остаются у\u00A0тебя; агент помогает прямо внутри проекта." }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "span": 6,
+            "region": {
+              "kind": "card",
+              "card": {
+                "tone": "accent",
+                "padding": "default",
+                "leadingIcon": "claude-code",
+                "justify": "between",
+                "slots": [
+                  {
+                    "items": [
+                      { "variant": "overline", "text": "Claude Code" },
+                      { "variant": "h2", "text": "Агент работает в\u00A0твоём окружении" }
+                    ]
+                  },
+                  {
+                    "items": [
+                      { "variant": "body", "text": "Тот\u00A0же репозиторий и\u00A0те\u00A0же команды, но\u00A0с\u00A0упором на\u00A0длинные автономные проходы и\u00A0многофайловые задачи." }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

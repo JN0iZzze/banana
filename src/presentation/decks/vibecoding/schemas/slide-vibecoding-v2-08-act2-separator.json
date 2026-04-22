@@ -11,7 +11,7 @@
     "items": [
       { "type": "text", "variant": "overline", "text": "Акт II" },
       { "type": "text", "variant": "h1", "size": "display", "text": "Выбор инструмента" },
-      { "type": "text", "variant": "lead", "text": "Инструментов много. Главное — понять, под\u00A0какую задачу каждый из\u00A0них." }
+      { "type": "text", "variant": "lead", "text": "Инструментов много. Главное — понять, под какую задачу каждый из них." }
     ]
   }
 }

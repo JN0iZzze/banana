@@ -1,0 +1,97 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Лёгкий вход",
+    "title": "Прототип за\u00A0час в\u00A0браузере, без\u00A0установки стека",
+    "lead": "Пока гипотеза сыровата и\u00A0свой репо с\u00A0Git ещё рано, песочница даёт проверку без\u00A0сборки стека на\u00A0машине."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "replit",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h2", "text": "Replit" },
+                  { "variant": "body", "text": "Агент, хостинг и\u00A0БД в\u00A0одной площадке." }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "caption", "text": "+ максимальная автономия, всё-в-одном" },
+                  { "variant": "caption", "text": "− vendor lock-in на\u00A0платформу" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "lovable",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h2", "text": "Lovable" },
+                  { "variant": "body", "text": "Аккуратный UI на\u00A0React + Supabase." }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "caption", "text": "+ чистая вёрстка и\u00A0аккуратный экспорт" },
+                  { "variant": "caption", "text": "− уклон в\u00A0SaaS-шаблоны" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "figma",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h2", "text": "Figma Make" },
+                  { "variant": "body", "text": "Prompt-to-app прямо в\u00A0Figma, из\u00A0макета в\u00A0черновик." }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "caption", "text": "+ стартуешь не\u00A0с\u00A0пустого файла, а\u00A0с\u00A0макета" },
+                  { "variant": "caption", "text": "− площадка под\u00A0прототип, не\u00A0под\u00A0долгий продукт" }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

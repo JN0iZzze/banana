@@ -3,6 +3,7 @@ import ByteDance from '@lobehub/icons/es/ByteDance';
 import ClaudeIcon from '@lobehub/icons/es/Claude';
 import CursorIcon from '@lobehub/icons/es/Cursor';
 import LovableIcon from '@lobehub/icons/es/Lovable';
+import FigmaIcon from '@lobehub/icons/es/Figma';
 import ReplitIcon from '@lobehub/icons/es/Replit';
 import Flux from '@lobehub/icons/es/Flux';
 import Gemini from '@lobehub/icons/es/Gemini';
@@ -62,6 +63,7 @@ export const JSON_SLIDE_CARD_ICON_REGISTRY: Record<JsonSlideCardIconId, JsonSlid
   'claude-code': ClaudeIcon,
   replit: ReplitIcon,
   lovable: LovableIcon,
+  figma: FigmaIcon,
 };
 
 export function getJsonSlideCardIcon(id: JsonSlideCardIconId): JsonSlideCardIconComponent {
