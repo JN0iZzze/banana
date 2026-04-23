@@ -1,0 +1,65 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт V · Главное испытание",
+    "title": "Архитектура требует внимания",
+    "lead": "ИИ слаб в вопросах проектирования архитектуры без явного на то запроса"
+  },
+  "layout": {
+    "type": "equalColumns",
+    "columns": 3,
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "brain",
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Бритва Оккама" },
+              { "variant": "body", "text": "ИИ всегда предложит рабочий код. Но без чётких правил он выберет самый простой путь, следуя путём бритвы Оккама" }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "repeat",
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Doom Loop" },
+              { "variant": "body", "text": "ИИ опирается на свой же предыдущий код. Каждая новая задача строится на догадках и костылях из предыдущей итерации."}
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "users",
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Человек — архитектор" },
+              { "variant": "body", "text": "Принятие решений, выбор архитектуры и управление состоянием — всегда ответственность человека." }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

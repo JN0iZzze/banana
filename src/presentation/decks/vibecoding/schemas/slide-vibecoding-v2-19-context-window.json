@@ -1,0 +1,127 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт III · Механика агента",
+    "title": "Контекстное окно",
+    "lead": "Модель видит только текущее окно: правила, код, историю диалога и свежие результаты команд."
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 2,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 2,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "layers",
+            "justify": "between",
+            "slots": [
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "overline", "text": "Главная мысль" },
+                  { "variant": "h2", "text": "Контекстное окно — лимит «оперативной памяти» модели" }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  { "variant": "body", "text": "Если информация попала в окно, модель может на неё опираться. Если не попала или уже вытеснена, для модели её просто нет." },
+                  { "variant": "body", "text": "Поэтому качество ответа зависит не только от самой модели, но и от того, какие именно правила, файлы и куски истории сейчас лежат перед ней." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "brain",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h3", "text": "До 200K токенов" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "У Claude Code 200K, Cursor рабочее окно около 70–120K" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "bar-chart-3",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h3", "text": "1 000 токенов ≈ 750 слов" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Или примерно 50–80 строк кода." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 2,
+        "colSpan": 2,
+        "rowSpan": 1,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "single",
+            "gap": "md",
+            "cellVariant": "fill",
+            "items": [
+              {
+                "type": "image",
+                "src": "/vibe/context.png",
+                "alt": "Индикатор оставшегося контекста",
+                "objectFit": "contain",
+                "showCaption": false
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

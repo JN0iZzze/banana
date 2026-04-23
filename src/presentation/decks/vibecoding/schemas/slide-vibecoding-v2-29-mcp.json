@@ -1,0 +1,91 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "MCP — руки агента во внешних системах",
+    "lead": "MCP — Model Context Protocol — стандарт, по которому агент не просто читает файлы в репозитории, а выполняет действия снаружи: в браузере, в трекере задач, в макетах. Без него мир агента ограничен тем, что лежит внутри проекта."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "monitor",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Браузер" },
+                  { "variant": "h2", "text": "Chrome DevTools — агент видит свою правку глазами" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Агент сам открывает страницу, кликает по своей же правке, читает консоль и сетевые ответы. Цикл «написал — посмотрел — поправил» закрывается без человека-посредника." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "workflow",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Тикеты" },
+                  { "variant": "h2", "text": "Jira — задача целиком, а не пересказ в чате" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Агент сам читает тикет: описание, комментарии, вложения, связанные задачи. Не нужно копировать суть в чат и терять контекст; статус и комментарий после правки тоже идут обратно в Jira." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "figma",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Макеты" },
+                  { "variant": "h2", "text": "Figma MCP — токены, компоненты и размеры из источника" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Официальный Dev Mode-сервер, порядка четырнадцати инструментов, работа с Cursor, Claude, VS Code и Windsurf. Запись обратно в канву на 2026 может быть ещё в бете." }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

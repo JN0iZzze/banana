@@ -1,0 +1,91 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "Скиллы",
+    "lead": "Правила читаются в каждой сессии. Скилл подключается только когда агент узнаёт знакомый паттерн задачи — и приносит готовый рецепт вместо очередной импровизации."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "layers",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Что это" },
+                  { "variant": "h3", "text": "Инструкция с примерами и условиями срабатывания для конкретной задачи" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Скилл описывает один тип задачи: что требуется на входе, какие шаги выполняются, на что обращать внимание. Рядом лежат примеры — на них агент ориентируется." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "default",
+            "leadingIcon": "repeat",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Когда срабатывает" },
+                  { "variant": "h3", "text": "Скилл срабатывает только на узнанном паттерне" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Правила лежат в корне и читаются в начале каждой сессии. Скилл не висит в контексте постоянно: агент подтягивает его, когда видит знакомую задачу по описанию и триггерам." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "sparkles",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Что обычно становится скиллом" },
+                  { "variant": "h3", "text": "Повторяющийся паттерн задачи с понятными границами" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Например: новый React-компонент по гайдлайну атомарного дизайна. Задача узнаётся по описанию, шаги одинаковые, на выходе — предсказуемый артефакт." }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

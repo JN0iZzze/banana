@@ -1,0 +1,64 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт III · Механика агента",
+    "title": "Саммаризация",
+    "lead": "Когда окно подходит к лимиту, агент не обрывает диалог. Он сворачивает прошлые сообщения в плотный пересказ и продолжается"
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "zap",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Как работает" },
+              { "variant": "h2", "text": "Двадцать реплик становятся одним абзацем" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Прошлые сообщения сворачиваются в краткое резюме: «ранее обсуждали X, договорились о Y, выбрали Z»." },
+              { "variant": "body", "text": "Место в окне освобождается — диалог продолжается дальше, не упираясь в стену." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "padding": "default",
+        "leadingIcon": "sparkles",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Цена" },
+              { "variant": "h2", "text": "Пересказ хранит суть, теряет детали" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Из окна уходят: точные имена переменных, конкретные числа, причины выбора стека, формулировки запретов, цитаты из ТЗ." },
+              { "variant": "body", "text": "Длинная сессия — компромисс между длиной диалога и точностью деталей." }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

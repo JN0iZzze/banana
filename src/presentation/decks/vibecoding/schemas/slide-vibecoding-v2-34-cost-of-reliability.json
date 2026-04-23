@@ -1,0 +1,111 @@
+{
+  "frame": {
+    "align": "top",
+    "padding": "compact"
+  },
+  "backdrop": {
+    "variant": "grid"
+  },
+  "content": {
+    "width": "wide",
+    "density": "compact",
+    "align": "left"
+  },
+  "header": {
+    "meta": "Акт V · Главное испытание",
+    "title": "После демо работа только начинается",
+    "lead": "Живая демка создаёт иллюзию, что осталось чуть-чуть. На практике один час прототипа часто тянет за собой ещё несколько часов работы."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 7,
+    "rightSpan": 5,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "padding": "spacious",
+        "leadingIcon": "clock",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Пропорция"
+              },
+              {
+                "variant": "h2",
+                "text": "За часом прототипа часто идут ещё три часа доработок"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "variant": "body",
+                "text": "Цифра — медиана и порядок величины, а не точное измерение. Сильные проекты укладываются быстрее, слабые — уходят в кратно больший коэффициент."
+              },
+              {
+                "variant": "body",
+                "text": "Самообман звучит так: раз демо живое, остаётся полировка. На деле полировка — это отдельный этап работы, сравнимый с самой сборкой."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "spacious",
+        "leadingIcon": "layers",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Что уходит в эти часы"
+              },
+              {
+                "variant": "h2",
+                "text": "Невидимая работа после валидации идеи"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "type": "component",
+                "component": "indexedList",
+                "gap": "sm",
+                "items": [
+                  {
+                    "index": 1,
+                    "title": "Edge cases",
+                    "subtitle": "Пустые состояния, обрывы, чужие данные."
+                  },
+                  {
+                    "index": 2,
+                    "title": "Обработка ошибок",
+                    "subtitle": "Не падать молча, а объяснять."
+                  },
+                  {
+                    "index": 3,
+                    "title": "Производительность",
+                    "subtitle": "Быстро и стабильно, а не просто живо."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

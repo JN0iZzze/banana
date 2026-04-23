@@ -1,0 +1,74 @@
+{
+  "frame": {
+    "align": "top",
+    "padding": "compact"
+  },
+  "backdrop": {
+    "variant": "grid"
+  },
+  "content": {
+    "width": "wide",
+    "density": "compact",
+    "align": "left"
+  },
+  "header": {
+    "meta": "Акт V · Главное испытание",
+    "title": "Безопасность — не побочный эффект разработки",
+    "lead": "Безопасность не появляется автоматически вместе с рабочим кодом."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 7,
+    "rightSpan": 5,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "padding": "spacious",
+        "leadingIcon": "workflow",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Исследования 2025–2026" },
+              { "variant": "h2", "text": "Около 70% вайб-приложений уходят в прод с критичными уязвимостями" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Речь о банальных дырах, которые не видны на этапе демо." },
+              { "variant": "body", "text": "Собрать продукт и сделать его безопасным — это две разные задачи." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "layers",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Что из этого следует" },
+              { "variant": "h2", "text": "Безопасность нужно проверять отдельно" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Агент пишет рабочий код, но не закрывает уязвимости и неверные допущения." },
+              { "variant": "body", "text": "Безопасность требует отдельного прохода: доступы, данные, интеграции." },
+              { "variant": "body", "text": "Прод без независимого аудита — это всегда риск." }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

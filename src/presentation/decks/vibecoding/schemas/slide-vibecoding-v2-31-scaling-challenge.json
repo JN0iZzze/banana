@@ -1,0 +1,64 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт V · Главное испытание",
+    "title": "Первая версия — это только начало",
+    "lead": "Собрать рабочий продукт можно быстро. Сложность начинается, когда его нужно расширять, поддерживать и не пересобирать с нуля."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "rocket",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Собрать" },
+              { "variant": "h2", "text": "Запустить первый рабочий сценарий" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Один экран, один флоу, знакомые данные. Этого хватает, чтобы проверить идею и быстро получить живой результат." },
+              { "variant": "body", "text": "На этом этапе не так важно, идеально ли всё устроено внутри. Важно, что продукт вообще ожил." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "padding": "default",
+        "leadingIcon": "layers",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Развивать" },
+              { "variant": "h2", "text": "Проект должен расти, а не собираться заново" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Новый экран, новая интеграция, новая логика оплаты. Проект растёт, и старые решения начинают либо помогать, либо мешать." },
+              { "variant": "body", "text": "Если при каждой новой задаче приходится перепридумывать основу, продукт собран, но ещё не устроен." }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

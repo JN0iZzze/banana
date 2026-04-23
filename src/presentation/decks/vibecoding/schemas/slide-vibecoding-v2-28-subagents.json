@@ -1,0 +1,57 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "Субагенты",
+    "lead": "Субагент получает задачу, думает в собственном контексте, а главному оркестратору возвращается уже компактный результат — окно основного диалога не засоряется."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "bot",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Зачем" },
+              { "variant": "h2", "text": "Задачи выполняются субагентом в отдельном контексте, чтобы не забивать главный диалог" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Типичные сценарии — прогнать тесты, собрать документацию, сделать ревью, при необходимости — дополнительный ресёрч. Каждая такая задача раздувает главный диалог, и её удобно вынести наружу." },
+              { "variant": "body", "text": "Главный агент отдаёт задачу, получает готовый ответ в компактной форме и продолжает свою линию — не затащив внутрь весь шум из чужого процесса." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "gap": "md",
+        "cellVariant": "fill",
+        "items": [
+          {
+            "type": "image",
+            "src": "/vibe/3e73e7e9-d06e-4948-90f2-4de3a9f831e5.gif",
+            "alt": "Схема субагентов",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    }
+  }
+}

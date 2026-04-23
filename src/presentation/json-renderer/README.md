@@ -317,10 +317,13 @@ Fields:
 - `columns: number`
 - `rows: number`
 - `gap?: "xs" | "sm" | "md" | "lg"`
-- `items: JsonSlideBentoItem[]`
+- `items: JsonSlideBentoItem[]` — each item is `{ "colStart", "rowStart", "colSpan", "rowSpan", "region" }`
 
 Rules:
 - each item must define `colStart`, `rowStart`, `colSpan`, `rowSpan`
+- each item region is either `{ "kind": "card", "card": ... }` or `{ "kind": "layout", "layout": ... }`
+- typical `kind: "layout"` usage in bento is `mediaGallery`
+- legacy bare `card` entries are still accepted by the parser and normalized to `region.kind = "card"`
 - items must stay inside the declared grid bounds
 - use when the slide needs a mixed-density layout instead of pure columns
 
@@ -800,14 +803,17 @@ Switch to a dedicated `.tsx` slide instead of forcing JSON if the slide needs:
         "rowStart": 1,
         "colSpan": 1,
         "rowSpan": 2,
-        "card": {
-          "tone": "accent",
-          "subtitle": { "variant": "overline", "text": "Tall cell" },
-          "justify": "between",
-          "items": [
-            { "variant": "h2", "text": "Hero block" },
-            { "variant": "body", "text": "Large content area." }
-          ]
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "subtitle": { "variant": "overline", "text": "Tall cell" },
+            "justify": "between",
+            "items": [
+              { "variant": "h2", "text": "Hero block" },
+              { "variant": "body", "text": "Large content area." }
+            ]
+          }
         }
       }
     ]

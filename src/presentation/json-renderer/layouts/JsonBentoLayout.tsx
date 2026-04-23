@@ -1,5 +1,5 @@
 import type { JsonSlideBentoLayout } from '../../jsonSlideTypes';
-import { JsonCardNode } from '../nodes/JsonCardNode';
+import { JsonSlideRegionNode } from '../nodes/JsonSlideRegionNode';
 import { bentoGridGapCssVar } from './bentoGridGapVar';
 
 export interface JsonBentoLayoutProps {
@@ -27,7 +27,7 @@ export function JsonBentoLayoutView({ layout }: JsonBentoLayoutProps) {
             gridRow: `${item.rowStart} / span ${item.rowSpan}`,
           }}
         >
-          <JsonCardNode card={item.card} delay={0.2 + i * 0.06} />
+          <JsonSlideRegionNode region={item.region} delay={0.2 + i * 0.06} />
         </div>
       ))}
     </div>

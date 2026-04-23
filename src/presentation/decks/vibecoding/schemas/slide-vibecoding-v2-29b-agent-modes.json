@@ -1,0 +1,115 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "Четыре режима работы агента",
+    "lead": "В зависимости от задачи можно использовать разные режимы со своими особенностями"
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 7,
+    "rightSpan": 5,
+    "left": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "gap": "md",
+        "cellVariant": "fill",
+        "items": [
+          {
+            "type": "image",
+            "src": "/vibe/modes.png",
+            "alt": "Четыре режима работы агента",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "uniformGrid",
+        "columns": 2,
+        "gap": "md",
+        "items": [
+          {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "brain",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h3", "text": "Ask" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Только читает код и отвечает в чате. Файлы не изменяет." }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "bot",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h3", "text": "Agent" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Правит файлы, запускает команды и гоняет тесты." }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "layers",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h3", "text": "Plan" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Планирует выполнение крупной задачи до начала правок." }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "zap",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "h3", "text": "Debug" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Ищет баги, проверяет гипотезы и разбирает поломки." }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

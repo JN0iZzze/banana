@@ -9,7 +9,7 @@ export interface JsonSlideRegionNodeProps {
   delay: number;
 }
 
-/** Renders a split/stack region: card, quote, text, or nested layout. */
+/** Renders a layout region: card, quote, text, or nested layout. */
 export function JsonSlideRegionNode({ region, delay }: JsonSlideRegionNodeProps) {
   if (region.kind === 'card') {
     return <JsonCardNode card={region.card} delay={delay} />;

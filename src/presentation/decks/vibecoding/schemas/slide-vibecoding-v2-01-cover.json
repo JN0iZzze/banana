@@ -9,7 +9,7 @@
     "gap": "md",
     "reveal": { "preset": "soft", "baseDelay": 0, "step": 0.08 },
     "items": [
-      { "type": "text", "variant": "overline", "text": "Акт I · Призыв" },
+      { "type": "text", "variant": "overline", "text": "Акт I · Зов к приключениям" },
       { "type": "text", "variant": "h1", "size": "display", "text": "Вайбкодинг" },
       { "type": "text", "variant": "lead", "text": "Путь героя от идеи к\u00A0продукту" }
     ]

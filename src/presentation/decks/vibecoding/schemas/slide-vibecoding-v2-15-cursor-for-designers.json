@@ -1,18 +1,25 @@
 {
-  "template": "textStack",
-  "frame": { "align": "center", "padding": "default" },
+  "theme": "editorial",
+  "frame": { "padding": "default" },
   "backdrop": { "variant": "mesh" },
-  "content": { "width": "wide", "align": "center", "density": "comfortable" },
-  "stack": {
-    "align": "center",
-    "justify": "center",
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Акт II",
+    "title": "Cursor Browser",
+    "align": "center"
+  },
+  "layout": {
+    "type": "mediaGallery",
     "gap": "md",
     "items": [
       {
-        "type": "image",
-        "src": "/vibe/cursor-designers.png",
-        "alt": "Слайд 14 · Cursor и дизайнер",
-        "width": 1040
+        "type": "video",
+        "src": "/vibe/cursor.mp4",
+        "autoplay": true,
+        "loop": true,
+        "muted": true,
+        "playsInline": true,
+        "objectFit": "contain"
       }
     ]
   }

@@ -1,53 +1,96 @@
 {
+  "theme": "cinema",
   "frame": { "align": "top", "padding": "compact" },
   "backdrop": { "variant": "grid" },
   "content": { "width": "wide", "density": "comfortable", "align": "left" },
   "header": {
     "meta": "Акт I · Обычный мир",
-    "title": "Раньше продукт — это команда из\u00A0шести человек и\u00A0полгода",
-    "lead": "В\u00A02024-м, чтобы запустить MVP, нужна была полноценная команда: фронт, бэк, дизайнер, девопс, менеджер. Идея доходила до\u00A0пользователя через найм и\u00A0бюджет."
+    "title": "Раньше"
   },
   "layout": {
     "type": "splitLayout",
     "gap": "md",
-    "leftSpan": 5,
-    "rightSpan": 7,
+    "leftSpan": 6,
+    "rightSpan": 6,
     "left": {
       "kind": "card",
       "card": {
         "tone": "standard",
-        "leadingIcon": "share-2",
-        "subtitle": { "variant": "overline", "text": "Типовая команда MVP" },
+        "leadingIcon": "rocket",
         "justify": "between",
+        "subtitle": { "variant": "overline", "text": "Как запускали MVP" },
         "items": [
-          { "variant": "h2", "text": "Пять-шесть ролей в\u00A0одной лодке" },
-          {
-            "type": "component",
-            "component": "tagList",
-            "variant": "compact",
-            "gap": "sm",
-            "items": [
-              { "label": "Фронтенд" },
-              { "label": "Бэкенд" },
-              { "label": "Дизайнер" },
-              { "label": "DevOps" },
-              { "label": "Менеджер" },
-              { "label": "QA" }
-            ]
-          }
+          { "variant": "h2", "text": "Продукт — это команда из шести человек и полгода" },
+          { "variant": "body", "text": "Критический путь упирался в найм и бюджет, а не в идею. Продуктовая разработка была доступна тем, у кого есть команда." }
         ]
       }
     },
     "right": {
-      "kind": "card",
-      "card": {
-        "tone": "accent",
-        "leadingIcon": "bar-chart-3",
-        "justify": "between",
-        "subtitle": { "variant": "overline", "text": "Сухие цифры" },
+      "kind": "layout",
+      "layout": {
+        "type": "stackLayout",
+        "gap": "md",
         "items": [
-          { "variant": "h2", "text": "~6 месяцев и $50–200K на\u00A0MVP" },
-          { "variant": "body", "text": "Критический путь разработки упирался в\u00A0найм, а\u00A0не в\u00A0идею. Продуктовая разработка была доступна тем, у\u00A0кого есть бюджет или команда." }
+          {
+            "span": 6,
+            "region": {
+              "kind": "layout",
+              "layout": {
+                "type": "equalColumns",
+                "gap": "md",
+                "items": [
+                  {
+                    "span": 6,
+                    "region": {
+                      "kind": "card",
+                      "card": {
+                        "tone": "standard",
+                        "leadingIcon": "clock",
+                        "justify": "between",
+                        "subtitle": { "variant": "overline", "text": "Время" },
+                        "items": [
+                          { "variant": "h2", "text": "6 месяцев" },
+                          { "variant": "body", "text": "от идеи до первой версии" }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "span": 6,
+                    "region": {
+                      "kind": "card",
+                      "card": {
+                        "tone": "standard",
+                        "leadingIcon": "circle-dollar-sign",
+                        "justify": "between",
+                        "subtitle": { "variant": "overline", "text": "Бюджет" },
+                        "items": [
+                          { "variant": "h2", "text": "$50–200K" },
+                          { "variant": "body", "text": "зарплаты и подрядчики до MVP" }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "span": 6,
+            "region": {
+              "kind": "card",
+              "card": {
+                "tone": "standard",
+                "leadingIcon": "users",
+                "justify": "between",
+                "subtitle": { "variant": "overline", "text": "Команда" },
+                "items": [
+                  { "variant": "h2", "text": "5–6 ролей" },
+                  { "variant": "body", "text": "фронт, бэк, дизайн, devops, PM, QA" }
+                ]
+              }
+            }
+          }
         ]
       }
     }

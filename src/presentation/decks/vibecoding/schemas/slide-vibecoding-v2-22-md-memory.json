@@ -1,0 +1,91 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт III · Механика агента",
+    "title": "Память агента — это набор md-файлов",
+    "lead": "История диалога саммаризируется — md-файлы нет: подгружаются в контекст заново каждую сессию. У каждого файла свой инструмент и своя зона действия."
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 2,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 2,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "claude-code",
+          "subtitle": { "variant": "overline", "text": "Проектный слой · Claude Code" },
+          "stackGap": "md",
+          "items": [
+            { "variant": "prompt", "text": "./CLAUDE.md" },
+            { "variant": "h2", "text": "Стек, архитектура, команды, запреты" },
+            { "variant": "body", "text": "Лежит в корне репозитория. Подгружается в начале каждой сессии Claude Code в этом проекте. Описывает технологический стек, ключевые файлы, команды сборки и тестов, ограничения." },
+            { "variant": "body", "text": "Можно держать вложенные CLAUDE.md в подпапках — для локального скоупа правил под конкретный модуль." }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "workflow",
+          "subtitle": { "variant": "overline", "text": "Открытый стандарт" },
+          "stackGap": "sm",
+          "items": [
+            { "variant": "prompt", "text": "./AGENTS.md" },
+            { "variant": "h3", "text": "Файл с правилами для агентов" },
+            { "variant": "body", "text": "Общий контракт: читают Cursor, Codex, и другие." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "cursor",
+          "subtitle": { "variant": "overline", "text": "Только Cursor" },
+          "stackGap": "sm",
+          "items": [
+            { "variant": "prompt", "text": "./.cursor/rules/" },
+            { "variant": "h3", "text": ".mdc-файлы по областям" },
+            { "variant": "body", "text": "Каждое правило подцепляется по триггерам" }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 2,
+        "colSpan": 2,
+        "rowSpan": 1,
+        "card": {
+          "tone": "accent",
+          "padding": "default",
+          "leadingIcon": "brain",
+          "subtitle": { "variant": "overline", "text": "Личный слой · Auto Memory" },
+          "stackGap": "sm",
+          "items": [
+            { "variant": "prompt", "text": "~/.claude/.../MEMORY.md" },
+            { "variant": "h3", "text": "Твои предпочтения и замечания по ходу" },
+            { "variant": "body", "text": "Хранит корректировки, прошлые договорённости, и др. Растёт сам по мере работы." }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -143,6 +143,7 @@ export const JSON_SLIDE_CARD_ICON_IDS = [
   'monitor',
   'globe',
   'brain',
+  'bot',
   'cursor',
   'claude',
   'claude-code',
@@ -150,6 +151,11 @@ export const JSON_SLIDE_CARD_ICON_IDS = [
   'lovable',
   'figma',
   'repeat',
+  'clock',
+  'users',
+  'banknote',
+  'circle-dollar-sign',
+  'rocket',
 ] as const;
 
 export type JsonSlideCardIconId = (typeof JSON_SLIDE_CARD_ICON_IDS)[number];
@@ -328,12 +334,16 @@ export interface JsonSlideEqualLayout {
   items: JsonSlideColumnItem[];
 }
 
+export type JsonSlideBentoRegion =
+  | { kind: 'card'; card: JsonSlideCard }
+  | { kind: 'layout'; layout: JsonSlideLayout };
+
 export interface JsonSlideBentoItem {
   colStart: number;
   rowStart: number;
   colSpan: number;
   rowSpan: number;
-  card: JsonSlideCard;
+  region: JsonSlideBentoRegion;
 }
 
 export interface JsonSlideBentoLayout {

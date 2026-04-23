@@ -27,6 +27,7 @@ export type {
   JsonSlideAsymmetricLayout,
   JsonSlideBackdrop,
   JsonSlideBackdropVariant,
+  JsonSlideBentoRegion,
   JsonSlideBentoItem,
   JsonSlideBentoLayout,
   JsonSlideCard,

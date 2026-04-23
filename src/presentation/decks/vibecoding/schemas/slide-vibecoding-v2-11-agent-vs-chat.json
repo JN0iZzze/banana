@@ -4,8 +4,7 @@
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
     "meta": "Акт II · Что такое агент",
-    "title": "Чат советует словами. Агент работает в проекте руками",
-    "lead": "Разница не в модели, а в доступе: у чата на входе только твой текст, у агента — файлы, терминал и git того же проекта, где идёт работа."
+    "title": "Чат vs Агент"
   },
   "layout": {
     "type": "splitLayout",
@@ -17,46 +16,50 @@
       "card": {
         "tone": "standard",
         "padding": "default",
-        "leadingIcon": "openai",
+        "leadingIcon": "bot",
         "justify": "between",
         "slots": [
           {
             "items": [
-              { "variant": "overline", "text": "Чат · ChatGPT и другие окна" },
-              { "variant": "h2", "text": "Ты носишь код между окнами" }
+              { "variant": "overline", "text": "В чём разница" },
+              {
+                "variant": "h2",
+                "text": "ChatGPT работает только с текстом запроса. Агент — с файлами и командами"
+              }
             ]
           },
           {
             "gap": "xs",
             "items": [
-              { "variant": "body", "text": "Копируешь файл или ошибку в окно, получаешь ответ текстом, вставляешь правки обратно руками." },
-              { "variant": "caption", "text": "Он не видит остальной проект и не может проверить, что получилось." }
+              {
+                "variant": "body",
+                "text": "В чате контекст ограничен тем, что ты передал в сообщении и истории диалога."
+              },
+              {
+                "variant": "body",
+                "text": "Агент опирается на состояние проекта: читает файлы, запускает команды и видит результат."
+              }
             ]
           }
         ]
       }
     },
     "right": {
-      "kind": "card",
-      "card": {
-        "tone": "accent",
-        "padding": "default",
-        "leadingIcon": "pen-tool",
-        "watermarkIcon": "zap",
-        "justify": "between",
-        "slots": [
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "gap": "md",
+        "cellVariant": "fill",
+        "items": [
           {
-            "items": [
-              { "variant": "overline", "text": "Агент · Cursor, Claude Code" },
-              { "variant": "h2", "text": "Сам читает файлы и запускает команды" }
-            ]
-          },
-          {
-            "gap": "xs",
-            "items": [
-              { "variant": "body", "text": "Открывает нужные файлы, вносит правки, гоняет тесты и коммитит — всё в одном цикле, без переноса контекста." },
-              { "variant": "caption", "text": "Ты задаёшь направление, а не таскаешь код туда-сюда." }
-            ]
+            "type": "video",
+            "src": "/vibe/agent.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "playsInline": true,
+            "objectFit": "cover"
           }
         ]
       }

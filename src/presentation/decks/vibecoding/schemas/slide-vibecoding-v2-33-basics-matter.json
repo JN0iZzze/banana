@@ -1,0 +1,172 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт V · Главное испытание",
+    "title": "Git, React, Node, Postgres и др.",
+    "lead": "У кого-то это Tailwind и shadcn, у кого-то HTML/CSS или Flutter/Swift. Важно не выучить всё, а различать инструменты, которыми ты реально меняешь продукт."
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 3,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "padding": "default",
+          "leadingIcon": "zap",
+          "justify": "between",
+          "slots": [
+            {
+              "gap": "xs",
+              "items": [
+                { "variant": "overline", "text": "Зачем различать стек" }
+              ]
+            },
+            {
+              "items": [
+                { "variant": "h2", "text": "Необходимый минимум" },
+                { "variant": "body", "text": "Чтобы понимать, как работает продукт изнутри" }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "workflow",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "Git" },
+            { "variant": "body", "text": "Коммиты, ветки, diff, откат." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "layout-template",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "React" },
+            { "variant": "body", "text": "Компоненты, состояние, UI." }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "globe",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "Node" },
+            { "variant": "body", "text": "API, env, серверная логика." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "bar-chart-3",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "Postgres" },
+            { "variant": "body", "text": "Таблицы, связи, права доступа." }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "sparkles",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "Tailwind" },
+            { "variant": "body", "text": "Утилити-классы и вёрстка." }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "layers",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "shadcn" },
+            { "variant": "body", "text": "Готовые UI-компоненты." }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "type",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "HTML/CSS" },
+            { "variant": "body", "text": "Базовая структура и стили." }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "monitor",
+          "justify": "between",
+          "items": [
+            { "variant": "h3", "text": "Flutter/Swift" },
+            { "variant": "body", "text": "Если продукт мобильный." }
+          ]
+        }
+      }
+    ]
+  }
+}

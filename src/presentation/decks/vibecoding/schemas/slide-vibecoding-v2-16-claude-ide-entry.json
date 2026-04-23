@@ -1,18 +1,22 @@
 {
-  "template": "textStack",
-  "frame": { "align": "center", "padding": "default" },
+  "theme": "editorial",
+  "frame": { "padding": "default" },
   "backdrop": { "variant": "mesh" },
-  "content": { "width": "wide", "align": "center", "density": "comfortable" },
-  "stack": {
-    "align": "center",
-    "justify": "center",
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Акт II",
+    "title": "Claude Code и IDE",
+    "align": "center"
+  },
+  "layout": {
+    "type": "mediaGallery",
     "gap": "md",
     "items": [
       {
         "type": "image",
-        "src": "/vibe/claude-ide.png",
-        "alt": "Слайд 15 · Claude Code и IDE",
-        "width": 1040
+        "src": "/vibe/claude.png",
+        "alt": "Claude Code и IDE",
+        "objectFit": "contain"
       }
     ]
   }

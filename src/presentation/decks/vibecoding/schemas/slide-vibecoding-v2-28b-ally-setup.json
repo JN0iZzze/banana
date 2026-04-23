@@ -1,0 +1,124 @@
+{
+  "frame": {
+    "align": "top",
+    "padding": "compact"
+  },
+  "backdrop": {
+    "variant": "grid"
+  },
+  "content": {
+    "width": "wide",
+    "density": "compact",
+    "align": "left"
+  },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "Как создавать",
+    "lead": "И в Claude Code, и в Cursor у скиллов и субагентов есть свои слэш-команды. Они запускают мастер, который собирает файл с YAML-шапкой и кладёт в нужную папку."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "spacious",
+            "leadingIcon": "claude-code",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  {
+                    "variant": "overline",
+                    "text": "Claude Code"
+                  },
+                  {
+                    "variant": "h2",
+                    "text": "Через /skill-creator и /agents"
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "h3",
+                    "text": "Скилл"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "Отдельный скилл /skill-creator — его нужно поставить. Он проводит через сборку SKILL.md по шагам и кладёт файл в .claude/skills/<name>/ с YAML-шапкой name и description."
+                  },
+                  {
+                    "variant": "h3",
+                    "text": "Субагент"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "Команда /agents открывает меню — пункт Create new agent проводит через name, description и список tools, файл сохраняется в .claude/agents/<name>.md."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 6,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "accent",
+            "padding": "spacious",
+            "leadingIcon": "cursor",
+            "justify": "between",
+            "slots": [
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "overline",
+                    "text": "Cursor"
+                  },
+                  {
+                    "variant": "h2",
+                    "text": "/create-skill"
+                  },
+                  {
+                    "variant": "h2",
+                    "text": "/create-subagent"
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "h3",
+                    "text": "Скилл"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "Команда /create-skill собирает правило в .cursor/rules/*.mdc — markdown с YAML-шапкой (description, globs, alwaysApply). Подтягивается, когда задача попадает под описание или globs."
+                  },
+                  {
+                    "variant": "h3",
+                    "text": "Субагент"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "Команда /create-subagent заводит Background Agent: он живёт в облачной VM в отдельной ветке. Несколько тикетов идут параллельно и не делят один контекст."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

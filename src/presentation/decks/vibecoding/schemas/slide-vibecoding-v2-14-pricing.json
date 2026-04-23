@@ -4,7 +4,7 @@
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
     "meta": "Акт II · Цена и ёмкость",
-    "title": "Один считает месяц, другой — сессию",
+    "title": "Квота на месяц vs сессия",
     "lead": "За одинаковые $200 — разные счётчики. Cursor живёт на едином месячном бюджете, распределённом по моделям. Claude Code работает скользящими окнами: сессия (~4 ч) и неделя сбрасываются независимо, единого потолка на месяц нет."
   },
   "layout": {
@@ -32,8 +32,8 @@
                     "gap": "sm",
                     "items": [
                       { "icon": "zap", "label": "Composer (проприетарный)", "value": "Основной пул, оптимизирован под скорость" },
-                      { "icon": "layers", "label": "Claude / GPT-4o / Gemini", "value": "Отдельный пул, расходуется быстрее" },
-                      { "icon": "calendar", "label": "Сброс лимитов", "value": "Раз в месяц" }
+                      { "icon": "layers", "label": "Claude / GPT / Gemini", "value": "Отдельный пул, расходуется в зависимости от модели" },
+                      { "icon": "repeat", "label": "Сброс лимитов", "value": "Раз в месяц" }
                     ]
                   }
                 ]
@@ -41,7 +41,7 @@
               {
                 "gap": "xs",
                 "items": [
-                  { "variant": "caption", "text": "~138 агент-часов в месяц · 1× доступ к SOTA-моделям" }
+                  { "variant": "body", "text": "~138 агент-часов в месяц за 200$" }
                 ]
               }
             ]
@@ -68,10 +68,10 @@
                     "component": "featureList",
                     "gap": "sm",
                     "items": [
-                      { "icon": "clock", "label": "Квота сессии", "value": "Сбрасывается каждые ~4 часа" },
-                      { "icon": "calendar-days", "label": "Квота недели", "value": "Отдельный независимый счётчик" },
+                      { "icon": "workflow", "label": "Квота сессии", "value": "Сбрасывается каждые ~4 часа" },
+                      { "icon": "repeat", "label": "Квота недели", "value": "Суммарная квота за неделю" },
                       { "icon": "sparkles", "label": "Claude Design", "value": "Отдельная квота" },
-                      { "icon": "ban", "label": "Месячный потолок", "value": "Отсутствует" }
+                      { "icon": "bar-chart-3", "label": "Месячный потолок", "value": "Отсутствует" }
                     ]
                   }
                 ]
@@ -79,7 +79,7 @@
               {
                 "gap": "xs",
                 "items": [
-                  { "variant": "caption", "text": "~678 агент-часов в месяц · ~38× доступ к Opus vs Cursor Ultra" }
+                  { "variant": "body", "text": "~678 агент-часов в месяц за 200$" }
                 ]
               }
             ]

@@ -1,0 +1,91 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт II · Локальный стек",
+    "title": "Среду под агента ставит человек, а не агент",
+    "lead": "Агент умеет править код и гонять команды, но компилятор, симулятор и SDK на машине появляются руками. Минимальный набор зависит от того, во что целишься."
+  },
+  "layout": {
+    "type": "equalColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "headerBadge": { "text": "01" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Веб и JS-стек" },
+                  { "variant": "h2", "text": "Node.js" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Runtime и менеджер пакетов npm. На нём живёт почти всё, что стартует с Vite, Next или Expo: фронт, бэк на JS, сборка, линтеры. Без него dev-сервер даже не поднимется." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "headerBadge": { "text": "02" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "iOS и нативка" },
+                  { "variant": "h2", "text": "Xcode" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "Тулчейн Apple и iOS-симулятор. Нужен, если цель — нативный iOS или React Native: без него проект не соберётся и не запустится на симуляторе. Ставится из App Store, весит десятки гигабайт." }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "default",
+            "headerBadge": { "text": "03" },
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  { "variant": "overline", "text": "Кроссплатформа" },
+                  { "variant": "h2", "text": "Flutter" }
+                ]
+              },
+              {
+                "items": [
+                  { "variant": "body", "text": "SDK для одного кода под iOS, Android и веб. Своя тулчейн поверх системных Android SDK и Xcode: ставится отдельно, проверяется через flutter doctor. Актуально, если в планах мобилка без отдельных команд на каждую платформу." }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "Cursor Rules",
+    "lead": "Правила дают агенту устойчивый фон — их текст попадает в начало контекста"
+  },
+  "layout": {
+    "type": "asymmetricColumns",
+    "gap": "md",
+    "items": [
+      {
+        "span": 4,
+        "region": {
+          "kind": "card",
+          "card": {
+            "tone": "standard",
+            "padding": "compact",
+            "leadingIcon": "cursor",
+            "subtitle": { "variant": "overline", "text": "Структура" },
+            "stackGap": "sm",
+            "justify": "start",
+            "items": [
+              {
+                "variant": "prompt",
+                "text": ".cursor/rules/\n  react-patterns.mdc       \n  api-guidelines.md        \n  frontend/                \n    components.md"
+              },
+              {
+                "variant": "body",
+                "text": "Каждое правило — отдельный markdown-файл с любым именем. Cursor принимает `.md` и `.mdc`; в `.mdc` задаются `description` и `globs`, чтобы точнее управлять, когда правило подключается."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "stackLayout",
+            "gap": "sm",
+            "items": [
+              {
+                "span": 6,
+                "region": {
+                  "kind": "card",
+                  "card": {
+                    "tone": "standard",
+                    "padding": "compact",
+                    "stackGap": "xs",
+                    "leadingIcon": "layout-template",
+                    "justify": "between",
+                    "slots": [
+                      {
+                        "items": [
+                          { "variant": "h3", "text": "Проектные правила" }
+                        ]
+                      },
+                      {
+                        "items": [
+                          {
+                            "variant": "body",
+                            "text": "Хранятся в `.cursor/rules`, под версионным контролем вместе с репозиторием и относятся только к этому коду."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "span": 6,
+                "region": {
+                  "kind": "card",
+                  "card": {
+                    "tone": "standard",
+                    "padding": "compact",
+                    "stackGap": "xs",
+                    "leadingIcon": "type",
+                    "justify": "between",
+                    "slots": [
+                      {
+                        "items": [
+                          { "variant": "h3", "text": "AGENTS.md" }
+                        ]
+                      },
+                      {
+                        "items": [
+                          {
+                            "variant": "body",
+                            "text": "Инструкции для агента в формате Markdown. Простая альтернатива набору правил в `.cursor/rules`."
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "span": 4,
+        "region": {
+          "kind": "layout",
+          "layout": {
+            "type": "mediaGallery",
+            "preset": "single",
+            "gap": "md",
+            "cellVariant": "fill",
+            "items": [
+              {
+                "type": "image",
+                "src": "/vibe/cursor_rules.png",
+                "alt": "Project rules и AGENTS в интерфейсе Cursor",
+                "objectFit": "contain",
+                "showCaption": false
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

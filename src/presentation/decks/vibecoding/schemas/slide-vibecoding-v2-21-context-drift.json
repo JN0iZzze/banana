@@ -1,0 +1,64 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт III · Механика агента",
+    "title": "Дрейф контекста",
+    "lead": "Саммаризация не одноразовая: она повторяется по мере того, как окно снова заполняется. Каждый цикл стирает чуть больше деталей. К середине длинной сессии агент держит в голове пересказ пересказа — а не оригинал."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "repeat",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Механика" },
+              { "variant": "h2", "text": "Каждый цикл саммаризации стирает чуть больше" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "В Cursor заявлено около 200K токенов, эффективно — 70–120K. После пары десятков промптов «начало» уже за пределами окна. У Claude Code 200K стабильнее, до 1M в бете." },
+              { "variant": "body", "text": "Длинные сессии и много открытых файлов ускоряют дрейф — окно заполняется быстрее." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "padding": "default",
+        "leadingIcon": "bar-chart-3",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Как это видно" },
+              { "variant": "h2", "text": "Запреты нарушены, стиль плывёт, решение забыто" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Агент нарушает запрет, который ты ставил час назад. Стиль кода плывёт — хуки сменяются классами. Уже принятое решение проговаривается заново." },
+              { "variant": "body", "text": "Это не «модель тупеет». Это начало диалога вышло из окна." }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

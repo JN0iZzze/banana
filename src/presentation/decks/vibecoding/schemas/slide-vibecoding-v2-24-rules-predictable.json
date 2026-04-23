@@ -1,0 +1,71 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "Правила",
+    "lead": "Правила делают агента предсказуемее: он читает их в начале каждой сессии."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 6,
+    "rightSpan": 6,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "pen-tool",
+        "justify": "between",
+        "slots": [
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "overline", "text": "Где живут правила" },
+              { "variant": "h3", "text": "Файл в\u00A0корне репозитория или в\u00A0специальной папке" },
+              {
+                "type": "component",
+                "component": "tagList",
+                "variant": "compact",
+                "gap": "sm",
+                "items": [
+                  { "label": "CLAUDE.md" },
+                  { "label": ".cursor/rules" },
+                  { "label": "AGENTS.md" }
+                ]
+              },
+              { "variant": "caption", "text": "Имена разные, смысл один: агент читает файл в\u00A0начале сессии." }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "overline", "text": "Что попадает внутрь" },
+              { "variant": "h3", "text": "Стек, стиль, запреты, порядок работы" },
+              { "variant": "body", "text": "Стек проекта, стиль кода, запреты и базовый алгоритм: сначала искать похожий паттерн, потом писать новое." }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "gap": "md",
+        "cellVariant": "fill",
+        "items": [
+          {
+            "type": "image",
+            "src": "/vibe/rules.png",
+            "alt": "Правила в репозитории",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    }
+  }
+}

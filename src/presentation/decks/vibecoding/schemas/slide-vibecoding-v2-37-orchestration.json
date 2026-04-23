@@ -1,0 +1,187 @@
+{
+  "frame": {
+    "align": "top",
+    "padding": "compact"
+  },
+  "backdrop": {
+    "variant": "grid"
+  },
+  "content": {
+    "width": "wide",
+    "density": "compact",
+    "align": "left"
+  },
+  "header": {
+    "meta": "Акт VI · Возвращение",
+    "title": "Что дизайнер уносит с собой",
+    "lead": "Не умение кодить вручную. Умение доводить идею до рабочего состояния через агентов."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 5,
+    "rightSpan": 7,
+    "left": {
+      "kind": "card",
+      "card": {
+        "tone": "accent",
+        "padding": "spacious",
+        "leadingIcon": "share-2",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              {
+                "variant": "overline",
+                "text": "Главный сдвиг"
+              },
+              {
+                "variant": "h2",
+                "text": "От макета к работающему опыту"
+              }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              {
+                "variant": "body",
+                "text": "Дизайнеру больше не обязательно останавливаться на экране. Теперь он может быстрее проверять гипотезы и видеть, как идея работает в живом виде."
+              },
+              {
+                "variant": "body",
+                "text": "Главное изменение — больше контроля над тем, как идея превращается в продукт."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "layout",
+      "layout": {
+        "type": "uniformGrid",
+        "columns": 2,
+        "gap": "sm",
+        "items": [
+          {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "rocket",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  {
+                    "variant": "overline",
+                    "text": "Независимость"
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "h3",
+                    "text": "Быстрее проверять гипотезы"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "От идеи до живого прототипа за часы, а не за недели."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "users",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  {
+                    "variant": "overline",
+                    "text": "Масштаб"
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "h3",
+                    "text": "Ставить задачи точнее"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "Меньше потерь при передаче между дизайном, разработкой и продуктом."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "brain",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  {
+                    "variant": "overline",
+                    "text": "Фокус"
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "h3",
+                    "text": "Видеть продукт шире экрана"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "Думать не только про UI, но и про сценарии, данные, ошибки и ограничения."
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tone": "standard",
+            "padding": "default",
+            "leadingIcon": "sparkles",
+            "justify": "between",
+            "slots": [
+              {
+                "items": [
+                  {
+                    "variant": "overline",
+                    "text": "Ответственность"
+                  }
+                ]
+              },
+              {
+                "gap": "xs",
+                "items": [
+                  {
+                    "variant": "h3",
+                    "text": "Оставаться автором решения"
+                  },
+                  {
+                    "variant": "body",
+                    "text": "ИИ исполняет. Человек задаёт направление, выбирает и несёт ответственность."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

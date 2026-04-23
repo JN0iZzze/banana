@@ -1,0 +1,202 @@
+{
+  "frame": {
+    "align": "top",
+    "padding": "compact"
+  },
+  "backdrop": {
+    "variant": "grid"
+  },
+  "content": {
+    "width": "wide",
+    "density": "compact",
+    "align": "left"
+  },
+  "header": {
+    "meta": "Акт I · Призыв",
+    "title": "Какого результата хотим достичь?",
+    "lead": "От интерактивного наброска до полного цикла продукта"
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 4,
+    "rows": 2,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "sparkles",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                {
+                  "variant": "overline",
+                  "text": "Уровень 1"
+                }
+              ]
+            },
+            {
+              "gap": "xs",
+              "items": [
+                {
+                  "variant": "h3",
+                  "text": "Анимированные прототипы"
+                },
+                {
+                  "variant": "body",
+                  "text": "Интерактивные макеты для презентаций"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 1,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "figma",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                {
+                  "variant": "overline",
+                  "text": "Уровень 2"
+                }
+              ]
+            },
+            {
+              "gap": "xs",
+              "items": [
+                {
+                  "variant": "h3",
+                  "text": "Как дополнение к дизайну в Figma"
+                },
+                {
+                  "variant": "body",
+                  "text": "Когда Figma не даёт нужного опыта взаимодействия"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "layout-template",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                {
+                  "variant": "overline",
+                  "text": "Уровень 3"
+                }
+              ]
+            },
+            {
+              "gap": "xs",
+              "items": [
+                {
+                  "variant": "h3",
+                  "text": "Замена дизайну в Figma"
+                },
+                {
+                  "variant": "body",
+                  "text": "Макет собирается сразу кодом на компонентах"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 2,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "default",
+          "leadingIcon": "rocket",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                {
+                  "variant": "overline",
+                  "text": "Уровень 4"
+                }
+              ]
+            },
+            {
+              "gap": "xs",
+              "items": [
+                {
+                  "variant": "h3",
+                  "text": "Собрать pet-проект"
+                },
+                {
+                  "variant": "body",
+                  "text": "Личный продукт на выходных: идея, сборка и публикация в одном контуре."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 1,
+        "colSpan": 2,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "padding": "spacious",
+          "leadingIcon": "workflow",
+          "justify": "between",
+          "slots": [
+            {
+              "items": [
+                {
+                  "variant": "overline",
+                  "text": "Уровень 5"
+                }
+              ]
+            },
+            {
+              "gap": "xs",
+              "items": [
+                {
+                  "variant": "h2",
+                  "text": "Полный цикл создания продукта"
+                },
+                {
+                  "variant": "body",
+                  "text": "Правила, MCP, субагенты, ревью — устойчивая сборка, которую можно выводить на пользователей."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

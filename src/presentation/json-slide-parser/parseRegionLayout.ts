@@ -141,6 +141,7 @@ function parseBentoItems(
   path: string,
   columns: number,
   rows: number,
+  splitNestRemaining: number,
 ): JsonSlideBentoItem[] | { ok: false; error: string } {
   if (!Array.isArray(raw) || raw.length === 0) {
     return err(`${path} must be a non-empty array`);
@@ -170,16 +171,32 @@ function parseBentoItems(
     if (rowStart + rowSpan - 1 > rows) {
       return err(`${path}[${i}] overflows grid rows (${rowStart}+${rowSpan - 1} > ${rows})`);
     }
-    const card = parseCard(el.card, `${path}[${i}].card`);
-    if ('ok' in card && card.ok === false) {
-      return card;
+    let region: JsonSlideBentoItem['region'] | { ok: false; error: string };
+    if (el.region !== undefined) {
+      const parsedRegion = parseRegion(el.region, `${path}[${i}].region`, splitNestRemaining);
+      if ('ok' in parsedRegion && parsedRegion.ok === false) {
+        return parsedRegion;
+      }
+      const bentoRegion = parsedRegion as JsonSlideRegion;
+      if (bentoRegion.kind !== 'card' && bentoRegion.kind !== 'layout') {
+        return err(`${path}[${i}].region.kind must be card or layout`);
+      }
+      region = bentoRegion;
+    } else if (el.card !== undefined) {
+      const card = parseCard(el.card, `${path}[${i}].card`);
+      if ('ok' in card && card.ok === false) {
+        return card;
+      }
+      region = { kind: 'card', card: card as JsonSlideCard };
+    } else {
+      return err(`${path}[${i}] must include region or card`);
     }
     items.push({
       colStart,
       rowStart,
       colSpan,
       rowSpan,
-      card: card as JsonSlideCard,
+      region: region as JsonSlideBentoItem['region'],
     });
   }
   return items;
@@ -559,7 +576,7 @@ export function parseLayout(
     return err(`${pathPrefix}.rows must be an integer 2–6`);
   }
 
-  const items = parseBentoItems(raw.items, `${pathPrefix}.items`, columns, rows);
+  const items = parseBentoItems(raw.items, `${pathPrefix}.items`, columns, rows, splitNestRemaining);
   if ('ok' in items && items.ok === false) {
     return items;
   }

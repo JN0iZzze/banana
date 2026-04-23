@@ -1,0 +1,59 @@
+{
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Акт IV · Союзники героя",
+    "title": "CLAUDE.md",
+    "lead": "Подгружается в начале каждой сессии Claude Code в этом проекте. Описывает технологический стек, ключевые файлы, команды сборки и тестов, ограничения."
+  },
+  "layout": {
+    "type": "splitLayout",
+    "gap": "md",
+    "leftSpan": 8,
+    "rightSpan": 4,
+    "left": {
+      "kind": "layout",
+      "layout": {
+        "type": "mediaGallery",
+        "preset": "single",
+        "gap": "md",
+        "cellVariant": "fill",
+        "items": [
+          {
+            "type": "image",
+            "src": "public/vibe/CLAUDE.md.png",
+            "alt": "Скриншот CLAUDE.md первого проекта",
+            "objectFit": "cover"
+          }
+        ]
+      }
+    },
+    "right": {
+      "kind": "card",
+      "card": {
+        "tone": "standard",
+        "padding": "default",
+        "leadingIcon": "pen-tool",
+        "justify": "between",
+        "slots": [
+          {
+            "items": [
+              { "variant": "overline", "text": "Создание файла" },
+              { "variant": "h2", "text": "/init" }
+            ]
+          },
+          {
+            "gap": "xs",
+            "items": [
+              { "variant": "body", "text": "Создаётся вызовом команды /init." },
+              { "variant": "body", "text": "Стек и версии зафиксированы сверху: агент не гадает, какой фреймворк у проекта." },
+              { "variant": "body", "text": "Запреты перечислены явно — что не трогать, какие паттерны считаются устаревшими." },
+              { "variant": "body", "text": "В конце — короткие ссылки на ключевые файлы и папки проекта: куда смотреть, прежде чем что-то менять." }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

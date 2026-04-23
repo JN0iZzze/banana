@@ -4,8 +4,8 @@
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
     "meta": "Акт II · Карта дорог",
-    "title": "Три трека: агент в\u00A0репо, конструктор и\u00A0вход с\u00A0макета",
-    "lead": "Дальше в\u00A0лекции — не «что круче», а где ты держишь репозиторий, а\u00A0где отдаёшь скорость платформе или\u00A0макету."
+    "title": "Ландшафт 2026",
+    "lead": "Главное различие здесь — где ты держишь репозиторий"
   },
   "layout": {
     "type": "asymmetricColumns",
@@ -40,7 +40,8 @@
                       { "label": "Claude Code" },
                       { "label": "Antigravity" }
                     ]
-                  }
+                  },
+                  { "variant": "caption", "text": "IDE - Integrated Development Environment, интегрированная среда разработки" }
                 ]
               }
             ]

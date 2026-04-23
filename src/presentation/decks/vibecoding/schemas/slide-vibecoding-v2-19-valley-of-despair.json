@@ -1,18 +1,24 @@
 {
-  "template": "textStack",
-  "frame": { "align": "center", "padding": "default" },
+  "theme": "signal",
+  "frame": { "padding": "default" },
   "backdrop": { "variant": "mesh" },
-  "content": { "width": "wide", "align": "center", "density": "comfortable" },
-  "stack": {
-    "align": "center",
-    "justify": "center",
+  "content": { "width": "wide", "density": "compact" },
+  "header": {
+    "meta": "Акт III",
+    "title": "Долина отчаяния",
+    "align": "center"
+  },
+  "layout": {
+    "type": "mediaGallery",
     "gap": "md",
     "items": [
       {
         "type": "image",
-        "src": "/vibe/valley-despair.png",
+        "src": "/vibe/danning.png",
         "alt": "Долина отчаяния",
-        "width": 1040
+        "objectFit": "contain",
+        "caption": "Эффект Даннинга-Крюгера",
+        "showCaption": true
       }
     ]
   }

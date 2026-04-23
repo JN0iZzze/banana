@@ -4,8 +4,8 @@
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
     "meta": "Акт II · Две среды для агента",
-    "title": "Готовая площадка или твой репозиторий",
-    "lead": "Агент один и тот же — меняется территория, на которой он работает. От этого зависит, что получается на выходе и насколько код твой."
+    "title": "Онлайн-песочница или локальная разработка",
+    "lead": "Меняется территория, на которой он работает агент, и степень контроля над кодом."
   },
   "layout": {
     "type": "equalColumns",
@@ -18,11 +18,11 @@
           "card": {
             "tone": "standard",
             "padding": "default",
-            "leadingIcon": "layers",
-            "subtitle": { "variant": "overline", "text": "Конструктор · Replit, Lovable, Figma Make" },
+            "leadingIcon": "globe",
+            "subtitle": { "variant": "overline", "text": "Конструктор" },
             "justify": "start",
             "items": [
-              { "variant": "h2", "text": "Стек, хостинг и БД уже собраны" },
+              { "variant": "h2", "text": "Replit, Lovable, Figma Make" },
               {
                 "type": "component",
                 "component": "featureList",
@@ -30,8 +30,8 @@
                 "items": [
                   { "icon": "globe", "label": "Где живёт код", "value": "На платформе, в браузере" },
                   { "icon": "layers", "label": "Стек", "value": "Задан конструктором, выбора почти нет" },
-                  { "icon": "pen-tool", "label": "Что делает агент", "value": "Правит проект внутри платформы" },
-                  { "icon": "bar-chart-3", "label": "Потолок", "value": "Прототип и MVP — дальше упираешься в рамки" }
+                  { "icon": "workflow", "label": "Зависимости", "value": "Среду и пакеты обычно готовит платформа" },
+                  { "icon": "bar-chart-3", "label": "Потолок", "value": "Прототип и MVP — дальше сильнее сказываются рамки платформы" }
                 ]
               }
             ]
@@ -46,19 +46,19 @@
             "tone": "accent",
             "padding": "default",
             "leadingIcon": "claude-code",
-            "subtitle": { "variant": "overline", "text": "Агент-в-репо · Cursor, Claude Code" },
+            "subtitle": { "variant": "overline", "text": "Агент" },
             "justify": "start",
             "items": [
-              { "variant": "h2", "text": "Работает у тебя на машине, в твоём git" },
+              { "variant": "h2", "text": "Cursor, Claude Code" },
               {
                 "type": "component",
                 "component": "featureList",
                 "gap": "sm",
                 "items": [
-                  { "icon": "monitor", "label": "Где живёт код", "value": "В твоём репозитории на диске" },
-                  { "icon": "layers", "label": "Стек", "value": "Любой, какой выберешь сам" },
-                  { "icon": "pen-tool", "label": "Что делает агент", "value": "Файлы, терминал, git, тесты" },
-                  { "icon": "bar-chart-3", "label": "Потолок", "value": "Упирается в твою инженерию, а не в платформу" }
+                  { "icon": "monitor", "label": "Где живёт код", "value": "Локально на диске" },
+                  { "icon": "layers", "label": "Стек", "value": "Определяется проектом, а не платформой" },
+                  { "icon": "workflow", "label": "Зависимости", "value": "Пакеты и зависимости — локальная установка и обновление" },
+                  { "icon": "bar-chart-3", "label": "Потолок", "value": "Предел задаёт зрелость инженерии, а не рамки платформы" }
                 ]
               }
             ]
