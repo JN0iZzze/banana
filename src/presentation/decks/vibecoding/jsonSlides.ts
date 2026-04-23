@@ -40,7 +40,6 @@ import rawAllySetup from './schemas/slide-vibecoding-v2-28b-ally-setup.json';
 import rawMcp from './schemas/slide-vibecoding-v2-29-mcp.json';
 import rawAgentModes from './schemas/slide-vibecoding-v2-29b-agent-modes.json';
 import rawAct5Separator from './schemas/slide-vibecoding-v2-30-act5-separator.json';
-import rawScalingChallenge from './schemas/slide-vibecoding-v2-31-scaling-challenge.json';
 import rawDoomLoop from './schemas/slide-vibecoding-v2-32-doom-loop.json';
 import rawBasicsMatter from './schemas/slide-vibecoding-v2-33-basics-matter.json';
 import rawCostOfReliability from './schemas/slide-vibecoding-v2-34-cost-of-reliability.json';

@@ -4,6 +4,8 @@ import type { CreatorSlide } from '../domain/types';
 import { STAGE_HEIGHT, STAGE_WIDTH } from '../../presentation/hooks/useStageScale';
 import { themeClassNames } from '../../ui/slides/themePresets';
 import { cn } from '../../ui/slides/cn';
+import { EditorModeProvider } from '../inline-edit/EditorModeProvider';
+import { useEditorStore } from '../editor/editorStore';
 
 interface SlidePreviewProps {
   slide: CreatorSlide | null;
@@ -43,17 +45,27 @@ export function SlidePreview({ slide }: SlidePreviewProps) {
     };
   }, []);
 
+  const { updateSlideDocument } = useEditorStore();
+
   return (
     <div
       ref={containerRef}
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
     >
-      <PreviewBody slide={slide} scale={scale} />
+      <PreviewBody slide={slide} scale={scale} onUpdateDocument={updateSlideDocument} />
     </div>
   );
 }
 
-function PreviewBody({ slide, scale }: { slide: CreatorSlide | null; scale: number }) {
+function PreviewBody({
+  slide,
+  scale,
+  onUpdateDocument,
+}: {
+  slide: CreatorSlide | null;
+  scale: number;
+  onUpdateDocument: (slideId: string, doc: unknown) => void;
+}) {
   if (!slide) {
     return (
       <PreviewMessage>Выбери слайд слева — здесь появится его превью.</PreviewMessage>
@@ -98,7 +110,9 @@ function PreviewBody({ slide, scale }: { slide: CreatorSlide | null; scale: numb
         }}
       >
         <main className="relative h-full w-full">
-          <SlideComponent slide={def} index={0} totalSlides={1} />
+          <EditorModeProvider slide={slide} onUpdateDocument={onUpdateDocument}>
+            <SlideComponent slide={def} index={0} totalSlides={1} />
+          </EditorModeProvider>
         </main>
       </div>
     </div>

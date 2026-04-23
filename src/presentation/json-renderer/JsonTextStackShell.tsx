@@ -1,6 +1,7 @@
 import type { JsonSlideTextStackDocument, JsonSlideTextStackItem, JsonSlideTextStackItemText } from '../jsonSlideTypes';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdrop, SlideBackdropFrame, SlideContent, SlideFrame, Text } from '../../ui/slides';
+import { useEditorMode, type EditorModeContextValue } from '../../creator/inline-edit/EditorModeContext';
 
 const justifyClasses: Record<string, string> = {
   start: 'justify-start',
@@ -47,7 +48,16 @@ function renderTextStackTextContent(item: JsonSlideTextStackItemText) {
   return item.text;
 }
 
-function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, preset: string, textAlign: string) {
+function renderItem(
+  item: JsonSlideTextStackItem,
+  index: number,
+  delay: number,
+  preset: string,
+  textAlign: string,
+  editorMode: EditorModeContextValue | null,
+) {
+  const editorCancelAdapter = editorMode ? (_path: string) => editorMode.onCancel() : undefined;
+
   if (item.type === 'link') {
     return (
       <Reveal
@@ -84,6 +94,9 @@ function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, 
     );
   }
 
+  // Determine whether this item has a simple text field (not chunks) for inline editing.
+  const hasSimpleText = 'text' in item && !('chunks' in item);
+
   return (
     <Reveal
       key={`text-${index}`}
@@ -98,8 +111,16 @@ function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, 
           item.variant === 'h1' ? 'max-w-[var(--slide-content-wide)] text-pretty tracking-tight' : undefined,
           item.variant === 'prompt' ? 'max-w-full min-w-0' : undefined,
           item.variant === 'lead' ? '!max-w-full min-w-0' : undefined,
+          editorMode?.editable && hasSimpleText ? 'pointer-events-auto' : undefined,
           textAlign,
         )}
+        {...(editorMode?.editable && hasSimpleText ? {
+          editorPath: `stack.items.${index}.text`,
+          editorMultiline: true,
+          onEditorStartEdit: editorMode.onStartEdit,
+          onEditorCommit: editorMode.onCommit,
+          onEditorCancel: editorCancelAdapter,
+        } : {})}
       >
         {renderTextStackTextContent(item)}
       </Text>
@@ -108,6 +129,7 @@ function renderItem(item: JsonSlideTextStackItem, index: number, delay: number, 
 }
 
 export function JsonTextStackShell({ doc }: { doc: JsonSlideTextStackDocument }) {
+  const editorMode = useEditorMode();
   const frame = doc.frame ?? {};
   const backdrop = doc.backdrop ?? {};
   const content = doc.content ?? {};
@@ -150,7 +172,7 @@ export function JsonTextStackShell({ doc }: { doc: JsonSlideTextStackDocument })
           )}
         >
           {stack.items.map((item, i) =>
-            renderItem(item, i, baseDelay + i * step, preset, textAlign),
+            renderItem(item, i, baseDelay + i * step, preset, textAlign, editorMode),
           )}
         </div>
       </SlideContent>
