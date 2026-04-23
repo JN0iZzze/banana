@@ -209,14 +209,6 @@ export const vibecodingJsonSlides: JsonSlideDefinition[] = [
     preloadAssets: ['/vibe/claude.png'],
   }),
   defineJsonSlide({
-    id: sid.localSetup,
-    title: 'Локальный стек: Node, Xcode, Flutter',
-    theme: 'editorial',
-    raw: rawLocalSetup,
-    source: 'slide-vibecoding-v2-16b-local-setup.json',
-    notes: 'Акт II · Что ставится руками до первой команды агенту. equalColumns × 3: Node.js (веб/JS), Xcode (iOS/RN), Flutter (кроссплатформа). Тон — факт, не инструкция.',
-  }),
-  defineJsonSlide({
     id: sid.cursorForDesigners,
     title: 'Cursor и дизайнер',
     theme: 'editorial',
@@ -224,6 +216,14 @@ export const vibecodingJsonSlides: JsonSlideDefinition[] = [
     source: 'slide-vibecoding-v2-15-cursor-for-designers.json',
     notes: 'Акт II · Как v2-19 (valley): header + mediaGallery, video loop. Ассет: public/vibe/cursor.mp4. Тема слайда — editorial в defineJsonSlide (как у valley), иначе theme: signal даёт синий #0047ab.',
     preloadAssets: ['/vibe/cursor.mp4'],
+  }),
+  defineJsonSlide({
+    id: sid.localSetup,
+    title: 'Локальный стек: Node, Xcode, Flutter',
+    theme: 'editorial',
+    raw: rawLocalSetup,
+    source: 'slide-vibecoding-v2-16b-local-setup.json',
+    notes: 'Акт II · Что ставится руками до первой команды агенту. equalColumns × 3: Node.js (веб/JS), Xcode (iOS/RN), Flutter (кроссплатформа). Тон — факт, не инструкция.',
   }),
   defineJsonSlide({
     id: sid.act3Separator,
