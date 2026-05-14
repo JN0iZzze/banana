@@ -48,11 +48,11 @@ export function ValidationPanel({
     }
   }
 
+  if (isValid && warnings.length === 0) return null;
+
   return (
     <div className="flex flex-col gap-2">
-      {isValid ? (
-        <Alert variant="success">Документ валиден</Alert>
-      ) : (
+      {!isValid ? (
         <Alert variant="destructive">
           {hasParseError ? (
             <div className="mb-1">
@@ -71,7 +71,7 @@ export function ValidationPanel({
             </div>
           ) : null}
         </Alert>
-      )}
+      ) : null}
 
       {warnings.length > 0 ? (
         <Alert variant="warning">

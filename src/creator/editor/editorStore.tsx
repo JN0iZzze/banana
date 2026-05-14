@@ -19,6 +19,12 @@ import {
 } from '../validation/validateSlideDocument';
 import type { CreatorAsset, CreatorDeck, CreatorSlide } from '../domain/types';
 import type { UpdateSlideMetaPatch } from '../domain/commands';
+import type { JsonSlideDocument } from '../../presentation/jsonSlideTypes';
+
+export interface CreateSlideOptions {
+  /** Готовый стартовый документ. Если не задан — используется `createEmptySlideDocument()`. */
+  document?: JsonSlideDocument;
+}
 
 export interface EditorState {
   deck: CreatorDeck | null;
@@ -120,11 +126,10 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
 export interface EditorStore extends EditorState {
   loadDeck: (deckId: string) => Promise<void>;
   setSelectedSlideId: (slideId: string | null) => void;
-  createSlide: () => Promise<CreatorSlide | null>;
+  createSlide: (options?: CreateSlideOptions) => Promise<CreatorSlide | null>;
   deleteSlide: (slideId: string) => Promise<void>;
   duplicateSlide: (slideId: string) => Promise<CreatorSlide | null>;
-  moveSlideUp: (slideId: string) => Promise<void>;
-  moveSlideDown: (slideId: string) => Promise<void>;
+  reorderSlides: (orderedIds: string[]) => Promise<void>;
   renameDeck: (title: string) => Promise<void>;
   setSlideHidden: (slideId: string, hidden: boolean) => Promise<void>;
   updateSlideMeta: (
@@ -234,26 +239,30 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'setError', error: null });
   }, []);
 
-  const createSlide = useCallback(async (): Promise<CreatorSlide | null> => {
-    if (!state.deck) return null;
-    const deckId = state.deck.id;
-    dispatch({ type: 'setSaving', value: true });
-    try {
-      const slide = await slidesRepo.createSlide(
-        deckId,
-        { document: createEmptySlideDocument() },
-        DEV_USER_ID,
-      );
-      dispatch({ type: 'addSlide', slide });
-      dispatch({ type: 'setSelectedSlideId', slideId: slide.id });
-      return slide;
-    } catch (err) {
-      dispatch({ type: 'setError', error: errorMessage(err) });
-      return null;
-    } finally {
-      dispatch({ type: 'setSaving', value: false });
-    }
-  }, [slidesRepo, state.deck]);
+  const createSlide = useCallback(
+    async (options?: CreateSlideOptions): Promise<CreatorSlide | null> => {
+      if (!state.deck) return null;
+      const deckId = state.deck.id;
+      const document = options?.document ?? createEmptySlideDocument();
+      dispatch({ type: 'setSaving', value: true });
+      try {
+        const slide = await slidesRepo.createSlide(
+          deckId,
+          { document },
+          DEV_USER_ID,
+        );
+        dispatch({ type: 'addSlide', slide });
+        dispatch({ type: 'setSelectedSlideId', slideId: slide.id });
+        return slide;
+      } catch (err) {
+        dispatch({ type: 'setError', error: errorMessage(err) });
+        return null;
+      } finally {
+        dispatch({ type: 'setSaving', value: false });
+      }
+    },
+    [slidesRepo, state.deck],
+  );
 
   const deleteSlide = useCallback(
     async (slideId: string) => {
@@ -293,38 +302,40 @@ export function EditorProvider({ children }: { children: ReactNode }) {
     [slidesRepo, state.deck],
   );
 
-  const move = useCallback(
-    async (slideId: string, direction: -1 | 1) => {
+  // Между фазами parking/finalize в репозитории нельзя пускать второй запрос —
+  // иначе уникальный индекс (deck_id, order_index) ловит коллизию. Поэтому
+  // записи в supabase сериализуем через одну общую цепочку. Цепочка обязана
+  // оставаться resolved: иначе chained .then перестают запускаться и реордер
+  // молча умирает после первой ошибки.
+  const reorderLockRef = useRef<Promise<void>>(Promise.resolve());
+
+  const reorderSlides = useCallback(
+    async (orderedIds: string[]) => {
       if (!state.deck) return;
       const deckId = state.deck.id;
-      const current = [...state.deck.slides].sort((a, b) => a.orderIndex - b.orderIndex);
-      const idx = current.findIndex((s) => s.id === slideId);
-      if (idx === -1) return;
-      const target = idx + direction;
-      if (target < 0 || target >= current.length) return;
-      const previousOrder = current.map((s) => s.id);
-      const next = [...current];
-      const tmp = next[idx];
-      next[idx] = next[target];
-      next[target] = tmp;
-      const orderedIds = next.map((s) => s.id);
       dispatch({ type: 'reorderSlides', orderedIds });
-      dispatch({ type: 'setSaving', value: true });
-      try {
-        await slidesRepo.reorderSlides(deckId, orderedIds, DEV_USER_ID);
-      } catch (err) {
-        dispatch({ type: 'reorderSlides', orderedIds: previousOrder });
-        dispatch({ type: 'setError', error: errorMessage(err) });
-        await reload(deckId);
-      } finally {
-        dispatch({ type: 'setSaving', value: false });
-      }
+      const next = reorderLockRef.current
+        .catch(() => {})
+        .then(async () => {
+          dispatch({ type: 'setSaving', value: true });
+          try {
+            await slidesRepo.reorderSlides(deckId, orderedIds, DEV_USER_ID);
+          } catch (err) {
+            dispatch({ type: 'setError', error: errorMessage(err) });
+            try {
+              await reload(deckId);
+            } catch {
+              /* reload failed — оставляем оптимистичный state, ошибка уже в тосте */
+            }
+          } finally {
+            dispatch({ type: 'setSaving', value: false });
+          }
+        });
+      reorderLockRef.current = next;
+      await next;
     },
     [reload, slidesRepo, state.deck],
   );
-
-  const moveSlideUp = useCallback((slideId: string) => move(slideId, -1), [move]);
-  const moveSlideDown = useCallback((slideId: string) => move(slideId, 1), [move]);
 
   const renameDeck = useCallback(
     async (title: string) => {
@@ -467,8 +478,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       createSlide,
       deleteSlide,
       duplicateSlide,
-      moveSlideUp,
-      moveSlideDown,
+      reorderSlides,
       renameDeck,
       setSlideHidden,
       updateSlideMeta,
@@ -486,8 +496,7 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       createSlide,
       deleteSlide,
       duplicateSlide,
-      moveSlideUp,
-      moveSlideDown,
+      reorderSlides,
       renameDeck,
       setSlideHidden,
       updateSlideMeta,

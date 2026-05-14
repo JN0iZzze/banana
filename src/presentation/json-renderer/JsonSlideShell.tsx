@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import type { JsonSlideDefaultDocument } from '../jsonSlideTypes';
-import { formatSlideMeta } from '../slideMeta';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdrop, SlideBackdropFrame, SlideContent, SlideFrame, SlideHeader, Text } from '../../ui/slides';
 import { useEditableTextProps, useIsEditorActive } from '../../creator/inline-edit';
@@ -16,6 +15,8 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
   const isEditorActive = useIsEditorActive();
   const titleEditableProps = useEditableTextProps('header.title');
   const leadEditableProps = useEditableTextProps('header.lead');
+  const metaEditableProps = useEditableTextProps('header.meta');
+  const metaCounter = `· ${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
 
   const frame = doc.frame ?? {};
   const backdrop = doc.backdrop ?? {};
@@ -43,7 +44,12 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
         <SlideHeader
           align={doc.header.align ?? 'left'}
           className="max-w-[1720px] shrink-0 gap-3"
-          meta={<Text variant="meta">{formatSlideMeta(doc.header.meta, index, totalSlides)}</Text>}
+          meta={
+            <span className="inline-flex items-baseline gap-2">
+              <Text variant="meta" {...metaEditableProps}>{doc.header.meta}</Text>
+              <Text variant="meta">{metaCounter}</Text>
+            </span>
+          }
         >
           {doc.header.title != null && doc.header.title.length > 0 ? (
             <Reveal preset="soft" delay={0.12}>

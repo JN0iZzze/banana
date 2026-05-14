@@ -28,6 +28,8 @@ type TextOwnProps = {
   as?: ElementType;
   children: ReactNode;
   className?: string;
+  /** Skip typography presets. Используется, когда у host-узла своя декоративная типографика (imageCover headline). */
+  unstyled?: boolean;
   /** If set, the element becomes contentEditable and gets data-editor-path. */
   editorPath?: string;
   /** Multiline field: applies `white-space: pre-wrap` for display, and (when editing)
@@ -92,6 +94,7 @@ export function Text({
   children,
   editorPath,
   multiline = false,
+  unstyled = false,
   onEditorCommit,
   onEditorCancel,
   onEditorStartEdit,
@@ -99,7 +102,7 @@ export function Text({
 }: TextProps) {
   const Component = (as ?? defaultElement(variant)) as ElementType;
   const h1Class = variant === 'h1' ? h1SizeClass[size] : variantClass[variant];
-  const baseClass = variant === 'h1' ? h1Class : variantClass[variant];
+  const baseClass = unstyled ? '' : (variant === 'h1' ? h1Class : variantClass[variant]);
 
   // Keep a snapshot of the original content for cancel restore.
   const originalTextRef = useRef<string | null>(null);

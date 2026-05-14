@@ -137,6 +137,10 @@ export function StructuredInspector({ slide }: StructuredInspectorProps) {
 
   return (
     <div className="flex flex-col gap-4 text-sm">
+      <p className="rounded-md border border-neutral-800 bg-neutral-900/40 px-3 py-2 text-[11px] leading-4 text-neutral-400">
+        Текст редактируется прямо на слайде. Здесь — структура, тема и медиа.
+        Невалидный документ чинится через <span className="text-neutral-200">JSON</span>.
+      </p>
       <Section title="Служебное">
         <Field label="Заголовок слайда (не публикуется)">
           <Input
@@ -276,7 +280,7 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
 
   return (
     <>
-      <Section title="Заголовок слайда (header)">
+      <Section title="Заголовок (header)">
         <Field label="Meta (обязательно)">
           <Input
             type="text"
@@ -288,44 +292,9 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
             className="w-full"
           />
         </Field>
-        <Field label="Title">
-          <Input
-            type="text"
-            value={header.title ?? ''}
-            onChange={(e) => {
-              const v = e.target.value;
-              patchHeader((h) => {
-                if (v === '') {
-                  const { title: _t, ...rest } = h;
-                  void _t;
-                  return rest;
-                }
-                return { ...h, title: v };
-              });
-            }}
-            size="sm"
-            className="w-full"
-          />
-        </Field>
-        <Field label="Lead">
-          <Textarea
-            value={header.lead ?? ''}
-            onChange={(e) => {
-              const v = e.target.value;
-              patchHeader((h) => {
-                if (v === '') {
-                  const { lead: _l, ...rest } = h;
-                  void _l;
-                  return rest;
-                }
-                return { ...h, lead: v };
-              });
-            }}
-            size="sm"
-            className="w-full resize-y font-mono"
-            rows={3}
-          />
-        </Field>
+        <p className="text-[11px] leading-4 text-neutral-500">
+          Title и Lead редактируются прямо на слайде — двойной клик по тексту.
+        </p>
         <Field label="Выравнивание">
           <RadioGroup
             value={header.align ?? 'left'}
@@ -511,7 +480,7 @@ function ImageCoverDocumentForm({ doc, patch }: ImageCoverFormProps) {
         </Select>
       </Field>
       <p className="mt-1 text-[11px] leading-4 text-neutral-500">
-        topRail / headline / bottomRail редактируй через Raw JSON.
+        Заголовок и тексты рейлов правятся прямо на слайде. Здесь — фон и обводка.
       </p>
     </Section>
   );

@@ -175,12 +175,29 @@ export class SupabaseSlideRepository implements CreatorSlideRepository {
     if (orderedIds.length === 0) return;
     const supabase = getSupabaseClient();
 
-    // Phase 1: park each slide at a unique negative index.
+    // Phase 1: park each slide ниже самого маленького текущего index в деке.
+    // Если предыдущий reorder упал и оставил строки на отрицательных индексах,
+    // фиксированный диапазон -1..-N даст коллизию по unique-индексу. Поэтому
+    // считаем «парковочную базу» от текущего min(order_index).
+    const minRes = await supabase
+      .from('creator_slides')
+      .select('order_index')
+      .eq('deck_id', deckId)
+      .order('order_index', { ascending: true })
+      .limit(1);
+    if (minRes.error) {
+      throw new RepositoryError('Failed during reorder phase 1', {
+        cause: minRes.error,
+      });
+    }
+    const minIndex = minRes.data?.[0]?.order_index ?? 0;
+    const parkingBase = Math.min(minIndex, 0) - 1;
+
     for (let i = 0; i < orderedIds.length; i += 1) {
       const id = orderedIds[i];
       const res = await supabase
         .from('creator_slides')
-        .update({ order_index: -1 - i })
+        .update({ order_index: parkingBase - i })
         .eq('id', id)
         .eq('deck_id', deckId);
       if (res.error) {

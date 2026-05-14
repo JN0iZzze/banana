@@ -1,14 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Eye, Images } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AlertCircle, ArrowLeft, Check, Eye, Images } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { EditorProvider, useEditorStore } from '../editor/editorStore';
 import { SlideList } from '../editor/SlideList';
 import { InspectorPanel } from '../editor/inspector/InspectorPanel';
 import { AssetLibrary } from '../editor/assets/AssetLibrary';
 import { SlidePreview } from '../preview/SlidePreview';
 import { Alert } from '../ui/alert';
+import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { Toaster } from '../ui/sonner';
 
 export function CreatorDeckEditorPage() {
   return (
@@ -76,6 +79,13 @@ function EditorPageInner() {
       setSelectedSlideId(sorted.length > 0 ? sorted[0].id : null);
     }
   }, [deck, selectedSlideId, setSelectedSlideId]);
+
+  // Ошибки рантайма редактора показываем тостами, а не баннером.
+  useEffect(() => {
+    if (!error || !deck) return;
+    toast.error(error);
+    store.clearError();
+  }, [error, deck, store]);
 
   // Синхронизация state → URL (deep link).
   useEffect(() => {
@@ -148,23 +158,6 @@ function EditorPageInner() {
         assetsOpen={assetsOpen}
         onToggleAssets={() => setAssetsOpen((v) => !v)}
       />
-      {error ? (
-        <Alert
-          variant="destructive"
-          className="flex items-center justify-between gap-3 rounded-none border-x-0 border-t-0 px-4 py-2 text-sm"
-        >
-          <span>{error}</span>
-          <Button
-            type="button"
-            variant="destructive"
-            size="xs"
-            onClick={store.clearError}
-            className="shrink-0 border-red-800/80"
-          >
-            Скрыть
-          </Button>
-        </Alert>
-      ) : null}
       {assetsOpen ? <AssetLibrary onClose={() => setAssetsOpen(false)} /> : null}
       <div className="grid min-h-0 flex-1 grid-cols-[280px_1fr_360px]">
         <aside className="min-h-0 border-r border-neutral-800 bg-neutral-950/60">
@@ -177,6 +170,7 @@ function EditorPageInner() {
           <InspectorPanel />
         </aside>
       </div>
+      <Toaster position="bottom-right" richColors closeButton />
     </div>
   );
 }
@@ -272,6 +266,8 @@ function EditorHeader({ assetsOpen, onToggleAssets }: EditorHeaderProps) {
           <span className="shrink-0 rounded-full border border-neutral-700 px-2 py-0.5 text-xs text-neutral-300">
             {deck.status}
           </span>
+          <SlideValidityBadge />
+
           {store.isSaving ? (
             <span className="shrink-0 text-xs text-neutral-500">Сохраняем…</span>
           ) : null}
@@ -304,6 +300,41 @@ function EditorHeader({ assetsOpen, onToggleAssets }: EditorHeaderProps) {
         </Button>
       </div>
     </header>
+  );
+}
+
+function SlideValidityBadge() {
+  const store = useEditorStore();
+  const { deck, selectedSlideId } = store;
+
+  const status = useMemo(() => {
+    if (!deck || !selectedSlideId) return null;
+    const slide = deck.slides.find((s) => s.id === selectedSlideId);
+    return slide?.validation.status ?? null;
+  }, [deck, selectedSlideId]);
+
+  if (status === null) return null;
+
+  if (status === 'valid') {
+    return (
+      <Badge
+        variant="outline"
+        className="border-emerald-900/60 bg-emerald-950/40 text-emerald-300"
+      >
+        <Check />
+        Валиден
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge
+      variant="outline"
+      className="border-red-900/60 bg-red-950/40 text-red-300"
+    >
+      <AlertCircle />
+      Ошибка
+    </Badge>
   );
 }
 

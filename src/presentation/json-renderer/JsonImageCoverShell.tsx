@@ -10,6 +10,7 @@ import type {
 } from '../jsonSlideTypes';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdropFrame, SlideFrame, Text } from '../../ui/slides';
+import { useEditableTextProps } from '../../creator/inline-edit';
 
 function overlayNode(overlay: JsonImageCover['background']['overlay']): ReactNode {
   if (overlay === 'none') {
@@ -48,6 +49,67 @@ function linesToNodes(lines: string[]): ReactNode {
   ));
 }
 
+type RailBasePath = 'cover.topRail' | 'cover.bottomRail';
+
+function RailEditableLine({
+  basePath,
+  itemIndex,
+  lineIndex,
+  text,
+  className,
+}: {
+  basePath: RailBasePath;
+  itemIndex: number;
+  lineIndex: number;
+  text: string;
+  className?: string;
+}) {
+  const editableProps = useEditableTextProps(`${basePath}.items.${itemIndex}.lines.${lineIndex}`);
+  return (
+    <Text variant="overline" className={className} {...editableProps}>
+      {text}
+    </Text>
+  );
+}
+
+function RailEditableLines({
+  basePath,
+  itemIndex,
+  lines,
+  className,
+}: {
+  basePath: RailBasePath;
+  itemIndex: number;
+  lines: string[];
+  className?: string;
+}): ReactNode {
+  if (lines.length === 1) {
+    return (
+      <RailEditableLine
+        basePath={basePath}
+        itemIndex={itemIndex}
+        lineIndex={0}
+        text={lines[0]!}
+        className={className}
+      />
+    );
+  }
+  return (
+    <span className="flex flex-col">
+      {lines.map((line, j) => (
+        <RailEditableLine
+          key={j}
+          basePath={basePath}
+          itemIndex={itemIndex}
+          lineIndex={j}
+          text={line}
+          className={className}
+        />
+      ))}
+    </span>
+  );
+}
+
 const labelCaps = 'font-semibold uppercase tracking-[0.2em]';
 const railInverted = `text-white ${labelCaps}`;
 
@@ -76,6 +138,7 @@ function railTextAlignClass(align: 'left' | 'center' | 'right' | undefined): str
 
 function renderTopRailItem(
   item: JsonImageCoverRailItem,
+  itemIndex: number,
   rowToneInverted: boolean,
 ): ReactNode {
   if (item.kind === 'cluster') {
@@ -95,12 +158,12 @@ function renderTopRailItem(
     );
   }
   return (
-    <Text
-      variant="overline"
+    <RailEditableLines
+      basePath="cover.topRail"
+      itemIndex={itemIndex}
+      lines={item.lines}
       className={cn(railTextAlignClass(item.textAlign), railTextClass(item.style, rowToneInverted))}
-    >
-      {linesToNodes(item.lines)}
-    </Text>
+    />
   );
 }
 
@@ -135,6 +198,15 @@ function blockTypography(block: JsonImageCoverHeadlineBlock): string {
   );
 }
 
+function HeadlineBlockText({ block, index }: { block: JsonImageCoverHeadlineBlock; index: number }) {
+  const editableProps = useEditableTextProps(`cover.headline.blocks.${index}.text`);
+  return (
+    <Text as="h1" variant="h1" unstyled className={blockTypography(block)} {...editableProps}>
+      {block.text}
+    </Text>
+  );
+}
+
 function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
   const y = headline.offsetYPx;
   if (headline.stack === 'br') {
@@ -145,7 +217,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
             {headline.blocks.map((b, i) => (
               <Fragment key={i}>
                 {i > 0 ? <br /> : null}
-                <h1 className={blockTypography(b)}>{b.text}</h1>
+                <HeadlineBlockText block={b} index={i} />
               </Fragment>
             ))}
           </>
@@ -159,9 +231,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
         <Reveal preset="enter-up" delay={0.5}>
           <div className="flex flex-col gap-1">
             {headline.blocks.map((b, i) => (
-              <h1 key={i} className={blockTypography(b)}>
-                {b.text}
-              </h1>
+              <HeadlineBlockText key={i} block={b} index={i} />
             ))}
           </div>
         </Reveal>
@@ -173,7 +243,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
     return (
       <div className="relative z-30 text-center" style={{ transform: `translateY(${y}px)` }}>
         <Reveal preset="enter-up" delay={0.5}>
-          <h1 className={blockTypography(b)}>{b.text}</h1>
+          <HeadlineBlockText block={b} index={0} />
         </Reveal>
       </div>
     );
@@ -183,9 +253,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
       <Reveal preset="enter-up" delay={0.5}>
         <div className="flex flex-col">
           {headline.blocks.map((b, i) => (
-            <h1 key={i} className={blockTypography(b)}>
-              {b.text}
-            </h1>
+            <HeadlineBlockText key={i} block={b} index={i} />
           ))}
         </div>
       </Reveal>
@@ -209,12 +277,23 @@ function bottomTextClass(style: JsonImageCoverRailTextStyle | undefined): string
   return labelCaps;
 }
 
-function renderBottomTextItem(t: { lines: string[]; style?: JsonImageCoverRailTextStyle }): ReactNode {
-  return <Text variant="overline" className={bottomTextClass(t.style)}>{linesToNodes(t.lines)}</Text>;
+function renderBottomTextItem(
+  t: { lines: string[]; style?: JsonImageCoverRailTextStyle },
+  itemIndex: number,
+): ReactNode {
+  return (
+    <RailEditableLines
+      basePath="cover.bottomRail"
+      itemIndex={itemIndex}
+      lines={t.lines}
+      className={bottomTextClass(t.style)}
+    />
+  );
 }
 
 function renderBottomItem(
   item: JsonImageCoverRailItem,
+  itemIndex: number,
   slot: 'left' | 'center' | 'right',
   delay: number,
   options: { centerRule: boolean },
@@ -237,7 +316,7 @@ function renderBottomItem(
       <div key={slot} className={bottomCellClass.center}>
         <Reveal preset="soft" delay={delay}>
           <div className="mx-auto mb-4 h-px w-32 bg-white/45" aria-hidden />
-          {renderBottomTextItem(item)}
+          {renderBottomTextItem(item, itemIndex)}
         </Reveal>
       </div>
     );
@@ -245,7 +324,7 @@ function renderBottomItem(
   if (item.kind === 'text') {
     return (
       <Reveal key={slot} preset="soft" delay={delay} className={bottomCellClass[slot]}>
-        {renderBottomTextItem(item)}
+        {renderBottomTextItem(item, itemIndex)}
       </Reveal>
     );
   }
@@ -295,7 +374,7 @@ export function JsonImageCoverShell({ cover }: { cover: JsonImageCover }) {
             delay={topDelaysForVariant(topRail.variant, i)}
             className={item.kind === 'text' && item.textAlign === 'right' ? 'text-right' : undefined}
           >
-            {renderTopRailItem(item, rowInv)}
+            {renderTopRailItem(item, i, rowInv)}
           </Reveal>
         ))}
       </div>
@@ -303,9 +382,9 @@ export function JsonImageCoverShell({ cover }: { cover: JsonImageCover }) {
       {renderHeadline(cover.headline)}
 
       <div className="absolute bottom-[var(--slide-safe-y-tight)] left-[var(--slide-safe-x-tight)] right-[var(--slide-safe-x-tight)] z-30 flex justify-between items-end gap-[var(--slide-grid-gap-lg)]">
-        {renderBottomItem(bottomRail.items[0], 'left', 0.6, { centerRule: false })}
-        {renderBottomItem(bottomRail.items[1], 'center', 0.7, { centerRule: bottomRail.centerAccent?.type === 'rule' })}
-        {renderBottomItem(bottomRail.items[2], 'right', 0.8, { centerRule: false })}
+        {renderBottomItem(bottomRail.items[0], 0, 'left', 0.6, { centerRule: false })}
+        {renderBottomItem(bottomRail.items[1], 1, 'center', 0.7, { centerRule: bottomRail.centerAccent?.type === 'rule' })}
+        {renderBottomItem(bottomRail.items[2], 2, 'right', 0.8, { centerRule: false })}
       </div>
     </SlideFrame>
   );
