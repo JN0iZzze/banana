@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 import type { CreatorSlide } from '../../domain/types';
 import type {
   JsonSlideDefaultDocument,
@@ -9,12 +9,33 @@ import type {
 import type { SlideTheme } from '../../../presentation/types';
 import { useEditorStore } from '../editorStore';
 import { AssetPicker } from '../assets/AssetPicker';
+import { Alert } from '../../ui/alert';
+import { Input } from '../../ui/input';
+import { Label } from '../../ui/label';
+import { RadioGroup, RadioGroupItem } from '../../ui/radio-group';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../ui/select';
+import { Textarea } from '../../ui/textarea';
 
 interface StructuredInspectorProps {
   slide: CreatorSlide;
 }
 
-const THEME_OPTIONS: { value: SlideTheme; label: string }[] = [
+/**
+ * Radix Select запрещает SelectItem value="". Используем sentinel для "пустого"
+ * выбора и мапим его в "" в onValueChange/value.
+ */
+const NONE = '__none__';
+const toUi = (value: string): string => (value === '' ? NONE : value);
+const fromUi = (value: string): string => (value === NONE ? '' : value);
+
+const THEME_OPTIONS: { value: SlideTheme | ''; label: string }[] = [
+  { value: '', label: '— не задано —' },
   { value: 'editorial', label: 'editorial' },
   { value: 'signal', label: 'signal' },
   { value: 'cinema', label: 'cinema' },
@@ -118,7 +139,7 @@ export function StructuredInspector({ slide }: StructuredInspectorProps) {
     <div className="flex flex-col gap-4 text-sm">
       <Section title="Служебное">
         <Field label="Заголовок слайда (не публикуется)">
-          <input
+          <Input
             type="text"
             value={titleDraft}
             onChange={(e) => setTitleDraft(e.target.value)}
@@ -129,25 +150,27 @@ export function StructuredInspector({ slide }: StructuredInspectorProps) {
                 (e.target as HTMLInputElement).blur();
               }
             }}
-            className={inputCls}
+            size="sm"
+            className="w-full"
             placeholder="Для навигации в списке слайдов"
           />
         </Field>
         <Field label="Заметки для докладчика">
-          <textarea
+          <Textarea
             value={notesDraft}
             onChange={(e) => setNotesDraft(e.target.value)}
             onBlur={commitNotes}
-            className={textareaCls}
+            size="sm"
+            className="w-full resize-y font-mono"
             rows={3}
           />
         </Field>
       </Section>
 
       {!doc ? (
-        <div className="rounded-md border border-red-900/60 bg-red-950/40 p-3 text-xs text-red-200">
+        <Alert variant="destructive" className="p-3">
           Документ невалиден, поля недоступны. Правь в Raw JSON.
-        </div>
+        </Alert>
       ) : (
         <DocumentForm doc={doc} patch={patchDoc} />
       )}
@@ -168,10 +191,10 @@ function DocumentForm({ doc, patch }: DocumentFormProps) {
     <>
       <Section title="Документ">
         <Field label="Тема (theme)">
-          <select
-            value={theme}
-            onChange={(e) => {
-              const value = e.target.value;
+          <Select
+            value={toUi(theme)}
+            onValueChange={(raw) => {
+              const value = fromUi(raw);
               patch((draft) => {
                 const next = { ...draft } as JsonSlideDocument;
                 if (value === '') {
@@ -182,15 +205,18 @@ function DocumentForm({ doc, patch }: DocumentFormProps) {
                 return next;
               });
             }}
-            className={selectCls}
           >
-            <option value="">— не задано —</option>
-            {THEME_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {THEME_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={toUi(o.value)}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
         <Field label="Шаблон (template)">
           <div className="text-xs text-neutral-500">
@@ -223,6 +249,7 @@ interface DefaultFormProps {
 function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
   const header = doc.header;
   const content = doc.content;
+  const headerAlignId = useId();
 
   const patchHeader = (mutator: (h: typeof header) => typeof header) => {
     patch((draft) => {
@@ -251,17 +278,18 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
     <>
       <Section title="Заголовок слайда (header)">
         <Field label="Meta (обязательно)">
-          <input
+          <Input
             type="text"
             value={header.meta}
             onChange={(e) =>
               patchHeader((h) => ({ ...h, meta: e.target.value }))
             }
-            className={inputCls}
+            size="sm"
+            className="w-full"
           />
         </Field>
         <Field label="Title">
-          <input
+          <Input
             type="text"
             value={header.title ?? ''}
             onChange={(e) => {
@@ -275,11 +303,12 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
                 return { ...h, title: v };
               });
             }}
-            className={inputCls}
+            size="sm"
+            className="w-full"
           />
         </Field>
         <Field label="Lead">
-          <textarea
+          <Textarea
             value={header.lead ?? ''}
             onChange={(e) => {
               const v = e.target.value;
@@ -292,35 +321,40 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
                 return { ...h, lead: v };
               });
             }}
-            className={textareaCls}
+            size="sm"
+            className="w-full resize-y font-mono"
             rows={3}
           />
         </Field>
         <Field label="Выравнивание">
-          <div className="flex gap-3">
-            {HEADER_ALIGN_OPTIONS.map((opt) => (
-              <label key={opt.value} className="flex items-center gap-1.5 text-xs text-neutral-200">
-                <input
-                  type="radio"
-                  name="header-align"
-                  checked={(header.align ?? 'left') === opt.value}
-                  onChange={() =>
-                    patchHeader((h) => ({ ...h, align: opt.value }))
-                  }
-                />
-                {opt.label}
-              </label>
-            ))}
-          </div>
+          <RadioGroup
+            value={header.align ?? 'left'}
+            onValueChange={(value) =>
+              patchHeader((h) => ({ ...h, align: value as 'left' | 'center' }))
+            }
+            className="flex gap-4"
+          >
+            {HEADER_ALIGN_OPTIONS.map((opt) => {
+              const id = `${headerAlignId}-${opt.value}`;
+              return (
+                <div key={opt.value} className="flex items-center gap-1.5">
+                  <RadioGroupItem id={id} value={opt.value} />
+                  <Label htmlFor={id} className="text-xs font-normal text-neutral-200">
+                    {opt.label}
+                  </Label>
+                </div>
+              );
+            })}
+          </RadioGroup>
         </Field>
       </Section>
 
       <Section title="Контент (content)">
         <Field label="Плотность (density)">
-          <select
-            value={content?.density ?? ''}
-            onChange={(e) => {
-              const v = e.target.value;
+          <Select
+            value={toUi(content?.density ?? '')}
+            onValueChange={(raw) => {
+              const v = fromUi(raw);
               patchContent((c) => {
                 const base = c ?? {};
                 if (v === '') {
@@ -335,20 +369,24 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
                 };
               });
             }}
-            className={selectCls}
           >
-            {DENSITY_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {DENSITY_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={toUi(o.value)}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
         <Field label="Выравнивание контента (align)">
-          <select
-            value={content?.align ?? ''}
-            onChange={(e) => {
-              const v = e.target.value;
+          <Select
+            value={toUi(content?.align ?? '')}
+            onValueChange={(raw) => {
+              const v = fromUi(raw);
               patchContent((c) => {
                 const base = c ?? {};
                 if (v === '') {
@@ -363,14 +401,18 @@ function DefaultDocumentForm({ doc, patch }: DefaultFormProps) {
                 };
               });
             }}
-            className={selectCls}
           >
-            {CONTENT_ALIGN_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CONTENT_ALIGN_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={toUi(o.value)}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
       </Section>
 
@@ -428,7 +470,7 @@ function ImageCoverDocumentForm({ doc, patch }: ImageCoverFormProps) {
         />
       </Field>
       <Field label="Alt">
-        <input
+        <Input
           type="text"
           value={bg.alt ?? ''}
           onChange={(e) => {
@@ -442,26 +484,31 @@ function ImageCoverDocumentForm({ doc, patch }: ImageCoverFormProps) {
               return { ...b, alt: v };
             });
           }}
-          className={inputCls}
+          size="sm"
+          className="w-full"
         />
       </Field>
       <Field label="Overlay">
-        <select
+        <Select
           value={bg.overlay}
-          onChange={(e) =>
+          onValueChange={(value) =>
             patchBackground((b) => ({
               ...b,
-              overlay: e.target.value as typeof bg.overlay,
+              overlay: value as typeof bg.overlay,
             }))
           }
-          className={selectCls}
         >
-          {IMAGE_COVER_OVERLAY_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {IMAGE_COVER_OVERLAY_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </Field>
       <p className="mt-1 text-[11px] leading-4 text-neutral-500">
         topRail / headline / bottomRail редактируй через Raw JSON.
@@ -490,40 +537,48 @@ function TextStackDocumentForm({ doc, patch }: TextStackFormProps) {
     <>
       <Section title="Стек текста (stack)">
         <Field label="Align">
-          <select
+          <Select
             value={stack.align}
-            onChange={(e) =>
-              patchStack((s) => ({ ...s, align: e.target.value as typeof stack.align }))
+            onValueChange={(value) =>
+              patchStack((s) => ({ ...s, align: value as typeof stack.align }))
             }
-            className={selectCls}
           >
-            {TEXT_STACK_ALIGN_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {TEXT_STACK_ALIGN_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={o.value}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
         <Field label="Justify">
-          <select
+          <Select
             value={stack.justify}
-            onChange={(e) =>
-              patchStack((s) => ({ ...s, justify: e.target.value as typeof stack.justify }))
+            onValueChange={(value) =>
+              patchStack((s) => ({ ...s, justify: value as typeof stack.justify }))
             }
-            className={selectCls}
           >
-            {TEXT_STACK_JUSTIFY_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {TEXT_STACK_JUSTIFY_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={o.value}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
         <Field label="Gap">
-          <select
-            value={stack.gap ?? ''}
-            onChange={(e) => {
-              const v = e.target.value;
+          <Select
+            value={toUi(stack.gap ?? '')}
+            onValueChange={(raw) => {
+              const v = fromUi(raw);
               patchStack((s) => {
                 if (v === '') {
                   const { gap: _g, ...rest } = s;
@@ -533,14 +588,18 @@ function TextStackDocumentForm({ doc, patch }: TextStackFormProps) {
                 return { ...s, gap: v as NonNullable<typeof s.gap> };
               });
             }}
-            className={selectCls}
           >
-            {STACK_GAP_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {STACK_GAP_OPTIONS.map((o) => (
+                <SelectItem key={o.value} value={toUi(o.value)}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
       </Section>
 
@@ -578,13 +637,6 @@ function summarizeStackItem(item: JsonSlideTextStackDocument['stack']['items'][n
 }
 
 // --- layout primitives ------------------------------------------------------
-
-const inputCls =
-  'w-full rounded-md border border-neutral-800 bg-neutral-950 px-2 py-1.5 text-xs text-neutral-100 focus:border-sky-500 focus:outline-none';
-const textareaCls =
-  'w-full resize-y rounded-md border border-neutral-800 bg-neutral-950 px-2 py-1.5 font-mono text-xs text-neutral-100 focus:border-sky-500 focus:outline-none';
-const selectCls =
-  'w-full rounded-md border border-neutral-800 bg-neutral-950 px-2 py-1.5 text-xs text-neutral-100 focus:border-sky-500 focus:outline-none';
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

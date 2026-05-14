@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { ArrowLeft, X } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { PresentationShell } from '../../presentation/components/PresentationShell';
 import { toDeckDefinition } from '../adapters/toDeckDefinition';
@@ -73,8 +74,12 @@ export function CreatorPresentPage() {
       <div className="flex h-screen w-screen items-center justify-center bg-[#060606] text-white">
         <div className="space-y-3 text-center">
           <p className="text-sm uppercase tracking-[0.2em] text-white/60">Загрузка…</p>
-          <Link to={editorHref} className="inline-block text-sm text-sky-400 hover:text-sky-300">
-            ← К редактору
+          <Link
+            to={editorHref}
+            className="inline-flex items-center gap-1.5 text-sm text-sky-400 hover:text-sky-300"
+          >
+            <ArrowLeft className="size-4" />
+            К редактору
           </Link>
         </div>
       </div>
@@ -88,8 +93,12 @@ export function CreatorPresentPage() {
           <p className="text-sm uppercase tracking-[0.2em] text-white/60">
             {error ?? 'Дека недоступна'}
           </p>
-          <Link to={editorHref} className="inline-block text-sm text-sky-400 hover:text-sky-300">
-            ← К редактору
+          <Link
+            to={editorHref}
+            className="inline-flex items-center gap-1.5 text-sm text-sky-400 hover:text-sky-300"
+          >
+            <ArrowLeft className="size-4" />
+            К редактору
           </Link>
         </div>
       </div>
@@ -108,8 +117,12 @@ export function CreatorPresentPage() {
               : ''}
             .
           </p>
-          <Link to={editorHref} className="inline-block text-sm text-sky-400 hover:text-sky-300">
-            ← К редактору
+          <Link
+            to={editorHref}
+            className="inline-flex items-center gap-1.5 text-sm text-sky-400 hover:text-sky-300"
+          >
+            <ArrowLeft className="size-4" />
+            К редактору
           </Link>
         </div>
       </div>
@@ -123,10 +136,11 @@ export function CreatorPresentPage() {
       <button
         type="button"
         onClick={() => navigate(editorHref)}
-        className="fixed right-4 top-4 z-20 rounded-md border border-white/20 bg-black/40 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition hover:bg-black/60"
+        className="fixed right-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-md border border-white/20 bg-black/40 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-md transition hover:bg-black/60"
         aria-label="Закрыть просмотр"
       >
-        × Закрыть
+        <X className="size-3.5" />
+        Закрыть
       </button>
 
       {bannerVisible ? (

@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react';
+import { Plus, RotateCw, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useRepositories } from '../data/repositoryContext';
 import { DEV_USER_ID } from '../constants';
 import { SlugConflictError } from '../domain/errors';
 import type { CreatorDeckSummary } from '../domain/types';
 import { isValidSlug, slugify } from '../domain/slug';
+import { Alert } from '../ui/alert';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 type ListState =
   | { status: 'loading' }
@@ -54,13 +58,10 @@ export function CreatorDecksListPage() {
     <section className="space-y-6">
       <header className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-neutral-50">Мои деки</h1>
-        <button
-          type="button"
-          onClick={() => setFormOpen((v) => !v)}
-          className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
-        >
+        <Button type="button" onClick={() => setFormOpen((v) => !v)}>
+          {formOpen ? <X /> : <Plus />}
           {formOpen ? 'Отмена' : 'Новая дека'}
-        </button>
+        </Button>
       </header>
 
       {formOpen ? <NewDeckForm onCreated={handleCreated} onCancel={() => setFormOpen(false)} /> : null}
@@ -70,15 +71,14 @@ export function CreatorDecksListPage() {
       ) : null}
 
       {state.status === 'error' ? (
-        <div className="space-y-3 rounded-md border border-red-900/60 bg-red-950/40 p-4">
-          <p className="text-sm text-red-200">Не удалось загрузить деки: {state.message}</p>
-          <button
-            type="button"
-            onClick={() => setReloadKey((k) => k + 1)}
-            className="rounded-md bg-red-900/60 px-3 py-1.5 text-sm text-red-100 hover:bg-red-900"
-          >
+        <div className="space-y-3">
+          <Alert variant="destructive" className="p-4">
+            Не удалось загрузить деки: {state.message}
+          </Alert>
+          <Button type="button" variant="destructive" onClick={() => setReloadKey((k) => k + 1)}>
+            <RotateCw />
             Повторить
-          </button>
+          </Button>
         </div>
       ) : null}
 
@@ -89,10 +89,11 @@ export function CreatorDecksListPage() {
           <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {state.decks.map((deck) => (
               <li key={deck.id}>
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => navigate(`/creator/decks/${deck.id}`)}
-                  className="block w-full rounded-lg border border-neutral-800 bg-neutral-900/60 p-4 text-left transition hover:border-neutral-700 hover:bg-neutral-900"
+                  className="flex h-auto min-h-0 w-full flex-col items-stretch justify-start rounded-lg border-neutral-800 bg-neutral-900/60 p-4 text-left font-normal hover:border-neutral-700 hover:bg-neutral-900"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -110,7 +111,7 @@ export function CreatorDecksListPage() {
                     ) : null}
                     <span>Обновлено: {new Date(deck.updatedAt).toLocaleString('ru')}</span>
                   </div>
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -171,14 +172,14 @@ function NewDeckForm({ onCreated, onCancel }: NewDeckFormProps) {
         <label className="block text-xs uppercase tracking-wide text-neutral-400" htmlFor="deck-title">
           Название
         </label>
-        <input
+        <Input
           id="deck-title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-neutral-100 focus:border-sky-500 focus:outline-none"
           placeholder="Например, Вайбкодинг"
           autoFocus
+          aria-invalid={!!titleError}
         />
         {titleError ? <p className="text-xs text-amber-400">{titleError}</p> : null}
       </div>
@@ -187,7 +188,7 @@ function NewDeckForm({ onCreated, onCancel }: NewDeckFormProps) {
         <label className="block text-xs uppercase tracking-wide text-neutral-400" htmlFor="deck-slug">
           Slug
         </label>
-        <input
+        <Input
           id="deck-slug"
           type="text"
           value={effectiveSlug}
@@ -195,29 +196,26 @@ function NewDeckForm({ onCreated, onCancel }: NewDeckFormProps) {
             setSlugTouched(true);
             setSlug(e.target.value);
           }}
-          className="w-full rounded-md border border-neutral-700 bg-neutral-950 px-3 py-2 font-mono text-sm text-neutral-100 focus:border-sky-500 focus:outline-none"
+          className="font-mono"
           placeholder="vibecoding"
+          aria-invalid={!!slugError}
         />
         {slugError ? <p className="text-xs text-amber-400">{slugError}</p> : null}
       </div>
 
-      {error ? <p className="text-sm text-red-300">{error}</p> : null}
+      {error ? (
+        <Alert variant="destructive" className="text-sm">
+          {error}
+        </Alert>
+      ) : null}
 
       <div className="flex items-center gap-2 pt-1">
-        <button
-          type="submit"
-          disabled={submitting || !!titleError || !!slugError}
-          className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:cursor-not-allowed disabled:bg-neutral-700"
-        >
+        <Button type="submit" disabled={submitting || !!titleError || !!slugError}>
           {submitting ? 'Создаём…' : 'Создать'}
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-md border border-neutral-700 px-4 py-2 text-sm text-neutral-200 hover:bg-neutral-800"
-        >
+        </Button>
+        <Button type="button" variant="outline" onClick={onCancel}>
           Отмена
-        </button>
+        </Button>
       </div>
     </form>
   );

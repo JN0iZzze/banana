@@ -130,18 +130,9 @@ function blockTypography(block: JsonImageCoverHeadlineBlock): string {
     spec.className,
     italicOn ? 'italic' : 'not-italic',
     weight === 'semibold' ? 'font-semibold' : 'font-normal',
+    'whitespace-pre-wrap',
     colorClass[block.color],
   );
-}
-
-function renderBlockLines(text: string): ReactNode {
-  const lines = text.split('\n');
-  return lines.map((line, i) => (
-    <Fragment key={i}>
-      {i > 0 ? <br /> : null}
-      {line}
-    </Fragment>
-  ));
 }
 
 function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
@@ -154,7 +145,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
             {headline.blocks.map((b, i) => (
               <Fragment key={i}>
                 {i > 0 ? <br /> : null}
-                <h1 className={blockTypography(b)}>{renderBlockLines(b.text)}</h1>
+                <h1 className={blockTypography(b)}>{b.text}</h1>
               </Fragment>
             ))}
           </>
@@ -169,7 +160,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
           <div className="flex flex-col gap-1">
             {headline.blocks.map((b, i) => (
               <h1 key={i} className={blockTypography(b)}>
-                {renderBlockLines(b.text)}
+                {b.text}
               </h1>
             ))}
           </div>
@@ -182,7 +173,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
     return (
       <div className="relative z-30 text-center" style={{ transform: `translateY(${y}px)` }}>
         <Reveal preset="enter-up" delay={0.5}>
-          <h1 className={blockTypography(b)}>{renderBlockLines(b.text)}</h1>
+          <h1 className={blockTypography(b)}>{b.text}</h1>
         </Reveal>
       </div>
     );
@@ -193,7 +184,7 @@ function renderHeadline(headline: JsonImageCover['headline']): ReactNode {
         <div className="flex flex-col">
           {headline.blocks.map((b, i) => (
             <h1 key={i} className={blockTypography(b)}>
-              {renderBlockLines(b.text)}
+              {b.text}
             </h1>
           ))}
         </div>

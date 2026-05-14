@@ -1,5 +1,23 @@
 import { useMemo } from 'react';
+import {
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Eye,
+  EyeOff,
+  MoreHorizontal,
+  Plus,
+  Trash2,
+} from 'lucide-react';
 import type { CreatorSlide } from '../domain/types';
+import { Button } from '../ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { useEditorStore } from './editorStore';
 
 interface SlideListProps {
@@ -21,13 +39,10 @@ export function SlideList({ onSelect }: SlideListProps) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
         <p className="text-sm text-neutral-400">В деке пока нет слайдов</p>
-        <button
-          type="button"
-          onClick={() => void store.createSlide()}
-          className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
-        >
+        <Button type="button" onClick={() => void store.createSlide()}>
+          <Plus />
           Создать первый слайд
-        </button>
+        </Button>
       </div>
     );
   }
@@ -65,9 +80,10 @@ export function SlideList({ onSelect }: SlideListProps) {
                     />
                   ) : null}
                   {slide.hidden ? (
-                    <span title="Скрыт" className="shrink-0 text-neutral-500">
-                      {hiddenIcon}
-                    </span>
+                    <EyeOff
+                      className="size-3.5 shrink-0 text-neutral-500"
+                      aria-label="Скрыт"
+                    />
                   ) : null}
                   <span
                     className={`truncate text-sm ${
@@ -83,38 +99,55 @@ export function SlideList({ onSelect }: SlideListProps) {
                     disabled={isFirst}
                     onClick={() => void store.moveSlideUp(slide.id)}
                   >
-                    ↑
+                    <ChevronUp />
                   </IconButton>
                   <IconButton
                     label="Вниз"
                     disabled={isLast}
                     onClick={() => void store.moveSlideDown(slide.id)}
                   >
-                    ↓
-                  </IconButton>
-                  <IconButton
-                    label="Дублировать"
-                    onClick={() => void store.duplicateSlide(slide.id)}
-                  >
-                    ⧉
+                    <ChevronDown />
                   </IconButton>
                   <IconButton
                     label={slide.hidden ? 'Показать' : 'Скрыть'}
                     onClick={() => void store.setSlideHidden(slide.id, !slide.hidden)}
                   >
-                    {slide.hidden ? '○' : '●'}
+                    {slide.hidden ? <EyeOff /> : <Eye />}
                   </IconButton>
-                  <IconButton
-                    label="Удалить"
-                    tone="danger"
-                    onClick={() => {
-                      if (window.confirm(`Удалить слайд «${title}»?`)) {
-                        void store.deleteSlide(slide.id);
-                      }
-                    }}
-                  >
-                    ×
-                  </IconButton>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-sm"
+                        title="Ещё"
+                        aria-label="Ещё"
+                        className="text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"
+                      >
+                        <MoreHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44">
+                      <DropdownMenuItem
+                        onSelect={() => void store.duplicateSlide(slide.id)}
+                      >
+                        <Copy />
+                        Дублировать
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        variant="destructive"
+                        onSelect={() => {
+                          if (window.confirm(`Удалить слайд «${title}»?`)) {
+                            void store.deleteSlide(slide.id);
+                          }
+                        }}
+                      >
+                        <Trash2 />
+                        Удалить
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </li>
@@ -122,13 +155,10 @@ export function SlideList({ onSelect }: SlideListProps) {
         })}
       </ul>
       <div className="border-t border-neutral-800 p-3">
-        <button
-          type="button"
-          onClick={() => void store.createSlide()}
-          className="w-full rounded-md bg-sky-600 px-3 py-2 text-sm font-medium text-white hover:bg-sky-500"
-        >
-          + Слайд
-        </button>
+        <Button type="button" className="w-full" onClick={() => void store.createSlide()}>
+          <Plus />
+          Слайд
+        </Button>
       </div>
     </div>
   );
@@ -143,31 +173,22 @@ interface IconButtonProps {
 }
 
 function IconButton({ label, onClick, disabled, tone = 'default', children }: IconButtonProps) {
-  const base =
-    'inline-flex h-6 w-6 items-center justify-center rounded text-xs transition disabled:cursor-not-allowed disabled:opacity-30';
-  const toneCls =
-    tone === 'danger'
-      ? 'text-neutral-400 hover:bg-red-950/60 hover:text-red-300'
-      : 'text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100';
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
+      size="icon-sm"
       title={label}
       aria-label={label}
       disabled={disabled}
       onClick={onClick}
-      className={`${base} ${toneCls}`}
+      className={
+        tone === 'danger'
+          ? 'text-neutral-400 hover:bg-red-950/60 hover:text-red-300'
+          : 'text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100'
+      }
     >
       {children}
-    </button>
+    </Button>
   );
 }
-
-const hiddenIcon = (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M3 3l18 18" />
-    <path d="M10.58 10.58a2 2 0 0 0 2.83 2.83" />
-    <path d="M9.88 4.26A9.77 9.77 0 0 1 12 4c7 0 10 8 10 8a18.3 18.3 0 0 1-2.16 3.19" />
-    <path d="M6.1 6.1A18.4 18.4 0 0 0 2 12s3 8 10 8a9.7 9.7 0 0 0 4.24-.96" />
-  </svg>
-);

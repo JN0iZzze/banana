@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
+import { Trash2, Upload, X } from 'lucide-react';
 import type { CreatorAsset } from '../../domain/types';
+import { Alert } from '../../ui/alert';
+import { Button } from '../../ui/button';
 import { useEditorStore } from '../editorStore';
 
 // Реализация: выдвижная панель сверху preview-блока, активируемая кнопкой
@@ -51,29 +54,33 @@ export function AssetLibrary({ onClose }: AssetLibraryProps) {
             onChange={handleInputChange}
             className="hidden"
           />
-          <button
+          <Button
             type="button"
+            variant="outline"
+            size="xs"
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
-            className="rounded-md border border-neutral-700 px-3 py-1.5 text-xs text-neutral-100 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
+            <Upload />
             {isUploading ? 'Загружается…' : 'Загрузить'}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="ghost"
+            size="icon-xs"
             onClick={onClose}
-            className="rounded-md border border-neutral-700 px-2 py-1.5 text-xs text-neutral-400 hover:bg-neutral-800"
             title="Скрыть панель"
+            aria-label="Скрыть панель"
           >
-            Закрыть
-          </button>
+            <X />
+          </Button>
         </div>
       </div>
 
       {assetsError ? (
-        <div className="mb-3 rounded-md border border-red-900/60 bg-red-950/40 px-3 py-2 text-xs text-red-200">
+        <Alert variant="destructive" className="mb-3">
           {assetsError}
-        </div>
+        </Alert>
       ) : null}
 
       {isAssetsLoading && assets.length === 0 ? (
@@ -120,14 +127,17 @@ function AssetCard({ asset, onDelete }: AssetCardProps) {
         </div>
         <div className="text-[10px] text-neutral-500">{formatSize(asset.sizeBytes)}</div>
       </div>
-      <button
+      <Button
         type="button"
+        variant="destructive"
+        size="icon-xs"
         onClick={onDelete}
-        className="absolute right-1.5 top-1.5 rounded border border-red-900/70 bg-red-950/80 px-1.5 py-0.5 text-[10px] text-red-200 opacity-0 transition hover:bg-red-900 group-hover:opacity-100"
+        className="absolute right-1.5 top-1.5 opacity-0 transition group-hover:opacity-100"
         title="Удалить"
+        aria-label="Удалить"
       >
-        Удалить
-      </button>
+        <Trash2 />
+      </Button>
     </li>
   );
 }

@@ -1,4 +1,5 @@
 import type { CreatorAsset, CreatorValidation } from '../../domain/types';
+import { Alert, AlertDescription, AlertTitle } from '../../ui/alert';
 
 interface ValidationPanelProps {
   validation: CreatorValidation;
@@ -50,11 +51,9 @@ export function ValidationPanel({
   return (
     <div className="flex flex-col gap-2">
       {isValid ? (
-        <div className="rounded-md border border-emerald-900/60 bg-emerald-950/40 px-3 py-2 text-xs text-emerald-300">
-          Документ валиден
-        </div>
+        <Alert variant="success">Документ валиден</Alert>
       ) : (
-        <div className="rounded-md border border-red-900/60 bg-red-950/40 px-3 py-2 text-xs text-red-200">
+        <Alert variant="destructive">
           {hasParseError ? (
             <div className="mb-1">
               <span className="font-medium">Некорректный JSON: </span>
@@ -71,20 +70,22 @@ export function ValidationPanel({
               </pre>
             </div>
           ) : null}
-        </div>
+        </Alert>
       )}
 
       {warnings.length > 0 ? (
-        <div className="rounded-md border border-amber-900/60 bg-amber-950/30 px-3 py-2 text-xs text-amber-200">
-          <div className="mb-1 font-medium">Предупреждения по медиа:</div>
-          <ul className="list-disc space-y-1 pl-4">
-            {warnings.map((w, idx) => (
-              <li key={idx} className="break-words">
-                {w}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Alert variant="warning">
+          <AlertTitle className="text-amber-200">Предупреждения по медиа:</AlertTitle>
+          <AlertDescription className="text-amber-200">
+            <ul className="list-disc space-y-1 pl-4">
+              {warnings.map((w, idx) => (
+                <li key={idx} className="break-words">
+                  {w}
+                </li>
+              ))}
+            </ul>
+          </AlertDescription>
+        </Alert>
       ) : null}
     </div>
   );

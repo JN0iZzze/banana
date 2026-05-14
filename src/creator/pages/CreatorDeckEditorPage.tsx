@@ -1,10 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ArrowLeft, Eye, Images } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { EditorProvider, useEditorStore } from '../editor/editorStore';
 import { SlideList } from '../editor/SlideList';
 import { InspectorPanel } from '../editor/inspector/InspectorPanel';
 import { AssetLibrary } from '../editor/assets/AssetLibrary';
 import { SlidePreview } from '../preview/SlidePreview';
+import { Alert } from '../ui/alert';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 
 export function CreatorDeckEditorPage() {
   return (
@@ -95,30 +99,46 @@ function EditorPageInner() {
   );
 
   if (isLoading && !deck) {
-    return <p className="text-neutral-400">Загрузка деки…</p>;
+    return (
+      <EditorPageFallbackChrome>
+        <p className="text-neutral-400">Загрузка деки…</p>
+      </EditorPageFallbackChrome>
+    );
   }
 
   if (error && !deck) {
     return (
-      <div className="space-y-3">
-        <div className="rounded-md border border-red-900/60 bg-red-950/40 p-4 text-sm text-red-200">
-          Не удалось загрузить деку: {error}
+      <EditorPageFallbackChrome>
+        <div className="space-y-3">
+          <Alert variant="destructive" className="p-4 text-sm">
+            Не удалось загрузить деку: {error}
+          </Alert>
+          <Link
+            to="/creator"
+            className="inline-flex items-center gap-1.5 text-sm text-sky-400 hover:text-sky-300"
+          >
+            <ArrowLeft className="size-4" />
+            К списку дек
+          </Link>
         </div>
-        <Link to="/creator" className="inline-block text-sm text-sky-400 hover:text-sky-300">
-          ← К списку дек
-        </Link>
-      </div>
+      </EditorPageFallbackChrome>
     );
   }
 
   if (!deck) {
     return (
-      <div className="space-y-3">
-        <p className="text-neutral-400">Дека не найдена.</p>
-        <Link to="/creator" className="inline-block text-sm text-sky-400 hover:text-sky-300">
-          ← К списку дек
-        </Link>
-      </div>
+      <EditorPageFallbackChrome>
+        <div className="space-y-3">
+          <p className="text-neutral-400">Дека не найдена.</p>
+          <Link
+            to="/creator"
+            className="inline-flex items-center gap-1.5 text-sm text-sky-400 hover:text-sky-300"
+          >
+            <ArrowLeft className="size-4" />
+            К списку дек
+          </Link>
+        </div>
+      </EditorPageFallbackChrome>
     );
   }
 
@@ -129,16 +149,21 @@ function EditorPageInner() {
         onToggleAssets={() => setAssetsOpen((v) => !v)}
       />
       {error ? (
-        <div className="flex items-center justify-between gap-3 border-b border-red-900/60 bg-red-950/40 px-4 py-2 text-sm text-red-200">
+        <Alert
+          variant="destructive"
+          className="flex items-center justify-between gap-3 rounded-none border-x-0 border-t-0 px-4 py-2 text-sm"
+        >
           <span>{error}</span>
-          <button
+          <Button
             type="button"
+            variant="destructive"
+            size="xs"
             onClick={store.clearError}
-            className="rounded border border-red-900/80 px-2 py-0.5 text-xs text-red-100 hover:bg-red-900/60"
+            className="shrink-0 border-red-800/80"
           >
             Скрыть
-          </button>
-        </div>
+          </Button>
+        </Alert>
       ) : null}
       {assetsOpen ? <AssetLibrary onClose={() => setAssetsOpen(false)} /> : null}
       <div className="grid min-h-0 flex-1 grid-cols-[280px_1fr_360px]">
@@ -152,6 +177,27 @@ function EditorPageInner() {
           <InspectorPanel />
         </aside>
       </div>
+    </div>
+  );
+}
+
+function EditorPageFallbackChrome({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex h-full min-h-0 flex-col">
+      <header className="flex shrink-0 items-center justify-between gap-4 border-b border-neutral-800 bg-neutral-900/60 px-6 py-3">
+        <Link
+          to="/creator"
+          className="inline-flex shrink-0 items-center justify-center rounded-md p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
+          title="К списку дек"
+          aria-label="К списку дек"
+        >
+          <ArrowLeft className="size-4" />
+        </Link>
+        <Link to="/" className="shrink-0 text-sm text-neutral-400 hover:text-neutral-100">
+          К презентациям
+        </Link>
+      </header>
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 py-8">{children}</div>
     </div>
   );
 }
@@ -185,67 +231,77 @@ function EditorHeader({ assetsOpen, onToggleAssets }: EditorHeaderProps) {
 
   return (
     <header className="flex items-center justify-between gap-4 border-b border-neutral-800 bg-neutral-900/60 px-6 py-3">
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         <Link
           to="/creator"
-          className="shrink-0 text-sm text-neutral-400 hover:text-neutral-100"
+          className="inline-flex shrink-0 items-center justify-center rounded-md p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
           title="К списку дек"
+          aria-label="К списку дек"
         >
-          ←
+          <ArrowLeft className="size-4" />
         </Link>
-        {editing ? (
-          <input
-            autoFocus
-            value={draftTitle}
-            onChange={(e) => setDraftTitle(e.target.value)}
-            onBlur={commit}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                (e.target as HTMLInputElement).blur();
-              } else if (e.key === 'Escape') {
-                e.preventDefault();
-                setEditing(false);
-              }
-            }}
-            className="min-w-0 rounded-md border border-neutral-700 bg-neutral-950 px-2 py-1 text-base text-neutral-50 focus:border-sky-500 focus:outline-none"
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={startEdit}
-            className="truncate text-base font-semibold text-neutral-50 hover:text-white"
-            title="Переименовать"
-          >
-            {deck.title}
-          </button>
-        )}
-        <span className="shrink-0 rounded-full border border-neutral-700 px-2 py-0.5 text-xs text-neutral-300">
-          {deck.status}
-        </span>
-        {store.isSaving ? (
-          <span className="shrink-0 text-xs text-neutral-500">Сохраняем…</span>
-        ) : null}
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          {editing ? (
+            <Input
+              autoFocus
+              value={draftTitle}
+              onChange={(e) => setDraftTitle(e.target.value)}
+              onBlur={commit}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  (e.target as HTMLInputElement).blur();
+                } else if (e.key === 'Escape') {
+                  e.preventDefault();
+                  setEditing(false);
+                }
+              }}
+              size="sm"
+              className="min-w-0 flex-1 border-neutral-700 text-lg font-semibold"
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={startEdit}
+              className="min-w-0 flex-1 truncate text-left text-lg font-semibold text-neutral-50 hover:text-white"
+              title="Переименовать"
+            >
+              {deck.title}
+            </button>
+          )}
+          <span className="shrink-0 rounded-full border border-neutral-700 px-2 py-0.5 text-xs text-neutral-300">
+            {deck.status}
+          </span>
+          {store.isSaving ? (
+            <span className="shrink-0 text-xs text-neutral-500">Сохраняем…</span>
+          ) : null}
+        </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={onToggleAssets}
-          className={`rounded-md border px-3 py-1.5 text-sm ${
-            assetsOpen
-              ? 'border-sky-600 bg-sky-950/40 text-sky-100'
-              : 'border-neutral-700 text-neutral-100 hover:bg-neutral-800'
-          }`}
+          className={
+            assetsOpen ? 'border-sky-600 bg-sky-950/40 text-sky-100 hover:bg-sky-950/50' : undefined
+          }
         >
+          <Images />
           Ассеты ({store.assets.length})
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="outline"
+          size="sm"
           onClick={() => navigate(`/creator/decks/${deck.id}/present`)}
-          className="rounded-md border border-neutral-700 px-3 py-1.5 text-sm text-neutral-100 hover:bg-neutral-800"
         >
+          <Eye />
           Просмотр
-        </button>
+        </Button>
+        <Button variant="outline" size="sm" className="text-neutral-400" asChild>
+          <Link to="/">К презентациям</Link>
+        </Button>
       </div>
     </header>
   );

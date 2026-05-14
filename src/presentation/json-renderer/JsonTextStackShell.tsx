@@ -86,6 +86,7 @@ function TextStackTextItem({
           textAlign,
         )}
         {...editableProps}
+        multiline={hasSimpleText}
       >
         {renderTextStackTextContent(item)}
       </Text>

@@ -71,6 +71,7 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
                   isEditorActive ? 'pointer-events-auto' : '',
                 ].join(' ').trim()}
                 {...leadEditableProps}
+                multiline
               >
                 {doc.header.lead}
               </Text>

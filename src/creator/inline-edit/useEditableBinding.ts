@@ -24,7 +24,7 @@ import { findEditableBinding } from './collectEditablePaths';
 
 export interface EditablePropsForText {
   editorPath: string;
-  editorMultiline: boolean;
+  multiline: boolean;
   onEditorStartEdit: (path: string) => void;
   onEditorCommit: (path: string, text: string) => void;
   onEditorCancel: (path: string) => void;
@@ -42,7 +42,7 @@ export function useEditableBinding(path: string): EditablePropsForText | null {
 
   return {
     editorPath: binding.path,
-    editorMultiline: binding.multiline,
+    multiline: binding.multiline,
     onEditorStartEdit: editorMode.onStartEdit,
     onEditorCommit: editorMode.onCommit,
     // Adapter: the context exposes `onCancel()` with no arguments, but the

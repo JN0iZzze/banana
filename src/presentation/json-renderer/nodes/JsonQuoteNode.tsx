@@ -59,6 +59,7 @@ export function JsonQuoteNode({ quote, delay = 0.16, editorPath }: JsonQuoteNode
             variant="prompt"
             className={cn(isEditorActive && 'pointer-events-auto')}
             {...textEditableProps}
+            multiline
           >
             {quote.text}
           </Text>

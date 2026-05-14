@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { Images } from 'lucide-react';
 import type { CreatorAsset, CreatorAssetKind } from '../../domain/types';
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
 import { useEditorStore } from '../editorStore';
 
 interface AssetPickerMeta {
@@ -44,21 +47,25 @@ export function AssetPicker({ value, onChange, kind, placeholder }: AssetPickerP
   return (
     <div ref={rootRef} className="relative flex flex-col gap-1">
       <div className="flex items-stretch gap-1">
-        <input
+        <Input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-md border border-neutral-800 bg-neutral-950 px-2 py-1.5 text-xs text-neutral-100 focus:border-sky-500 focus:outline-none"
+          size="sm"
+          className="w-full border-neutral-800"
         />
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="xs"
           onClick={() => setOpen((v) => !v)}
-          className="shrink-0 rounded-md border border-neutral-700 bg-neutral-900 px-2 py-1.5 text-[11px] text-neutral-200 hover:bg-neutral-800"
+          className="shrink-0 text-[11px]"
           title="Выбрать из библиотеки ассетов"
         >
+          <Images />
           Из библиотеки
-        </button>
+        </Button>
       </div>
       {open ? (
         <div className="absolute right-0 top-full z-10 mt-1 max-h-64 w-full overflow-auto rounded-md border border-neutral-700 bg-neutral-950 p-2 shadow-lg">

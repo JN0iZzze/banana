@@ -59,6 +59,7 @@ interface JsonCardTextItemProps {
   tailClassName?: string;
   /** Absolute path to this text item; pass `NOOP_EDITOR_PATH` to disable inline editing. */
   editorPath: string;
+  multiline: boolean;
 }
 
 function JsonCardTextItem({
@@ -69,6 +70,7 @@ function JsonCardTextItem({
   surface,
   tailClassName,
   editorPath,
+  multiline,
 }: JsonCardTextItemProps) {
   const editableProps = useEditableTextProps(editorPath);
   const isEditorActive = useIsEditorActive();
@@ -102,10 +104,16 @@ function JsonCardTextItem({
         tailClassName,
       )}
       {...editableProps}
+      multiline={multiline}
     >
       {item.text}
     </Text>
   );
+}
+
+const MULTILINE_CARD_VARIANTS = new Set(['prompt', 'body', 'bodyLg', 'h2', 'h3']);
+function isMultilineCardVariant(variant: JsonSlideCardItemText['variant']): boolean {
+  return MULTILINE_CARD_VARIANTS.has(variant);
 }
 
 /**
@@ -171,6 +179,7 @@ export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
             compactCard={compactCard}
             surface={surface}
             editorPath={editorPath ? `${editorPath}.items.0.text` : NOOP_EDITOR_PATH}
+            multiline={isMultilineCardVariant((flatItems[0] as JsonSlideCardItemText).variant)}
           />
           <JsonCardTextItem
             item={flatItems[1] as JsonSlideCardItemText}
@@ -179,6 +188,7 @@ export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
             compactCard={compactCard}
             surface={surface}
             editorPath={editorPath ? `${editorPath}.items.1.text` : NOOP_EDITOR_PATH}
+            multiline={isMultilineCardVariant((flatItems[1] as JsonSlideCardItemText).variant)}
           />
         </div>
       </div>
@@ -213,6 +223,7 @@ export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
                   editorPath={
                     editorPath ? `${editorPath}.slots.${si}.items.${ii}.text` : NOOP_EDITOR_PATH
                   }
+                  multiline={isMultilineCardVariant(item.variant)}
                 />
               ) : (
                 renderJsonCardComponentItem(card.tone, item, ii)
@@ -249,6 +260,7 @@ export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
               surface={surface}
               tailClassName={pinBodyTailToBottom ? 'mt-auto' : undefined}
               editorPath={itemEditorPath}
+              multiline={isMultilineCardVariant(item.variant)}
             />
           );
         }
@@ -315,6 +327,7 @@ export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
             compactCard={compactCard}
             surface={surface}
             editorPath={subtitlePath}
+            multiline={false}
           />
         </div>
       ) : null}

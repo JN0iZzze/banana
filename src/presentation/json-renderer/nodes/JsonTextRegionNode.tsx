@@ -36,6 +36,8 @@ interface JsonTextRegionTextItemProps {
   itemPath: string | null;
 }
 
+const MULTILINE_REGION_VARIANTS = new Set(['prompt', 'body', 'bodyLg', 'h2', 'h3']);
+
 function JsonTextRegionTextItem({ item, index, itemPath }: JsonTextRegionTextItemProps) {
   const editableProps = useEditableTextProps(itemPath ?? '');
   const isEditorActive = useIsEditorActive();
@@ -53,6 +55,7 @@ function JsonTextRegionTextItem({ item, index, itemPath }: JsonTextRegionTextIte
         itemPath != null && isEditorActive && 'pointer-events-auto',
       )}
       {...editableProps}
+      multiline={MULTILINE_REGION_VARIANTS.has(item.variant)}
     >
       {item.text}
     </Text>

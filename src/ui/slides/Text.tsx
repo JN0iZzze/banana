@@ -30,8 +30,9 @@ type TextOwnProps = {
   className?: string;
   /** If set, the element becomes contentEditable and gets data-editor-path. */
   editorPath?: string;
-  /** If true, Enter inserts newline instead of committing. Cmd/Ctrl+Enter commits. */
-  editorMultiline?: boolean;
+  /** Multiline field: applies `white-space: pre-wrap` for display, and (when editing)
+   *  Enter inserts a newline instead of committing — Cmd/Ctrl+Enter commits. */
+  multiline?: boolean;
   /** Called when the user commits an edit (blur / Enter / Cmd+Enter). */
   onEditorCommit?: (path: string, text: string) => void;
   /** Called when the user cancels editing (Escape). */
@@ -90,7 +91,7 @@ export function Text({
   className,
   children,
   editorPath,
-  editorMultiline = false,
+  multiline = false,
   onEditorCommit,
   onEditorCancel,
   onEditorStartEdit,
@@ -109,8 +110,10 @@ export function Text({
 
   const editorPathLiveRef = useRef(editorPath);
   const onEditorCommitLiveRef = useRef(onEditorCommit);
+  const multilineLiveRef = useRef(multiline);
   editorPathLiveRef.current = editorPath;
   onEditorCommitLiveRef.current = onEditorCommit;
+  multilineLiveRef.current = multiline;
 
   useLayoutEffect(() => {
     return () => {
@@ -123,7 +126,7 @@ export function Text({
       if (!el || orig === null) {
         return;
       }
-      const next = el.textContent ?? '';
+      const next = multilineLiveRef.current ? el.innerText : (el.textContent ?? '');
       if (next === orig) return;
       commit(path, next);
     };
@@ -132,7 +135,7 @@ export function Text({
   if (!editorPath) {
     return (
       <Component
-        className={cn(baseClass, className)}
+        className={cn(baseClass, multiline && 'whitespace-pre-wrap', className)}
         data-slide-text-context={context === 'onAccent' ? 'onAccent' : undefined}
         {...rest}
       >
@@ -144,13 +147,15 @@ export function Text({
   const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
     blurFiredRef.current = false;
     focusedEditorElRef.current = e.currentTarget;
-    originalTextRef.current = e.currentTarget.textContent ?? '';
+    originalTextRef.current = multiline
+      ? e.currentTarget.innerText
+      : (e.currentTarget.textContent ?? '');
     onEditorStartEdit?.(editorPath);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
     blurFiredRef.current = true;
-    const nextText = e.currentTarget.textContent ?? '';
+    const nextText = multiline ? e.currentTarget.innerText : (e.currentTarget.textContent ?? '');
     onEditorCommit?.(editorPath, nextText);
     originalTextRef.current = null;
     focusedEditorElRef.current = null;
@@ -168,15 +173,37 @@ export function Text({
       return;
     }
 
-    if (!editorMultiline && e.key === 'Enter') {
+    if (!multiline && e.key === 'Enter') {
       e.preventDefault();
       e.currentTarget.blur();
       return;
     }
 
-    if (editorMultiline && e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+    if (multiline && e.key === 'Enter') {
+      const el = e.currentTarget;
       e.preventDefault();
-      e.currentTarget.blur();
+      if (e.metaKey || e.ctrlKey) {
+        e.currentTarget.blur();
+        return;
+      }
+      // execCommand('insertText', '\n') в Chrome создаёт <div>/<br>, из-за чего innerText
+      // даёт лишние переводы. Вставляем один символ перевода строки через Selection API.
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) {
+        return;
+      }
+      const range = sel.getRangeAt(0);
+      if (!el.contains(range.commonAncestorContainer)) {
+        return;
+      }
+      range.deleteContents();
+      const nlNode = document.createTextNode('\n');
+      range.insertNode(nlNode);
+      range.setStartAfter(nlNode);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      el.normalize();
       return;
     }
 
@@ -186,6 +213,7 @@ export function Text({
     <Component
       className={cn(
         baseClass,
+        multiline && 'whitespace-pre-wrap',
         'cursor-text',
         'rounded-sm outline-none focus:ring-2 focus:ring-sky-400/50 focus:ring-offset-2 focus:ring-offset-transparent',
         className,

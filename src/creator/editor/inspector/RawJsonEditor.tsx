@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { CreatorSlide } from '../../domain/types';
+import { Textarea } from '../../ui/textarea';
 import { useEditorStore } from '../editorStore';
 
 interface RawJsonEditorProps {
@@ -59,17 +60,14 @@ export function RawJsonEditor({ slide, onParseErrorChange }: RawJsonEditorProps)
     }
   };
 
-  const borderCls = parseError
-    ? 'border-red-700 focus:border-red-500'
-    : 'border-neutral-800 focus:border-sky-500';
-
   return (
-    <textarea
+    <Textarea
       value={text}
       onChange={(e) => handleChange(e.target.value)}
       onKeyDown={handleKeyDown}
       spellCheck={false}
-      className={`h-full w-full flex-1 resize-none rounded-md border bg-neutral-950 p-3 font-mono text-xs text-neutral-100 focus:outline-none ${borderCls}`}
+      aria-invalid={parseError !== null}
+      className="h-full min-h-0 flex-1 resize-none p-3 font-mono text-xs"
       style={{ whiteSpace: 'pre', overflow: 'auto' }}
     />
   );
