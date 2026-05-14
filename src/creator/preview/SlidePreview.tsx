@@ -45,12 +45,20 @@ export function SlidePreview({ slide }: SlidePreviewProps) {
     };
   }, []);
 
-  const { updateSlideDocument } = useEditorStore();
+  const { updateSlideDocument, clearInspectorSelection } = useEditorStore();
+
+  // Клик в любую «пустую» область превью (не по узлу со своим click-handler,
+  // т.к. selectable-узлы делают stopPropagation) — сбрасывает selection в
+  // SLIDE_SELECTION. Это даёт ожидаемое поведение «кликнул мимо — снял выбор».
+  const handleBackgroundClick = () => {
+    clearInspectorSelection();
+  };
 
   return (
     <div
       ref={containerRef}
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
+      onClick={handleBackgroundClick}
     >
       <PreviewBody slide={slide} scale={scale} onUpdateDocument={updateSlideDocument} />
     </div>

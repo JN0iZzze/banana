@@ -5,7 +5,7 @@ import { cn } from '../../../ui/slides/cn';
 import { cardStackGapCssVar } from '../layouts/cardStackGapCssVar';
 import { renderJsonCardComponentItem } from '../jsonSlideCardComponentRegistry';
 import { getJsonSlideCardIcon } from '../jsonSlideCardIconRegistry';
-import { useEditableTextProps, useIsEditorActive } from '../../../creator/inline-edit';
+import { useEditableTextProps, useInspectorSelectable, useIsEditorActive } from '../../../creator/inline-edit';
 
 export interface JsonCardNodeProps {
   card: JsonSlideCard;
@@ -123,6 +123,9 @@ function isMultilineCardVariant(variant: JsonSlideCardItemText['variant']): bool
  */
 export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
   const subtitlePath = editorPath ? `${editorPath}.subtitle.text` : NOOP_EDITOR_PATH;
+  // Path к карточке (для selection); editorPath может приходить undefined в
+  // презентационном режиме — тогда selectable вернёт {}.
+  const cardSelectable = useInspectorSelectable(editorPath, 'card');
   const onAccent = card.tone === 'accent';
   const surface = card.surface ?? 'box';
   const onAccentCard = onAccent || surface === 'accentGradient';
@@ -348,47 +351,53 @@ export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
 
   if (surface === 'ghost') {
     return (
-      <Reveal preset="soft" delay={delay} className="h-full min-h-0">
-        <SurfaceCard
-          variant="ghost"
-          padding={padding}
-          className="h-full min-h-0 border-white/10 bg-white/[0.045] backdrop-blur-[10px]"
-        >
-          {inner}
-        </SurfaceCard>
-      </Reveal>
+      <div {...cardSelectable} className={cn('h-full min-h-0', cardSelectable.className)}>
+        <Reveal preset="soft" delay={delay} className="h-full min-h-0">
+          <SurfaceCard
+            variant="ghost"
+            padding={padding}
+            className="h-full min-h-0 border-white/10 bg-white/[0.045] backdrop-blur-[10px]"
+          >
+            {inner}
+          </SurfaceCard>
+        </Reveal>
+      </div>
     );
   }
 
   if (surface === 'accentGradient') {
     return (
+      <div {...cardSelectable} className={cn('h-full min-h-0', cardSelectable.className)}>
+        <Reveal preset="soft" delay={delay} className="h-full min-h-0">
+          <Box
+            tone="accent"
+            padding={padding}
+            className={cn(
+              'h-full',
+              'justify-between border-none bg-[linear-gradient(160deg,var(--slide-color-accent),#b53b17)]',
+            )}
+          >
+            {inner}
+          </Box>
+        </Reveal>
+      </div>
+    );
+  }
+
+  return (
+    <div {...cardSelectable} className={cn('h-full min-h-0', cardSelectable.className)}>
       <Reveal preset="soft" delay={delay} className="h-full min-h-0">
         <Box
-          tone="accent"
+          tone={card.tone}
           padding={padding}
           className={cn(
             'h-full',
-            'justify-between border-none bg-[linear-gradient(160deg,var(--slide-color-accent),#b53b17)]',
+            onAccent ? 'border-none' : 'border border-[color:var(--slide-color-line)] shadow-[var(--slide-shadow-soft)]',
           )}
         >
           {inner}
         </Box>
       </Reveal>
-    );
-  }
-
-  return (
-    <Reveal preset="soft" delay={delay} className="h-full min-h-0">
-      <Box
-        tone={card.tone}
-        padding={padding}
-        className={cn(
-          'h-full',
-          onAccent ? 'border-none' : 'border border-[color:var(--slide-color-line)] shadow-[var(--slide-shadow-soft)]',
-        )}
-      >
-        {inner}
-      </Box>
-    </Reveal>
+    </div>
   );
 }

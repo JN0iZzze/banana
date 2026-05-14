@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { JsonSlideDefaultDocument } from '../jsonSlideTypes';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdrop, SlideBackdropFrame, SlideContent, SlideFrame, SlideHeader, Text } from '../../ui/slides';
-import { useEditableTextProps, useIsEditorActive } from '../../creator/inline-edit';
+import { useEditableTextProps, useInspectorSelectable, useIsEditorActive } from '../../creator/inline-edit';
 
 export interface JsonSlideShellProps {
   doc: JsonSlideDefaultDocument;
@@ -16,6 +16,7 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
   const titleEditableProps = useEditableTextProps('header.title');
   const leadEditableProps = useEditableTextProps('header.lead');
   const metaEditableProps = useEditableTextProps('header.meta');
+  const headerSelectable = useInspectorSelectable('header', 'header');
   const metaCounter = `· ${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
 
   const frame = doc.frame ?? {};
@@ -41,6 +42,7 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
         align={content.align ?? 'left'}
         className={cn('relative h-full min-h-0 justify-between gap-6', showShellBorderFrame ? 'z-30' : 'z-10')}
       >
+        <div {...headerSelectable} className={cn('shrink-0', headerSelectable.className)}>
         <SlideHeader
           align={doc.header.align ?? 'left'}
           className="max-w-[1720px] shrink-0 gap-3"
@@ -84,6 +86,7 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
             </Reveal>
           ) : null}
         </SlideHeader>
+        </div>
 
         {children}
       </SlideContent>

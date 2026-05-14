@@ -1,7 +1,7 @@
 import type { JsonSlideQuote } from '../../jsonSlideTypes';
 import { Reveal, SlidePromptQuote, Text } from '../../../ui/slides';
 import { cn } from '../../../ui/slides/cn';
-import { useEditableTextProps, useIsEditorActive } from '../../../creator/inline-edit';
+import { useEditableTextProps, useInspectorSelectable, useIsEditorActive } from '../../../creator/inline-edit';
 
 export interface JsonQuoteNodeProps {
   quote: JsonSlideQuote;
@@ -22,6 +22,7 @@ const NOOP_EDITOR_PATH = '__noop__';
 
 export function JsonQuoteNode({ quote, delay = 0.16, editorPath }: JsonQuoteNodeProps) {
   const isEditorActive = useIsEditorActive();
+  const quoteSelectable = useInspectorSelectable(editorPath, 'quote');
 
   const labelPath = editorPath ? `${editorPath}.label` : NOOP_EDITOR_PATH;
   const subtitlePath = editorPath ? `${editorPath}.subtitle` : NOOP_EDITOR_PATH;
@@ -39,6 +40,10 @@ export function JsonQuoteNode({ quote, delay = 0.16, editorPath }: JsonQuoteNode
   const paragraphs = quote.paragraphs?.filter((p) => p.trim().length > 0) ?? [];
 
   return (
+    <div
+      {...quoteSelectable}
+      className={cn('h-full min-h-0', quoteSelectable.className)}
+    >
     <Reveal
       preset="soft"
       delay={delay}
@@ -70,5 +75,6 @@ export function JsonQuoteNode({ quote, delay = 0.16, editorPath }: JsonQuoteNode
         <SlidePromptQuote key={`q-${i}`}>{p}</SlidePromptQuote>
       ))}
     </Reveal>
+    </div>
   );
 }

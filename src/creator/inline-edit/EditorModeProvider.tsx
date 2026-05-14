@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { CreatorValidation } from '../domain/types';
-import { EditorModeContext } from './EditorModeContext';
+import { EditorModeContext, type EditorSelectionApi } from './EditorModeContext';
 import { getByPath, setByPath } from './collectEditablePaths';
+import { useEditorStore } from '../editor/editorStore';
 
 interface EditorModeProviderProps {
   slide: { id: string; document: unknown; validation: CreatorValidation };
@@ -17,6 +18,16 @@ function editingBaseDocument(slide: EditorModeProviderProps['slide']): unknown {
 export function EditorModeProvider({ slide, onUpdateDocument, children }: EditorModeProviderProps) {
   const [editingPath, setEditingPath] = useState<string | null>(null);
   const originalTextRef = useRef<string | null>(null);
+  const { inspectorSelection, setInspectorSelection, clearInspectorSelection } = useEditorStore();
+
+  const selection = useMemo<EditorSelectionApi>(
+    () => ({
+      current: inspectorSelection,
+      set: (path, kind) => setInspectorSelection({ scope: 'node', path, kind }),
+      clear: () => clearInspectorSelection(),
+    }),
+    [inspectorSelection, setInspectorSelection, clearInspectorSelection],
+  );
 
   // Track editingPath in a ref so the slide.id effect can access the latest value
   // without it being a dependency (which would re-run the effect on every edit).
@@ -71,6 +82,7 @@ export function EditorModeProvider({ slide, onUpdateDocument, children }: Editor
         onStartEdit,
         onCommit,
         onCancel,
+        selection,
       }}
     >
       {children}

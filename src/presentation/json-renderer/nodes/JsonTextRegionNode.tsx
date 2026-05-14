@@ -1,7 +1,7 @@
 import type { JsonSlideCardItemText, JsonSlideGridGap, JsonSlideTextRegionPayload } from '../../jsonSlideTypes';
 import { Reveal, Text } from '../../../ui/slides';
 import { cn } from '../../../ui/slides/cn';
-import { useEditableTextProps, useIsEditorActive } from '../../../creator/inline-edit';
+import { useEditableTextProps, useInspectorSelectable, useIsEditorActive } from '../../../creator/inline-edit';
 import { cardStackGapCssVar } from '../layouts/cardStackGapCssVar';
 
 export interface JsonTextRegionNodeProps {
@@ -69,8 +69,13 @@ export function JsonTextRegionNode({ text, delay, editorPath }: JsonTextRegionNo
   const align = text.align ?? 'left';
   const stackGapResolved: JsonSlideGridGap = text.stackGap ?? 'md';
   const stackGapStyle = cardStackGapCssVar(stackGapResolved);
+  const regionSelectable = useInspectorSelectable(editorPath, 'textRegion');
 
   return (
+    <div
+      {...regionSelectable}
+      className={cn('h-full min-h-0 w-full', regionSelectable.className)}
+    >
     <Reveal
       preset="soft"
       delay={delay}
@@ -94,5 +99,6 @@ export function JsonTextRegionNode({ text, delay, editorPath }: JsonTextRegionNo
         ))}
       </div>
     </Reveal>
+    </div>
   );
 }

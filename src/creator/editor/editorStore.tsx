@@ -20,6 +20,7 @@ import {
 import type { CreatorAsset, CreatorDeck, CreatorSlide } from '../domain/types';
 import type { UpdateSlideMetaPatch } from '../domain/commands';
 import type { JsonSlideDocument } from '../../presentation/jsonSlideTypes';
+import { SLIDE_SELECTION, type InspectorSelection } from './inspector/selection';
 
 export interface CreateSlideOptions {
   /** Готовый стартовый документ. Если не задан — используется `createEmptySlideDocument()`. */
@@ -35,6 +36,15 @@ export interface EditorState {
   assets: CreatorAsset[];
   isAssetsLoading: boolean;
   assetsError: string | null;
+  /**
+   * Текущее выделение в инспекторе. По умолчанию `{ scope: 'slide' }` —
+   * показываем общий инспектор слайда. При выделении узла на сцене
+   * становится `{ scope: 'node', path, kind }`. Сбрасывается в
+   * `SLIDE_SELECTION` при смене `selectedSlideId`.
+   *
+   * NB: это НЕ `editingPath` из `EditorModeContext` — это разные оси.
+   */
+  inspectorSelection: InspectorSelection;
 }
 
 type EditorAction =
@@ -52,7 +62,8 @@ type EditorAction =
   | { type: 'addAsset'; asset: CreatorAsset }
   | { type: 'removeAsset'; assetId: string }
   | { type: 'setAssetsLoading'; value: boolean }
-  | { type: 'setAssetsError'; error: string | null };
+  | { type: 'setAssetsError'; error: string | null }
+  | { type: 'setInspectorSelection'; selection: InspectorSelection };
 
 const initialState: EditorState = {
   deck: null,
@@ -63,6 +74,7 @@ const initialState: EditorState = {
   assets: [],
   isAssetsLoading: false,
   assetsError: null,
+  inspectorSelection: SLIDE_SELECTION,
 };
 
 function reducer(state: EditorState, action: EditorAction): EditorState {
@@ -75,8 +87,18 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       return { ...state, deck: action.deck };
     case 'setError':
       return { ...state, error: action.error };
-    case 'setSelectedSlideId':
-      return { ...state, selectedSlideId: action.slideId };
+    case 'setSelectedSlideId': {
+      // Сбрасываем выделение узла только если slideId реально другой,
+      // чтобы повторный клик по тому же слайду не сбивал scope: 'node'.
+      if (state.selectedSlideId === action.slideId) {
+        return { ...state, selectedSlideId: action.slideId };
+      }
+      return {
+        ...state,
+        selectedSlideId: action.slideId,
+        inspectorSelection: SLIDE_SELECTION,
+      };
+    }
     case 'replaceSlide': {
       if (!state.deck) return state;
       const slides = state.deck.slides.map((s) => (s.id === action.slide.id ? action.slide : s));
@@ -118,6 +140,8 @@ function reducer(state: EditorState, action: EditorAction): EditorState {
       return { ...state, isAssetsLoading: action.value };
     case 'setAssetsError':
       return { ...state, assetsError: action.error };
+    case 'setInspectorSelection':
+      return { ...state, inspectorSelection: action.selection };
     default:
       return state;
   }
@@ -142,6 +166,8 @@ export interface EditorStore extends EditorState {
   loadAssets: (deckId: string) => Promise<void>;
   uploadAsset: (file: File) => Promise<CreatorAsset | null>;
   deleteAsset: (assetId: string) => Promise<void>;
+  setInspectorSelection: (selection: InspectorSelection) => void;
+  clearInspectorSelection: () => void;
 }
 
 const StoreCtx = createContext<EditorStore | null>(null);
@@ -233,6 +259,14 @@ export function EditorProvider({ children }: { children: ReactNode }) {
 
   const setSelectedSlideId = useCallback((slideId: string | null) => {
     dispatch({ type: 'setSelectedSlideId', slideId });
+  }, []);
+
+  const setInspectorSelection = useCallback((selection: InspectorSelection) => {
+    dispatch({ type: 'setInspectorSelection', selection });
+  }, []);
+
+  const clearInspectorSelection = useCallback(() => {
+    dispatch({ type: 'setInspectorSelection', selection: SLIDE_SELECTION });
   }, []);
 
   const clearError = useCallback(() => {
@@ -488,6 +522,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       loadAssets,
       uploadAsset,
       deleteAsset,
+      setInspectorSelection,
+      clearInspectorSelection,
     }),
     [
       state,
@@ -506,6 +542,8 @@ export function EditorProvider({ children }: { children: ReactNode }) {
       loadAssets,
       uploadAsset,
       deleteAsset,
+      setInspectorSelection,
+      clearInspectorSelection,
     ],
   );
 

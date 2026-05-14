@@ -3,6 +3,7 @@ import { JsonCardNode } from './JsonCardNode';
 import { JsonQuoteNode } from './JsonQuoteNode';
 import { JsonTextRegionNode } from './JsonTextRegionNode';
 import { renderJsonLayout } from '../layouts/renderJsonLayout';
+import { useInspectorSelectable } from '../../../creator/inline-edit';
 
 export interface JsonSlideRegionNodeProps {
   region: JsonSlideRegion;
@@ -19,6 +20,11 @@ export interface JsonSlideRegionNodeProps {
 
 /** Renders a layout region: card, quote, text, or nested layout. */
 export function JsonSlideRegionNode({ region, delay, editorPath }: JsonSlideRegionNodeProps) {
+  // Path для вложенного layout (kind: 'layout'); вычисляем безусловно ради
+  // стабильного порядка хуков, а используем только в layout-ветке.
+  const layoutPath = editorPath != null ? `${editorPath}.layout` : undefined;
+  const layoutSelectable = useInspectorSelectable(layoutPath, 'layout');
+
   if (region.kind === 'card') {
     return (
       <JsonCardNode
@@ -47,8 +53,8 @@ export function JsonSlideRegionNode({ region, delay, editorPath }: JsonSlideRegi
     );
   }
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      {renderJsonLayout(region.layout, editorPath != null ? `${editorPath}.layout` : undefined)}
+    <div className="flex h-full min-h-0 flex-col" {...layoutSelectable}>
+      {renderJsonLayout(region.layout, layoutPath)}
     </div>
   );
 }

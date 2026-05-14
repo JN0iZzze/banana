@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Copy,
   Eye,
@@ -107,6 +107,7 @@ export function SlideList({ onSelect }: SlideListProps) {
                 isActive={store.selectedSlideId === slide.id}
                 onSelect={() => onSelect(slide.id)}
                 onToggleHidden={() => void store.setSlideHidden(slide.id, !slide.hidden)}
+                onRename={(title) => store.updateSlideMeta(slide.id, { title })}
                 onDuplicate={() => void store.duplicateSlide(slide.id)}
                 onDelete={() => {
                   const title =
@@ -141,6 +142,7 @@ interface SortableSlideRowProps {
   isActive: boolean;
   onSelect: () => void;
   onToggleHidden: () => void;
+  onRename: (title: string) => Promise<void> | void;
   onDuplicate: () => void;
   onDelete: () => void;
 }
@@ -151,6 +153,7 @@ function SortableSlideRow({
   isActive,
   onSelect,
   onToggleHidden,
+  onRename,
   onDuplicate,
   onDelete,
 }: SortableSlideRowProps) {
@@ -163,7 +166,22 @@ function SortableSlideRow({
     isDragging,
   } = useSortable({ id: slide.id });
 
-  const title = slide.title && slide.title.trim().length > 0 ? slide.title : 'Без названия';
+  const [isEditing, setIsEditing] = useState(false);
+  const editRef = useRef<HTMLSpanElement | null>(null);
+
+  useEffect(() => {
+    if (!isEditing || !editRef.current) return;
+    const el = editRef.current;
+    el.focus();
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+  }, [isEditing]);
+
+  const rawTitle = slide.title ?? '';
+  const displayTitle = rawTitle.trim().length > 0 ? rawTitle : 'Без названия';
   const isInvalid = slide.validation.status === 'invalid';
 
   const style = {
@@ -171,53 +189,93 @@ function SortableSlideRow({
     transition,
   };
 
+  const stop = (event: React.SyntheticEvent) => event.stopPropagation();
+
+  const commitTitle = () => {
+    setIsEditing(false);
+    const next = (editRef.current?.textContent ?? '').trim();
+    if (next === rawTitle.trim()) return;
+    void onRename(next);
+  };
+
   return (
     <li
       ref={setNodeRef}
       style={style}
       {...attributes}
-      {...listeners}
+      {...(isEditing ? {} : listeners)}
+      onClick={isEditing ? undefined : onSelect}
+      onDoubleClick={(event) => {
+        event.stopPropagation();
+        setIsEditing(true);
+      }}
       className={`touch-none border-b border-neutral-800 ${
         isActive ? 'bg-neutral-800/80' : 'hover:bg-neutral-900'
       } ${isDragging ? 'relative z-10 opacity-60 shadow-lg' : ''}`}
     >
       <div className="flex items-center gap-2 px-3 py-2">
-        <button
-          type="button"
-          onClick={onSelect}
-          className="flex min-w-0 flex-1 items-center gap-2 text-left"
-        >
-          <span className="w-6 shrink-0 text-xs tabular-nums text-neutral-500">
-            {index + 1}
-          </span>
-          {isInvalid ? (
-            <span
-              className="h-2 w-2 shrink-0 rounded-full bg-red-500"
-              title="Невалидный JSON"
-            />
-          ) : null}
-          {slide.hidden ? (
-            <EyeOff
-              className="size-3.5 shrink-0 text-neutral-500"
-              aria-label="Скрыт"
-            />
-          ) : null}
+        <span className="w-6 shrink-0 text-xs tabular-nums text-neutral-500">
+          {index + 1}
+        </span>
+        {isInvalid ? (
           <span
-            className={`truncate text-sm ${
+            className="h-2 w-2 shrink-0 rounded-full bg-red-500"
+            title="Невалидный JSON"
+          />
+        ) : null}
+        {isEditing ? (
+          <span
+            ref={editRef}
+            contentEditable
+            suppressContentEditableWarning
+            spellCheck={false}
+            role="textbox"
+            aria-label="Заголовок слайда"
+            onPointerDown={stop}
+            onClick={stop}
+            onDoubleClick={stop}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                commitTitle();
+              } else if (event.key === 'Escape') {
+                event.preventDefault();
+                if (editRef.current) editRef.current.textContent = rawTitle;
+                setIsEditing(false);
+              }
+            }}
+            onBlur={commitTitle}
+            className={`min-w-0 flex-1 truncate text-sm outline-none ${
               slide.hidden ? 'text-neutral-500 line-through' : 'text-neutral-100'
             }`}
           >
-            {title}
+            {rawTitle}
           </span>
-        </button>
-        <div className="flex shrink-0 items-center gap-0.5">
+        ) : (
+          <span
+            className={`min-w-0 flex-1 truncate text-sm ${
+              slide.hidden ? 'text-neutral-500 line-through' : 'text-neutral-100'
+            }`}
+          >
+            {displayTitle}
+          </span>
+        )}
+        <div
+          className="flex shrink-0 items-center gap-0.5"
+          onPointerDown={stop}
+          onClick={stop}
+          onDoubleClick={stop}
+        >
           <Button
             type="button"
             variant="ghost"
             size="icon-sm"
             title={slide.hidden ? 'Показать' : 'Скрыть'}
             aria-label={slide.hidden ? 'Показать' : 'Скрыть'}
-            onClick={onToggleHidden}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleHidden();
+            }}
             className="text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"
           >
             {slide.hidden ? <EyeOff /> : <Eye />}
@@ -230,6 +288,7 @@ function SortableSlideRow({
                 size="icon-sm"
                 title="Ещё"
                 aria-label="Ещё"
+                onClick={stop}
                 className="text-neutral-400 hover:bg-neutral-700 hover:text-neutral-100"
               >
                 <MoreHorizontal />

@@ -19,8 +19,10 @@
  * structuredText / collectionField return `null` for now.
  */
 
+import { useCallback, useMemo, type MouseEvent } from 'react';
 import { useEditorMode } from './EditorModeContext';
 import { findEditableBinding } from './collectEditablePaths';
+import type { InspectorSelectionKind } from '../editor/inspector/selection';
 
 export interface EditablePropsForText {
   editorPath: string;
@@ -64,4 +66,68 @@ export function useEditableTextProps(
 export function useIsEditorActive(): boolean {
   const editorMode = useEditorMode();
   return editorMode?.editable === true;
+}
+
+/**
+ * Возвращает props для подключения click-to-select на конкретный узел JSON-документа.
+ *
+ * Поведение:
+ * - вне editor-mode (контекст null или selection не проброшен) — возвращает `{}`,
+ *   чтобы презентационный режим оставался без кликов.
+ * - одиночный клик: `event.stopPropagation()` + `selection.set(path, kind)`.
+ *   Двойной клик НЕ ловится этим обработчиком и оставляет inline-edit нетронутым
+ *   (Convention: single click → select, double click → edit).
+ * - возвращает `data-inspector-path` / `data-inspector-selected` для DOM-инспекции
+ *   и тонкий outline-класс через Tailwind, если узел сейчас выделен.
+ */
+export interface InspectorSelectableProps {
+  onClick?: (event: MouseEvent<HTMLElement>) => void;
+  'data-inspector-path'?: string;
+  'data-inspector-kind'?: InspectorSelectionKind;
+  'data-inspector-selected'?: 'true';
+  className?: string;
+}
+
+export function useInspectorSelectable(
+  path: string | undefined,
+  kind: InspectorSelectionKind,
+): InspectorSelectableProps {
+  const editorMode = useEditorMode();
+  const selection = editorMode?.selection;
+  const isSelected =
+    selection?.current.scope === 'node' &&
+    selection.current.path === path &&
+    selection.current.kind === kind;
+
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      if (!selection || path == null) return;
+      // Не перехватываем клики на contentEditable-узлах: они должны попадать
+      // в inline-edit (focus → handleFocus в Text.tsx). Если кликнули по такому
+      // узлу — ничего не делаем здесь, чтобы edit-сессия не сбивалась.
+      const target = event.target as HTMLElement | null;
+      if (target && target.closest('[contenteditable="true"]') !== null) {
+        return;
+      }
+      event.stopPropagation();
+      selection.set(path, kind);
+    },
+    [selection, path, kind],
+  );
+
+  return useMemo(() => {
+    if (!selection || path == null) return {};
+    const props: InspectorSelectableProps = {
+      onClick: handleClick,
+      'data-inspector-path': path,
+      'data-inspector-kind': kind,
+      className: isSelected
+        ? 'outline outline-2 outline-offset-2 outline-sky-400/70 rounded-sm'
+        : undefined,
+    };
+    if (isSelected) {
+      props['data-inspector-selected'] = 'true';
+    }
+    return props;
+  }, [selection, path, kind, isSelected, handleClick]);
 }

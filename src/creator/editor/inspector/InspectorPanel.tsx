@@ -1,14 +1,25 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useEditorStore } from '../editorStore';
-import { StructuredInspector } from './StructuredInspector';
+import { SlideInspector } from './SlideInspector';
+import { NodeInspector } from './NodeInspector';
 import { RawJsonEditor } from './RawJsonEditor';
 import { ValidationPanel } from './ValidationPanel';
 
 type InspectorTab = 'structured' | 'raw';
 
+/**
+ * Shell правой панели редактора. Здесь живут только:
+ * - выбор таба (Структура / JSON);
+ * - роутинг таба «Структура» по `inspectorSelection.scope`
+ *   (`slide` → `SlideInspector`, `node` → `NodeInspector`);
+ * - нижний блок `ValidationPanel`.
+ *
+ * Сама форма свойств слайда вынесена в `SlideInspector`, форма для узлов —
+ * в `NodeInspector` (Этап 4 подключит к ней реестр).
+ */
 export function InspectorPanel() {
   const store = useEditorStore();
-  const { deck, selectedSlideId, assets } = store;
+  const { deck, selectedSlideId, assets, inspectorSelection, clearInspectorSelection } = store;
 
   const slide = useMemo(() => {
     if (!deck || !selectedSlideId) return null;
@@ -42,6 +53,7 @@ export function InspectorPanel() {
   }
 
   const structuredDisabled = !isValid;
+  const isNodeScope = inspectorSelection.scope === 'node';
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">
@@ -61,7 +73,22 @@ export function InspectorPanel() {
 
       <div className="min-h-0 flex-1 overflow-auto">
         {tab === 'structured' ? (
-          <StructuredInspector slide={slide} />
+          <div className="flex flex-col gap-3">
+            {isNodeScope ? (
+              <button
+                type="button"
+                onClick={clearInspectorSelection}
+                className="self-start text-[11px] text-neutral-400 transition hover:text-neutral-200"
+              >
+                ← Вернуться к слайду
+              </button>
+            ) : null}
+            {inspectorSelection.scope === 'node' ? (
+              <NodeInspector selection={inspectorSelection} />
+            ) : (
+              <SlideInspector slide={slide} />
+            )}
+          </div>
         ) : (
           <div className="flex h-full min-h-[240px] flex-col">
             <RawJsonEditor slide={slide} onParseErrorChange={handleParseErrorChange} />

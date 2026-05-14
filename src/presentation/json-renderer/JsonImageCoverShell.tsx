@@ -10,7 +10,7 @@ import type {
 } from '../jsonSlideTypes';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdropFrame, SlideFrame, Text } from '../../ui/slides';
-import { useEditableTextProps } from '../../creator/inline-edit';
+import { useEditableTextProps, useInspectorSelectable } from '../../creator/inline-edit';
 
 function overlayNode(overlay: JsonImageCover['background']['overlay']): ReactNode {
   if (overlay === 'none') {
@@ -344,17 +344,66 @@ function topDelaysForVariant(v: 'two' | 'three', index: number): number {
   return 0.4;
 }
 
+function RailItemSelectable({
+  basePath,
+  itemIndex,
+  children,
+}: {
+  basePath: 'cover.topRail' | 'cover.bottomRail';
+  itemIndex: number;
+  children: ReactNode;
+}) {
+  const selectable = useInspectorSelectable(
+    `${basePath}.items.${itemIndex}`,
+    'imageCoverRail',
+  );
+  return (
+    <div {...selectable} className={cn(selectable.className)}>
+      {children}
+    </div>
+  );
+}
+
+function HeadlineSelectable({
+  selectable,
+  children,
+}: {
+  selectable: ReturnType<typeof useInspectorSelectable>;
+  children: ReactNode;
+}) {
+  if (!selectable.onClick) return <>{children}</>;
+  return (
+    <div {...selectable} className={cn('relative z-30', selectable.className)}>
+      {children}
+    </div>
+  );
+}
+
 export function JsonImageCoverShell({ cover }: { cover: JsonImageCover }) {
   const { background, topRail, bottomRail } = cover;
   const rowInv = topRail.tone === 'inverted';
+  const headlineSelectable = useInspectorSelectable('cover.headline', 'imageCoverHeadline');
+  const backgroundSelectable = useInspectorSelectable(
+    'cover.background',
+    'imageCoverBackground',
+  );
   return (
     <SlideFrame
       align="center"
       padding="none"
       className="relative isolate items-center justify-center"
     >
-      <div className="pointer-events-none absolute inset-0 z-0">
-        <img src={background.src} alt={background.alt ?? ''} className="h-full w-full object-cover" />
+      <div
+        {...backgroundSelectable}
+        className={cn(
+          'absolute inset-0 z-0',
+          // В презентационном режиме (selectable={}) фон не должен ловить клики
+          // и перехватывать поведение. В editor-mode — наоборот, нужен клик.
+          backgroundSelectable.onClick ? '' : 'pointer-events-none',
+          backgroundSelectable.className,
+        )}
+      >
+        <img src={background.src} alt={background.alt ?? ''} className="pointer-events-none h-full w-full object-cover" />
         {overlayNode(background.overlay)}
       </div>
 
@@ -367,24 +416,37 @@ export function JsonImageCoverShell({ cover }: { cover: JsonImageCover }) {
         )}
       >
         {topRail.items.map((item, i) => (
-          <Reveal
+          <RailItemSelectable
             // eslint-disable-next-line react/no-array-index-key
             key={i}
-            preset="soft"
-            delay={topDelaysForVariant(topRail.variant, i)}
-            className={item.kind === 'text' && item.textAlign === 'right' ? 'text-right' : undefined}
+            basePath="cover.topRail"
+            itemIndex={i}
           >
-            {renderTopRailItem(item, i, rowInv)}
-          </Reveal>
+            <Reveal
+              preset="soft"
+              delay={topDelaysForVariant(topRail.variant, i)}
+              className={item.kind === 'text' && item.textAlign === 'right' ? 'text-right' : undefined}
+            >
+              {renderTopRailItem(item, i, rowInv)}
+            </Reveal>
+          </RailItemSelectable>
         ))}
       </div>
 
-      {renderHeadline(cover.headline)}
+      <HeadlineSelectable selectable={headlineSelectable}>
+        {renderHeadline(cover.headline)}
+      </HeadlineSelectable>
 
       <div className="absolute bottom-[var(--slide-safe-y-tight)] left-[var(--slide-safe-x-tight)] right-[var(--slide-safe-x-tight)] z-30 flex justify-between items-end gap-[var(--slide-grid-gap-lg)]">
-        {renderBottomItem(bottomRail.items[0], 0, 'left', 0.6, { centerRule: false })}
-        {renderBottomItem(bottomRail.items[1], 1, 'center', 0.7, { centerRule: bottomRail.centerAccent?.type === 'rule' })}
-        {renderBottomItem(bottomRail.items[2], 2, 'right', 0.8, { centerRule: false })}
+        <RailItemSelectable basePath="cover.bottomRail" itemIndex={0}>
+          {renderBottomItem(bottomRail.items[0], 0, 'left', 0.6, { centerRule: false })}
+        </RailItemSelectable>
+        <RailItemSelectable basePath="cover.bottomRail" itemIndex={1}>
+          {renderBottomItem(bottomRail.items[1], 1, 'center', 0.7, { centerRule: bottomRail.centerAccent?.type === 'rule' })}
+        </RailItemSelectable>
+        <RailItemSelectable basePath="cover.bottomRail" itemIndex={2}>
+          {renderBottomItem(bottomRail.items[2], 2, 'right', 0.8, { centerRule: false })}
+        </RailItemSelectable>
       </div>
     </SlideFrame>
   );

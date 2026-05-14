@@ -1,5 +1,5 @@
 export { EditorModeContext, useEditorMode } from './EditorModeContext';
-export type { EditorModeContextValue } from './EditorModeContext';
+export type { EditorModeContextValue, EditorSelectionApi } from './EditorModeContext';
 export {
   collectEditablePaths,
   collectEditableBindings,
@@ -13,5 +13,6 @@ export {
   useEditableBinding,
   useEditableTextProps,
   useIsEditorActive,
+  useInspectorSelectable,
 } from './useEditableBinding';
-export type { EditablePropsForText } from './useEditableBinding';
+export type { EditablePropsForText, InspectorSelectableProps } from './useEditableBinding';

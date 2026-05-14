@@ -1,7 +1,7 @@
 import type { JsonSlideTextStackDocument, JsonSlideTextStackItem, JsonSlideTextStackItemText } from '../jsonSlideTypes';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdrop, SlideBackdropFrame, SlideContent, SlideFrame, Text } from '../../ui/slides';
-import { useEditableTextProps, useIsEditorActive } from '../../creator/inline-edit';
+import { useEditableTextProps, useInspectorSelectable, useIsEditorActive } from '../../creator/inline-edit';
 
 const justifyClasses: Record<string, string> = {
   start: 'justify-start',
@@ -155,6 +155,7 @@ export function JsonTextStackShell({ doc }: { doc: JsonSlideTextStackDocument })
   const content = doc.content ?? {};
   const stack = doc.stack;
   const reveal = stack.reveal;
+  const stackSelectable = useInspectorSelectable('stack', 'stack');
 
   const backdropVariant = backdrop.variant ?? 'none';
   const backdropAlreadyHasFrame = backdropVariant === 'grid' || backdropVariant === 'mesh';
@@ -185,10 +186,12 @@ export function JsonTextStackShell({ doc }: { doc: JsonSlideTextStackDocument })
         )}
       >
         <div
+          {...stackSelectable}
           className={cn(
             'flex flex-col',
             alignClasses[stack.align],
             stack.gap ? gapClasses[stack.gap] : 'gap-8',
+            stackSelectable.className,
           )}
         >
           {stack.items.map((item, i) =>
