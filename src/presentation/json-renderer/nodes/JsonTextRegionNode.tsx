@@ -1,11 +1,21 @@
 import type { JsonSlideCardItemText, JsonSlideGridGap, JsonSlideTextRegionPayload } from '../../jsonSlideTypes';
 import { Reveal, Text } from '../../../ui/slides';
 import { cn } from '../../../ui/slides/cn';
+import { useEditableTextProps, useIsEditorActive } from '../../../creator/inline-edit';
 import { cardStackGapCssVar } from '../layouts/cardStackGapCssVar';
 
 export interface JsonTextRegionNodeProps {
   text: JsonSlideTextRegionPayload;
   delay: number;
+  /**
+   * Absolute path from the document root to this text region
+   * (e.g. `layout.equalColumns.items.0.region.text`).
+   *
+   * When provided, each item connects to the inline-edit helper via
+   * `${editorPath}.items.${j}.text`. Без пути helper вернёт пустой объект —
+   * презентационный режим остаётся без изменений.
+   */
+  editorPath?: string;
 }
 
 const alignToItemsClass: Record<NonNullable<JsonSlideTextRegionPayload['align']>, string> = {
@@ -20,7 +30,15 @@ const alignToTextClass: Record<NonNullable<JsonSlideTextRegionPayload['align']>,
   right: 'text-right',
 };
 
-function renderTextRow(item: JsonSlideCardItemText, index: number) {
+interface JsonTextRegionTextItemProps {
+  item: JsonSlideCardItemText;
+  index: number;
+  itemPath: string | null;
+}
+
+function JsonTextRegionTextItem({ item, index, itemPath }: JsonTextRegionTextItemProps) {
+  const editableProps = useEditableTextProps(itemPath ?? '');
+  const isEditorActive = useIsEditorActive();
   const isPrompt = item.variant === 'prompt';
   const isBodyRow = item.variant === 'body' || item.variant === 'bodyLg';
   return (
@@ -32,7 +50,9 @@ function renderTextRow(item: JsonSlideCardItemText, index: number) {
         !isPrompt && isBodyRow && 'text-pretty',
         !isPrompt && isBodyRow && 'text-[color:var(--slide-color-text-soft)]',
         isPrompt && 'max-w-full min-w-0',
+        itemPath != null && isEditorActive && 'pointer-events-auto',
       )}
+      {...editableProps}
     >
       {item.text}
     </Text>
@@ -42,7 +62,7 @@ function renderTextRow(item: JsonSlideCardItemText, index: number) {
 /**
  * Plain text stack in `splitLayout` / `stackLayout` — no `SurfaceCard` or card chrome.
  */
-export function JsonTextRegionNode({ text, delay }: JsonTextRegionNodeProps) {
+export function JsonTextRegionNode({ text, delay, editorPath }: JsonTextRegionNodeProps) {
   const align = text.align ?? 'left';
   const stackGapResolved: JsonSlideGridGap = text.stackGap ?? 'md';
   const stackGapStyle = cardStackGapCssVar(stackGapResolved);
@@ -61,7 +81,14 @@ export function JsonTextRegionNode({ text, delay }: JsonTextRegionNodeProps) {
         )}
         style={{ gap: stackGapStyle }}
       >
-        {text.items.map((item, i) => renderTextRow(item, i))}
+        {text.items.map((item, i) => (
+          <JsonTextRegionTextItem
+            key={`tr-${i}`}
+            item={item}
+            index={i}
+            itemPath={editorPath != null ? `${editorPath}.items.${i}.text` : null}
+          />
+        ))}
       </div>
     </Reveal>
   );

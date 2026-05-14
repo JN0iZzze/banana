@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import type { CreatorValidation } from '../domain/types';
 import { EditorModeContext } from './EditorModeContext';
 import { getByPath, setByPath } from './collectEditablePaths';
 
 interface EditorModeProviderProps {
-  slide: { id: string; document: unknown };
+  slide: { id: string; document: unknown; validation: CreatorValidation };
   onUpdateDocument: (slideId: string, doc: unknown) => void;
   children: React.ReactNode;
+}
+
+/** Same tree the renderer uses (`toJsonSlideDefinition` reads `validation.doc`). */
+function editingBaseDocument(slide: EditorModeProviderProps['slide']): unknown {
+  return slide.validation.status === 'valid' ? slide.validation.doc : slide.document;
 }
 
 export function EditorModeProvider({ slide, onUpdateDocument, children }: EditorModeProviderProps) {
@@ -32,13 +38,14 @@ export function EditorModeProvider({ slide, onUpdateDocument, children }: Editor
   }, [slide.id]);
 
   function onStartEdit(path: string) {
-    const current = getByPath(slide.document, path);
+    const base = editingBaseDocument(slide);
+    const current = getByPath(base, path);
     originalTextRef.current = typeof current === 'string' ? current : null;
     setEditingPath(path);
   }
 
   function onCommit(path: string, text: string) {
-    const nextDoc = setByPath(slide.document, path, text);
+    const nextDoc = setByPath(editingBaseDocument(slide), path, text);
     onUpdateDocument(slide.id, nextDoc);
     setEditingPath(null);
     originalTextRef.current = null;
@@ -57,7 +64,14 @@ export function EditorModeProvider({ slide, onUpdateDocument, children }: Editor
 
   return (
     <EditorModeContext.Provider
-      value={{ editable: true, editingPath, onStartEdit, onCommit, onCancel }}
+      value={{
+        editable: true,
+        editingPath,
+        document: editingBaseDocument(slide),
+        onStartEdit,
+        onCommit,
+        onCancel,
+      }}
     >
       {children}
     </EditorModeContext.Provider>

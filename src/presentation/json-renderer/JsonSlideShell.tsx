@@ -3,7 +3,7 @@ import type { JsonSlideDefaultDocument } from '../jsonSlideTypes';
 import { formatSlideMeta } from '../slideMeta';
 import { cn } from '../../ui/slides/cn';
 import { Reveal, SlideBackdrop, SlideBackdropFrame, SlideContent, SlideFrame, SlideHeader, Text } from '../../ui/slides';
-import { useEditorMode } from '../../creator/inline-edit/EditorModeContext';
+import { useEditableTextProps, useIsEditorActive } from '../../creator/inline-edit';
 
 export interface JsonSlideShellProps {
   doc: JsonSlideDefaultDocument;
@@ -13,8 +13,9 @@ export interface JsonSlideShellProps {
 }
 
 export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideShellProps) {
-  const editorMode = useEditorMode();
-  const editorCancelAdapter = editorMode ? (_path: string) => editorMode.onCancel() : undefined;
+  const isEditorActive = useIsEditorActive();
+  const titleEditableProps = useEditableTextProps('header.title');
+  const leadEditableProps = useEditableTextProps('header.lead');
 
   const frame = doc.frame ?? {};
   const backdrop = doc.backdrop ?? {};
@@ -52,15 +53,9 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
                 className={[
                   'max-w-[28ch] leading-[1.02] tracking-[-0.03em]',
                   doc.header.align === 'center' ? 'text-center' : '',
-                  editorMode?.editable ? 'pointer-events-auto' : '',
+                  isEditorActive ? 'pointer-events-auto' : '',
                 ].join(' ').trim()}
-                {...(editorMode?.editable ? {
-                  editorPath: 'header.title',
-                  editorMultiline: false,
-                  onEditorStartEdit: editorMode.onStartEdit,
-                  onEditorCommit: editorMode.onCommit,
-                  onEditorCancel: editorCancelAdapter,
-                } : {})}
+                {...titleEditableProps}
               >
                 {doc.header.title}
               </Text>
@@ -73,15 +68,9 @@ export function JsonSlideShell({ doc, index, totalSlides, children }: JsonSlideS
                 className={[
                   'max-w-[70ch] text-pretty',
                   doc.header.align === 'center' ? 'text-center' : '',
-                  editorMode?.editable ? 'pointer-events-auto' : '',
+                  isEditorActive ? 'pointer-events-auto' : '',
                 ].join(' ').trim()}
-                {...(editorMode?.editable ? {
-                  editorPath: 'header.lead',
-                  editorMultiline: true,
-                  onEditorStartEdit: editorMode.onStartEdit,
-                  onEditorCommit: editorMode.onCommit,
-                  onEditorCancel: editorCancelAdapter,
-                } : {})}
+                {...leadEditableProps}
               >
                 {doc.header.lead}
               </Text>

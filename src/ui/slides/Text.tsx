@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, ElementType, KeyboardEvent, ReactNode } from 'react';
-import { useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { cn } from './cn';
 
 export type SlideTextVariant =
@@ -102,6 +102,32 @@ export function Text({
 
   // Keep a snapshot of the original content for cancel restore.
   const originalTextRef = useRef<string | null>(null);
+  /** DOM that was focused during edit; React clears `ref` callbacks before layout cleanup, this stays until blur/unmount commit. */
+  const focusedEditorElRef = useRef<HTMLElement | null>(null);
+  const hostRef = useRef<HTMLElement | null>(null);
+  const blurFiredRef = useRef(false);
+
+  const editorPathLiveRef = useRef(editorPath);
+  const onEditorCommitLiveRef = useRef(onEditorCommit);
+  editorPathLiveRef.current = editorPath;
+  onEditorCommitLiveRef.current = onEditorCommit;
+
+  useLayoutEffect(() => {
+    return () => {
+      const path = editorPathLiveRef.current;
+      const commit = onEditorCommitLiveRef.current;
+      if (!path || !commit) return;
+      if (blurFiredRef.current) return;
+      const el = focusedEditorElRef.current ?? hostRef.current;
+      const orig = originalTextRef.current;
+      if (!el || orig === null) {
+        return;
+      }
+      const next = el.textContent ?? '';
+      if (next === orig) return;
+      commit(path, next);
+    };
+  }, []);
 
   if (!editorPath) {
     return (
@@ -115,15 +141,19 @@ export function Text({
     );
   }
 
-  // Editor-enabled branch.
   const handleFocus = (e: React.FocusEvent<HTMLElement>) => {
+    blurFiredRef.current = false;
+    focusedEditorElRef.current = e.currentTarget;
     originalTextRef.current = e.currentTarget.textContent ?? '';
     onEditorStartEdit?.(editorPath);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
-    onEditorCommit?.(editorPath, e.currentTarget.textContent ?? '');
+    blurFiredRef.current = true;
+    const nextText = e.currentTarget.textContent ?? '';
+    onEditorCommit?.(editorPath, nextText);
     originalTextRef.current = null;
+    focusedEditorElRef.current = null;
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
@@ -149,6 +179,7 @@ export function Text({
       e.currentTarget.blur();
       return;
     }
+
   };
 
   return (
@@ -167,6 +198,9 @@ export function Text({
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
       {...rest}
+      ref={(node: HTMLElement | null) => {
+        hostRef.current = node;
+      }}
     >
       {children}
     </Component>

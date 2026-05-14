@@ -7,6 +7,7 @@ import type {
 } from '../../jsonSlideTypes';
 import { Reveal, SlideAssetImage, SlideImagePair, Text } from '../../../ui/slides';
 import { cn } from '../../../ui/slides/cn';
+import { useEditableTextProps, useIsEditorActive } from '../../../creator/inline-edit';
 import { bentoGridGapCssVar } from './bentoGridGapVar';
 
 function gridTemplateColumns(count: number): string {
@@ -60,6 +61,43 @@ interface MediaItemProps {
   frameWidth?: 'content' | 'fill';
   cellMode?: 'panel' | 'fill';
   verticalAlign?: JsonSlideMediaGalleryVerticalAlign;
+  /**
+   * Absolute path from the document root to this item's `caption` field
+   * (e.g. `layout.mediaGallery.items.0.caption`).
+   *
+   * When provided, the caption connects to the inline-edit helper. Without a
+   * path the helper returns `{}` — презентационный режим без изменений.
+   */
+  captionPath?: string;
+}
+
+/**
+ * Caption под медиа в галерее. Хук редактирования вызывается на верхнем уровне
+ * подкомпонента, чтобы соблюсти rules of hooks внутри `items.map(...)`.
+ */
+function JsonMediaGalleryCaption({
+  text,
+  className,
+  captionPath,
+}: {
+  text: string;
+  className: string;
+  captionPath?: string;
+}) {
+  const editableProps = useEditableTextProps(captionPath ?? '');
+  const isEditorActive = useIsEditorActive();
+  return (
+    <Text
+      variant="overline"
+      className={cn(
+        className,
+        captionPath != null && isEditorActive ? 'pointer-events-auto' : undefined,
+      )}
+      {...editableProps}
+    >
+      {text}
+    </Text>
+  );
 }
 
 function renderImageFillCell(item: Extract<JsonSlideMediaGalleryItem, { type: 'image' }>) {
@@ -94,7 +132,14 @@ function mediaItemObjectFit(item: JsonSlideMediaGalleryItem): 'cover' | 'contain
   return item.objectFit ?? 'cover';
 }
 
-function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel', verticalAlign }: MediaItemProps) {
+function MediaItem({
+  item,
+  delay,
+  frameWidth = 'content',
+  cellMode = 'panel',
+  verticalAlign,
+  captionPath,
+}: MediaItemProps) {
   const v = effectiveVerticalAlign(verticalAlign);
   const showCaption = item.showCaption === true && item.caption != null;
   const mediaFrameMaxHeightClass = showCaption ? 'max-h-[calc(100%_-_1.75rem)]' : 'max-h-full';
@@ -130,9 +175,11 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel', ve
             )}
           </div>
           {showCaption ? (
-            <Text variant="overline" className="mt-2 shrink-0 text-center tracking-[0.35em]">
-              {item.caption}
-            </Text>
+            <JsonMediaGalleryCaption
+              text={item.caption as string}
+              className="mt-2 shrink-0 text-center tracking-[0.35em]"
+              captionPath={captionPath}
+            />
           ) : null}
         </Reveal>
       );
@@ -146,9 +193,11 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel', ve
           {item.type === 'image' ? renderImageFillCell(item) : renderVideoFillCell(item)}
         </div>
         {showCaption ? (
-          <Text variant="overline" className="mt-2 shrink-0 text-center tracking-[0.35em]">
-            {item.caption}
-          </Text>
+          <JsonMediaGalleryCaption
+            text={item.caption as string}
+            className="mt-2 shrink-0 text-center tracking-[0.35em]"
+            captionPath={captionPath}
+          />
         ) : null}
       </Reveal>
     );
@@ -271,9 +320,11 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel', ve
         </div>
       )}
       {showCaption && !isPairStrip ? (
-        <Text variant="overline" className="mt-2 shrink-0 text-center tracking-[0.35em]">
-          {item.caption}
-        </Text>
+        <JsonMediaGalleryCaption
+          text={item.caption as string}
+          className="mt-2 shrink-0 text-center tracking-[0.35em]"
+          captionPath={captionPath}
+        />
       ) : null}
     </Reveal>
   );
@@ -281,10 +332,22 @@ function MediaItem({ item, delay, frameWidth = 'content', cellMode = 'panel', ve
 
 export interface JsonMediaGalleryLayoutProps {
   layout: JsonSlideMediaGalleryLayout;
+  /**
+   * Absolute path from the document root to this `mediaGallery` layout node
+   * (e.g. `layout.mediaGallery`). Used to build per-item caption paths in the
+   * form `${editorPath}.items.${i}.caption` для inline-edit helper.
+   *
+   * Без пути captions рендерятся как прежде — презентационный режим без изменений.
+   */
+  editorPath?: string;
 }
 
 function stripJustify(justify: 'start' | 'end' | undefined) {
   return justify === 'start' ? 'start' : 'end';
+}
+
+function captionPathFor(editorPath: string | undefined, index: number): string | undefined {
+  return editorPath != null ? `${editorPath}.items.${index}.caption` : undefined;
 }
 
 function CountBasedGallery({
@@ -292,11 +355,13 @@ function CountBasedGallery({
   gapValue,
   cellMode,
   verticalAlign,
+  editorPath,
 }: {
   items: JsonSlideMediaGalleryItem[];
   gapValue: string;
   cellMode: 'panel' | 'fill';
   verticalAlign: JsonSlideMediaGalleryVerticalAlign | undefined;
+  editorPath?: string;
 }) {
   const count = items.length;
   if (count >= 5) {
@@ -316,6 +381,7 @@ function CountBasedGallery({
               delay={0.2 + i * 0.08}
               cellMode={cellMode}
               verticalAlign={verticalAlign}
+              captionPath={captionPathFor(editorPath, i)}
             />
           </div>
         ))}
@@ -335,6 +401,7 @@ function CountBasedGallery({
             delay={0.2 + i * 0.08}
             cellMode={cellMode}
             verticalAlign={verticalAlign}
+            captionPath={captionPathFor(editorPath, i)}
           />
         </div>
       ))}
@@ -342,7 +409,7 @@ function CountBasedGallery({
   );
 }
 
-export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutProps) {
+export function JsonMediaGalleryLayoutView({ layout, editorPath }: JsonMediaGalleryLayoutProps) {
   const { items, gap, preset, rowJustify, cellVariant, verticalAlign } = layout;
   const gapValue = bentoGridGapCssVar(gap);
   const j = stripJustify(rowJustify);
@@ -351,7 +418,15 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
   const va = verticalAlign;
 
   if (autoMode) {
-    return <CountBasedGallery items={items} gapValue={gapValue} cellMode={cellMode} verticalAlign={va} />;
+    return (
+      <CountBasedGallery
+        items={items}
+        gapValue={gapValue}
+        cellMode={cellMode}
+        verticalAlign={va}
+        editorPath={editorPath}
+      />
+    );
   }
 
   if (preset === 'single') {
@@ -359,7 +434,13 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
     return (
       <div className="flex min-h-0 w-full flex-1 auto-rows-fr items-stretch" style={{ gap: gapValue }}>
         <div className="min-h-0 w-full">
-          <MediaItem item={item} delay={0.2} cellMode={cellMode} verticalAlign={va} />
+          <MediaItem
+            item={item}
+            delay={0.2}
+            cellMode={cellMode}
+            verticalAlign={va}
+            captionPath={captionPathFor(editorPath, 0)}
+          />
         </div>
       </div>
     );
@@ -378,7 +459,13 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
       >
         {items.map((item, i) => (
           <div key={`mgallery-col-${i}`} className="min-h-0 min-w-0">
-            <MediaItem item={item} delay={0.2 + i * 0.08} cellMode={cellMode} verticalAlign={va} />
+            <MediaItem
+              item={item}
+              delay={0.2 + i * 0.08}
+              cellMode={cellMode}
+              verticalAlign={va}
+              captionPath={captionPathFor(editorPath, i)}
+            />
           </div>
         ))}
       </div>
@@ -394,7 +481,13 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
         >
           {items.map((item, i) => (
             <div key={`mgallery-${i}`} className="min-h-0 min-w-0">
-              <MediaItem item={item} delay={0.2 + i * 0.08} cellMode="fill" verticalAlign={va} />
+              <MediaItem
+                item={item}
+                delay={0.2 + i * 0.08}
+                cellMode="fill"
+                verticalAlign={va}
+                captionPath={captionPathFor(editorPath, i)}
+              />
             </div>
           ))}
         </div>
@@ -462,6 +555,7 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
               frameWidth="fill"
               cellMode={cellMode}
               verticalAlign={va}
+              captionPath={captionPathFor(editorPath, i)}
             />
           </div>
         ))}
@@ -469,5 +563,13 @@ export function JsonMediaGalleryLayoutView({ layout }: JsonMediaGalleryLayoutPro
     );
   }
 
-  return <CountBasedGallery items={items} gapValue={gapValue} cellMode={cellMode} verticalAlign={va} />;
+  return (
+    <CountBasedGallery
+      items={items}
+      gapValue={gapValue}
+      cellMode={cellMode}
+      verticalAlign={va}
+      editorPath={editorPath}
+    />
+  );
 }

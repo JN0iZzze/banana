@@ -4,9 +4,15 @@ import { bentoGridGapCssVar } from './bentoGridGapVar';
 
 export interface JsonBentoLayoutProps {
   layout: JsonSlideBentoLayout;
+  /**
+   * Путь до самого layout-узла (например, `layout.bentoGrid`).
+   * Каждому элементу передаётся `${basePath}.items.${i}.region`,
+   * см. `collectEditablePaths.walkBento`.
+   */
+  basePath?: string;
 }
 
-export function JsonBentoLayoutView({ layout }: JsonBentoLayoutProps) {
+export function JsonBentoLayoutView({ layout, basePath }: JsonBentoLayoutProps) {
   const gapVar = bentoGridGapCssVar(layout.gap);
 
   return (
@@ -27,7 +33,11 @@ export function JsonBentoLayoutView({ layout }: JsonBentoLayoutProps) {
             gridRow: `${item.rowStart} / span ${item.rowSpan}`,
           }}
         >
-          <JsonSlideRegionNode region={item.region} delay={0.2 + i * 0.06} />
+          <JsonSlideRegionNode
+            region={item.region}
+            delay={0.2 + i * 0.06}
+            editorPath={basePath != null ? `${basePath}.items.${i}.region` : undefined}
+          />
         </div>
       ))}
     </div>

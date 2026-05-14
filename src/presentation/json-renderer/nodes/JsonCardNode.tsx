@@ -5,11 +5,21 @@ import { cn } from '../../../ui/slides/cn';
 import { cardStackGapCssVar } from '../layouts/cardStackGapCssVar';
 import { renderJsonCardComponentItem } from '../jsonSlideCardComponentRegistry';
 import { getJsonSlideCardIcon } from '../jsonSlideCardIconRegistry';
+import { useEditableTextProps, useIsEditorActive } from '../../../creator/inline-edit';
 
 export interface JsonCardNodeProps {
   card: JsonSlideCard;
   delay: number;
+  /**
+   * Absolute dot-path to the card inside the slide document, e.g.
+   * `layout.equalColumns.items.0.region.card` or `layout.splitLayout.left.card`.
+   * When omitted, inline editing stays off — the helper returns `{}`.
+   */
+  editorPath?: string;
 }
+
+/** Path placeholder for cases where the card has no editor path attached. */
+const NOOP_EDITOR_PATH = '__noop__';
 
 const justifyClass: Record<NonNullable<JsonSlideCard['justify']>, string> = {
   start: 'justify-start',
@@ -40,14 +50,28 @@ function renderHeaderBadge(badge: JsonSlideCardHeaderBadge, onAccentCard: boolea
   );
 }
 
-function renderItemText(
-  item: JsonSlideCardItemText,
-  reactKey: string,
-  onAccent: boolean,
-  compactCard: boolean,
-  surface: NonNullable<JsonSlideCard['surface']> | undefined,
-  tailClassName?: string,
-) {
+interface JsonCardTextItemProps {
+  item: JsonSlideCardItemText;
+  reactKey: string;
+  onAccent: boolean;
+  compactCard: boolean;
+  surface: NonNullable<JsonSlideCard['surface']> | undefined;
+  tailClassName?: string;
+  /** Absolute path to this text item; pass `NOOP_EDITOR_PATH` to disable inline editing. */
+  editorPath: string;
+}
+
+function JsonCardTextItem({
+  item,
+  reactKey,
+  onAccent,
+  compactCard,
+  surface,
+  tailClassName,
+  editorPath,
+}: JsonCardTextItemProps) {
+  const editableProps = useEditableTextProps(editorPath);
+  const isEditorActive = useIsEditorActive();
   const ghost = surface === 'ghost';
   const isPrompt = item.variant === 'prompt';
   const isBodyRow = item.variant === 'body' || item.variant === 'bodyLg';
@@ -74,8 +98,10 @@ function renderItemText(
         !isPrompt && isBodyRow && 'text-pretty',
         !isPrompt && isBodyRow && !onAccent && 'text-[color:var(--slide-color-text-soft)]',
         isPrompt && 'min-h-0 w-full min-w-0 flex-1',
+        isEditorActive && 'pointer-events-auto',
         tailClassName,
       )}
+      {...editableProps}
     >
       {item.text}
     </Text>
@@ -87,7 +113,8 @@ function renderItemText(
  * When `headerBadge` + leading `overline`/`h2`, the badge is pinned to the top-right of the card; `justify: "between"` splits space between that header text row and the remaining `items` block; inner body stack can still use `between` when there are multiple tail rows.
  * Authoring heuristics for "good cards" live in `json-renderer/README.md` under the card contract.
  */
-export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
+export function JsonCardNode({ card, delay, editorPath }: JsonCardNodeProps) {
+  const subtitlePath = editorPath ? `${editorPath}.subtitle.text` : NOOP_EDITOR_PATH;
   const onAccent = card.tone === 'accent';
   const surface = card.surface ?? 'box';
   const onAccentCard = onAccent || surface === 'accentGradient';
@@ -137,20 +164,22 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
           className="flex min-w-0 flex-1 flex-col pr-16"
           style={{ gap: stackGapStyle }}
         >
-          {renderItemText(
-            flatItems[0] as JsonSlideCardItemText,
-            'hdr0',
-            onAccent,
-            compactCard,
-            surface,
-          )}
-          {renderItemText(
-            flatItems[1] as JsonSlideCardItemText,
-            'hdr1',
-            onAccent,
-            compactCard,
-            surface,
-          )}
+          <JsonCardTextItem
+            item={flatItems[0] as JsonSlideCardItemText}
+            reactKey="hdr0"
+            onAccent={onAccent}
+            compactCard={compactCard}
+            surface={surface}
+            editorPath={editorPath ? `${editorPath}.items.0.text` : NOOP_EDITOR_PATH}
+          />
+          <JsonCardTextItem
+            item={flatItems[1] as JsonSlideCardItemText}
+            reactKey="hdr1"
+            onAccent={onAccent}
+            compactCard={compactCard}
+            surface={surface}
+            editorPath={editorPath ? `${editorPath}.items.1.text` : NOOP_EDITOR_PATH}
+          />
         </div>
       </div>
     ) : null;
@@ -173,9 +202,21 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
             style={{ gap: slotGap }}
           >
             {slot.items.map((item, ii) =>
-              isJsonSlideCardItemText(item)
-                ? renderItemText(item, `slot-${si}-item-${ii}`, onAccent, compactCard, surface)
-                : renderJsonCardComponentItem(card.tone, item, ii),
+              isJsonSlideCardItemText(item) ? (
+                <JsonCardTextItem
+                  key={`slot-${si}-item-${ii}-${item.variant}-${item.text.slice(0, 24)}`}
+                  item={item}
+                  reactKey={`slot-${si}-item-${ii}`}
+                  onAccent={onAccent}
+                  compactCard={compactCard}
+                  surface={surface}
+                  editorPath={
+                    editorPath ? `${editorPath}.slots.${si}.items.${ii}.text` : NOOP_EDITOR_PATH
+                  }
+                />
+              ) : (
+                renderJsonCardComponentItem(card.tone, item, ii)
+              ),
             )}
           </div>
         );
@@ -192,17 +233,33 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
       )}
       style={{ gap: stackGapStyle }}
     >
-      {itemsBody.map((item, i) =>
-        isJsonSlideCardItemText(item)
-          ? renderItemText(item, `body-${i}`, onAccent, compactCard, surface, pinBodyTailToBottom ? 'mt-auto' : undefined)
-          : pinBodyTailToBottom ? (
-              <div key={`body-${i}-comp`} className="mt-auto min-w-0 w-full">
-                {renderJsonCardComponentItem(card.tone, item, i)}
-              </div>
-            ) : (
-              renderJsonCardComponentItem(card.tone, item, i)
-            ),
-      )}
+      {itemsBody.map((item, i) => {
+        const absoluteIndex = headerHasPair ? i + 2 : i;
+        const itemEditorPath = editorPath
+          ? `${editorPath}.items.${absoluteIndex}.text`
+          : NOOP_EDITOR_PATH;
+        if (isJsonSlideCardItemText(item)) {
+          return (
+            <JsonCardTextItem
+              key={`body-${i}-${item.variant}-${item.text.slice(0, 24)}`}
+              item={item}
+              reactKey={`body-${i}`}
+              onAccent={onAccent}
+              compactCard={compactCard}
+              surface={surface}
+              tailClassName={pinBodyTailToBottom ? 'mt-auto' : undefined}
+              editorPath={itemEditorPath}
+            />
+          );
+        }
+        return pinBodyTailToBottom ? (
+          <div key={`body-${i}-comp`} className="mt-auto min-w-0 w-full">
+            {renderJsonCardComponentItem(card.tone, item, i)}
+          </div>
+        ) : (
+          renderJsonCardComponentItem(card.tone, item, i)
+        );
+      })}
     </div>
   );
 
@@ -251,7 +308,14 @@ export function JsonCardNode({ card, delay }: JsonCardNodeProps) {
 
       {card.subtitle ? (
         <div className="relative z-10 shrink-0">
-          {renderItemText(card.subtitle, 'subtitle', onAccent, compactCard, surface)}
+          <JsonCardTextItem
+            item={card.subtitle}
+            reactKey="subtitle"
+            onAccent={onAccent}
+            compactCard={compactCard}
+            surface={surface}
+            editorPath={subtitlePath}
+          />
         </div>
       ) : null}
 

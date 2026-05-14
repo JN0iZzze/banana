@@ -5,9 +5,15 @@ import { bentoGridGapCssVar } from './bentoGridGapVar';
 
 export interface JsonUniformGridLayoutProps {
   layout: JsonSlideUniformGridLayout;
+  /**
+   * Путь до самого layout-узла, например `layout.uniformGrid`.
+   * Карточкам сетки передаётся `${basePath}.items.${i}` — без сегмента
+   * `.region`, см. `collectEditablePaths.walkUniformGrid`.
+   */
+  basePath?: string;
 }
 
-export function JsonUniformGridLayoutView({ layout }: JsonUniformGridLayoutProps) {
+export function JsonUniformGridLayoutView({ layout, basePath }: JsonUniformGridLayoutProps) {
   const gapVar = bentoGridGapCssVar(layout.gap);
 
   return (
@@ -25,7 +31,11 @@ export function JsonUniformGridLayoutView({ layout }: JsonUniformGridLayoutProps
         const keySeed = firstText?.text.slice(0, 12) ?? `card-${i}`;
         return (
         <div key={`uniform-${i}-${keySeed}`} className="flex min-h-0 h-full min-w-0 flex-col">
-          <JsonCardNode card={card} delay={0.2 + i * 0.07} />
+          <JsonCardNode
+            card={card}
+            delay={0.2 + i * 0.07}
+            editorPath={basePath != null ? `${basePath}.items.${i}` : undefined}
+          />
         </div>
         );
       })}

@@ -1,10 +1,23 @@
 /**
- * collectEditablePaths — returns a list of dot-paths to editable plain-text fields
- * in a JsonSlideDocument. Used as the foundation for the inline-editing PoC in Creator.
+ * Editable binding registry for JSON slide documents (Creator inline-edit).
  *
- * Wave A: header.title, header.lead, stack.items[n].text
- * Wave B: card items, header.meta — see TODO below.
+ * EditableBinding.path     — absolute dot-notation from the document root (`stack.items.0.text`).
+ * EditableBinding.kind     — `plainText` | `structuredText` | `collectionField`.
+ * EditableBinding.multiline — soft hint for the editor UI.
+ * EditableBinding.enabled  — `true` for wave 1 plain-text targets; `false` is reserved.
+ *
+ * EditablePath / collectEditablePaths kept as a thin compatibility wrapper for legacy callers.
  */
+
+export type EditableKind = 'plainText' | 'structuredText' | 'collectionField';
+
+export interface EditableBinding {
+  /** Absolute dot-notation path from the document root, e.g. `header.title`, `stack.items.0.text`. */
+  path: string;
+  kind: EditableKind;
+  multiline: boolean;
+  enabled: boolean;
+}
 
 export interface EditablePath {
   /** Dot-notation path, e.g. 'header.title', 'stack.items.0.text' */
@@ -13,46 +26,372 @@ export interface EditablePath {
   multiline: boolean;
 }
 
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
+export function collectEditableBindings(doc: unknown): EditableBinding[] {
+  const out: EditableBinding[] = [];
+  if (!isRecord(doc)) return out;
+
+  collectHeader(doc, out);
+  collectStack(doc, out);
+  collectLayout(doc, out);
+  collectCover(doc, out);
+
+  return out;
+}
+
+export function findEditableBinding(doc: unknown, path: string): EditableBinding | null {
+  const bindings = collectEditableBindings(doc);
+  return bindings.find((b) => b.path === path) ?? null;
+}
+
 export function collectEditablePaths(doc: unknown): EditablePath[] {
-  const paths: EditablePath[] = [];
+  return collectEditableBindings(doc)
+    .filter((b) => b.enabled && b.kind === 'plainText')
+    .map(({ path, multiline }) => ({ path, multiline }));
+}
 
-  if (!isRecord(doc)) return paths;
+// ---------------------------------------------------------------------------
+// Header
+// ---------------------------------------------------------------------------
 
-  // --- header.title ---
+function collectHeader(doc: Record<string, unknown>, out: EditableBinding[]): void {
   const header = doc['header'];
-  if (isRecord(header)) {
-    if (typeof header['title'] === 'string') {
-      paths.push({ path: 'header.title', multiline: false });
-    }
+  if (!isRecord(header)) return;
 
-    // --- header.lead ---
-    if (typeof header['lead'] === 'string') {
-      paths.push({ path: 'header.lead', multiline: true });
-    }
-
-    // TODO: Волна B — header.meta (string)
+  if (typeof header['title'] === 'string') {
+    out.push({ path: 'header.title', kind: 'plainText', multiline: false, enabled: true });
   }
+  if (typeof header['lead'] === 'string') {
+    out.push({ path: 'header.lead', kind: 'plainText', multiline: true, enabled: true });
+  }
+  if (typeof header['meta'] === 'string') {
+    out.push({ path: 'header.meta', kind: 'plainText', multiline: false, enabled: true });
+  }
+}
 
-  // --- stack.items[n].text (textStack template) ---
+// ---------------------------------------------------------------------------
+// Text stack (textStack template)
+// ---------------------------------------------------------------------------
+
+function collectStack(doc: Record<string, unknown>, out: EditableBinding[]): void {
   const stack = doc['stack'];
-  if (isRecord(stack) && Array.isArray(stack['items'])) {
-    const items = stack['items'] as unknown[];
-    items.forEach((item, i) => {
-      if (
-        isRecord(item) &&
-        'text' in item &&
-        typeof item['text'] === 'string' &&
-        item['type'] !== 'link' &&
-        item['type'] !== 'image'
-      ) {
-        paths.push({ path: `stack.items.${i}.text`, multiline: true });
-      }
+  if (!isRecord(stack)) return;
+  const items = stack['items'];
+  if (!Array.isArray(items)) return;
+
+  items.forEach((item, i) => {
+    if (!isRecord(item)) return;
+    if (item['type'] === 'link' || item['type'] === 'image') return;
+    if ('chunks' in item) return;
+    if (typeof item['text'] !== 'string') return;
+    out.push({
+      path: `stack.items.${i}.text`,
+      kind: 'plainText',
+      multiline: true,
+      enabled: true,
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Layout dispatch
+// ---------------------------------------------------------------------------
+
+function collectLayout(doc: Record<string, unknown>, out: EditableBinding[]): void {
+  const layout = doc['layout'];
+  if (!isRecord(layout)) return;
+  walkLayout(layout, 'layout', out);
+}
+
+function walkLayout(layout: Record<string, unknown>, base: string, out: EditableBinding[]): void {
+  const type = layout['type'];
+  switch (type) {
+    case 'equalColumns':
+    case 'asymmetricColumns':
+      walkColumnItems(layout, base, out);
+      break;
+    case 'splitLayout':
+      walkSplit(layout, base, out);
+      break;
+    case 'stackLayout':
+      walkStackLayout(layout, base, out);
+      break;
+    case 'uniformGrid':
+      walkUniformGrid(layout, base, out);
+      break;
+    case 'bentoGrid':
+      walkBento(layout, base, out);
+      break;
+    case 'mediaGallery':
+      walkMediaGallery(layout, base, out);
+      break;
+    default:
+      break;
+  }
+}
+
+function walkColumnItems(
+  layout: Record<string, unknown>,
+  base: string,
+  out: EditableBinding[],
+): void {
+  const items = layout['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((item, i) => {
+    if (!isRecord(item)) return;
+    const region = item['region'];
+    if (isRecord(region)) {
+      walkRegion(region, `${base}.items.${i}.region`, out);
+    }
+  });
+}
+
+function walkSplit(layout: Record<string, unknown>, base: string, out: EditableBinding[]): void {
+  const left = layout['left'];
+  if (isRecord(left)) walkRegion(left, `${base}.left`, out);
+  const right = layout['right'];
+  if (isRecord(right)) walkRegion(right, `${base}.right`, out);
+}
+
+function walkStackLayout(
+  layout: Record<string, unknown>,
+  base: string,
+  out: EditableBinding[],
+): void {
+  const items = layout['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((item, i) => {
+    if (!isRecord(item)) return;
+    const region = item['region'];
+    if (isRecord(region)) {
+      walkRegion(region, `${base}.items.${i}.region`, out);
+    }
+  });
+}
+
+function walkUniformGrid(
+  layout: Record<string, unknown>,
+  base: string,
+  out: EditableBinding[],
+): void {
+  const items = layout['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((card, i) => {
+    if (!isRecord(card)) return;
+    walkCard(card, `${base}.items.${i}`, out);
+  });
+}
+
+function walkBento(layout: Record<string, unknown>, base: string, out: EditableBinding[]): void {
+  const items = layout['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((item, i) => {
+    if (!isRecord(item)) return;
+    const region = item['region'];
+    if (isRecord(region)) {
+      walkRegion(region, `${base}.items.${i}.region`, out);
+    }
+  });
+}
+
+function walkMediaGallery(
+  layout: Record<string, unknown>,
+  base: string,
+  out: EditableBinding[],
+): void {
+  const items = layout['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((item, i) => {
+    if (!isRecord(item)) return;
+    if (typeof item['caption'] === 'string') {
+      out.push({
+        path: `${base}.items.${i}.caption`,
+        kind: 'plainText',
+        multiline: false,
+        enabled: true,
+      });
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Regions
+// ---------------------------------------------------------------------------
+
+function walkRegion(region: Record<string, unknown>, base: string, out: EditableBinding[]): void {
+  const kind = region['kind'];
+  if (kind === 'card') {
+    const card = region['card'];
+    if (isRecord(card)) walkCard(card, `${base}.card`, out);
+    return;
+  }
+  if (kind === 'text') {
+    const text = region['text'];
+    if (isRecord(text)) walkTextRegion(text, `${base}.text`, out);
+    return;
+  }
+  if (kind === 'quote') {
+    const quote = region['quote'];
+    if (isRecord(quote)) walkQuote(quote, `${base}.quote`, out);
+    return;
+  }
+  if (kind === 'layout') {
+    const layout = region['layout'];
+    if (isRecord(layout)) walkLayout(layout, `${base}.layout`, out);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Card
+// ---------------------------------------------------------------------------
+
+function walkCard(card: Record<string, unknown>, base: string, out: EditableBinding[]): void {
+  const subtitle = card['subtitle'];
+  if (isRecord(subtitle) && typeof subtitle['text'] === 'string') {
+    out.push({
+      path: `${base}.subtitle.text`,
+      kind: 'plainText',
+      multiline: false,
+      enabled: true,
     });
   }
 
-  // TODO: Волна B — card items (layout → cards → items[n].text), quote fields, imageCover blocks.
+  const items = card['items'];
+  if (Array.isArray(items)) {
+    items.forEach((item, j) => {
+      collectCardItemText(item, `${base}.items.${j}`, out);
+    });
+  }
 
-  return paths;
+  const slots = card['slots'];
+  if (Array.isArray(slots)) {
+    slots.forEach((slot, s) => {
+      if (!isRecord(slot)) return;
+      const slotItems = slot['items'];
+      if (!Array.isArray(slotItems)) return;
+      slotItems.forEach((item, j) => {
+        collectCardItemText(item, `${base}.slots.${s}.items.${j}`, out);
+      });
+    });
+  }
+}
+
+function collectCardItemText(item: unknown, base: string, out: EditableBinding[]): void {
+  if (!isRecord(item)) return;
+  if (item['type'] === 'component') return;
+  if ('chunks' in item) return;
+  if (typeof item['text'] !== 'string') return;
+  const v = item['variant'];
+  const multiline =
+    v === 'prompt' ||
+    v === 'body' ||
+    v === 'bodyLg' ||
+    v === 'h2' ||
+    v === 'h3';
+  out.push({
+    path: `${base}.text`,
+    kind: 'plainText',
+    multiline,
+    enabled: true,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Text region (split/stack panes, kind: "text")
+// ---------------------------------------------------------------------------
+
+function walkTextRegion(
+  region: Record<string, unknown>,
+  base: string,
+  out: EditableBinding[],
+): void {
+  const items = region['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((item, j) => {
+    if (!isRecord(item)) return;
+    if (typeof item['text'] !== 'string') return;
+    out.push({
+      path: `${base}.items.${j}.text`,
+      kind: 'plainText',
+      multiline: true,
+      enabled: true,
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Quote (split panes, kind: "quote")
+// ---------------------------------------------------------------------------
+
+function walkQuote(quote: Record<string, unknown>, base: string, out: EditableBinding[]): void {
+  if (typeof quote['label'] === 'string') {
+    out.push({ path: `${base}.label`, kind: 'plainText', multiline: false, enabled: true });
+  }
+  if (typeof quote['subtitle'] === 'string') {
+    out.push({ path: `${base}.subtitle`, kind: 'plainText', multiline: false, enabled: true });
+  }
+  if (typeof quote['text'] === 'string') {
+    out.push({ path: `${base}.text`, kind: 'plainText', multiline: true, enabled: true });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Image cover (imageCover template)
+// ---------------------------------------------------------------------------
+
+function collectCover(doc: Record<string, unknown>, out: EditableBinding[]): void {
+  const cover = doc['cover'];
+  if (!isRecord(cover)) return;
+
+  const topRail = cover['topRail'];
+  if (isRecord(topRail)) collectRail(topRail, 'cover.topRail', out);
+
+  const bottomRail = cover['bottomRail'];
+  if (isRecord(bottomRail)) collectRail(bottomRail, 'cover.bottomRail', out);
+
+  const headline = cover['headline'];
+  if (isRecord(headline)) {
+    const blocks = headline['blocks'];
+    if (Array.isArray(blocks)) {
+      blocks.forEach((block, i) => {
+        if (!isRecord(block)) return;
+        if (typeof block['text'] !== 'string') return;
+        out.push({
+          path: `cover.headline.blocks.${i}.text`,
+          kind: 'plainText',
+          multiline: true,
+          enabled: true,
+        });
+      });
+    }
+  }
+}
+
+function collectRail(
+  rail: Record<string, unknown>,
+  base: string,
+  out: EditableBinding[],
+): void {
+  const items = rail['items'];
+  if (!Array.isArray(items)) return;
+  items.forEach((item, i) => {
+    if (!isRecord(item)) return;
+    if (item['kind'] !== 'text') return;
+    const lines = item['lines'];
+    if (!Array.isArray(lines)) return;
+    lines.forEach((line, j) => {
+      if (typeof line !== 'string') return;
+      out.push({
+        path: `${base}.items.${i}.lines.${j}`,
+        kind: 'plainText',
+        multiline: false,
+        enabled: true,
+      });
+    });
+  });
 }
 
 // ---------------------------------------------------------------------------

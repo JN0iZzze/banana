@@ -1,9 +1,13 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 ## Проект
 `newgen` — Vite + React приложение, которое рендерит презентационные деки. Деки собираются в [src/presentation/decks/](src/presentation/decks/), большинство слайдов описаны JSON-схемами и рендерятся общим рендерером [src/presentation/json-renderer/](src/presentation/json-renderer/).
 
 Контент на русском.
+
+Точка входа — [src/app/App.tsx](src/app/App.tsx): маршруты `/` → `mainDeck`, `/vibecoding` → `vibecodingDeck`, `/creator/*` → `CreatorRoot`. Дека любого типа отдаётся в общий `PresentationShell`, который и поднимает `JsonSlideRenderer` для JSON-слайдов.
 
 ## Активный фокус
 **Презентация «Вайбкодинг»** (дека `/vibecoding`). Остальные деки стабильны — правки по умолчанию ограничены этой декой.
@@ -44,8 +48,10 @@
 - **Единый источник правды — md-реестр.** Решение поменялось — правим сначала md, потом всё остальное.
 
 ## Сборка и проверка
-- `npm run typecheck`
-- `npm run build`
-- `npm run dev`
+- `npm run typecheck` — `tsc -b`
+- `npm run build` — `vite build`
+- `npm run lint` — `eslint .`
+- `npm run dev` — локальный Vite-сервер
+- `npm run preview` — превью прод-сборки
 
 После любой правки JSON-схемы гнать `typecheck` и `build`, как требует README JSON-рендерера.

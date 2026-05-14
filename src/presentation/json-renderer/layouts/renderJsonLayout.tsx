@@ -3,8 +3,15 @@ import type { JsonSlideLayout } from '../../jsonSlideTypes';
 import { JsonLayoutDecorationsOverlay } from '../JsonLayoutDecorationsOverlay';
 import { renderJsonLayoutInner } from './renderJsonLayoutInner';
 
-export function renderJsonLayout(layout: JsonSlideLayout): ReactNode {
-  const inner = renderJsonLayoutInner(layout);
+/**
+ * `basePath` — абсолютный путь от корня документа до этого layout-узла
+ * (например, `layout` для корневого или `layout.splitLayout.left.layout`
+ * для вложенного). Пробрасывается дальше в лэйауты, чтобы text-region
+ * ноды смогли регистрироваться в inline-edit registry. Если не передан —
+ * рендерер ведёт себя как в презентационном режиме.
+ */
+export function renderJsonLayout(layout: JsonSlideLayout, basePath?: string): ReactNode {
+  const inner = renderJsonLayoutInner(layout, basePath);
   const decorations = layout.decorations;
   if (!decorations?.length) {
     return inner;

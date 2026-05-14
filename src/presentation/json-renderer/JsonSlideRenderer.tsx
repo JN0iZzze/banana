@@ -43,7 +43,7 @@ export function JsonSlideRenderer({ slide, index, totalSlides }: SlideRenderProp
       index={index}
       totalSlides={totalSlides}
     >
-      {renderJsonLayout(doc.layout)}
+      {renderJsonLayout(doc.layout, 'layout')}
     </JsonSlideShell>
   );
 }

@@ -3,6 +3,12 @@ import { createContext, useContext } from 'react';
 export type EditorModeContextValue = {
   editable: boolean;
   editingPath: string | null;
+  /**
+   * Дерево документа в форме, совпадающей с рендером превью: для валидных
+   * слайдов это `slide.validation.doc` (см. `toJsonSlideDefinition`), иначе `slide.document`.
+   * Нужно для `useEditableBinding` / реестра путей.
+   */
+  document: unknown;
   onStartEdit: (path: string) => void;
   onCommit: (path: string, text: string) => void;
   onCancel: () => void;
