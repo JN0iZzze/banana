@@ -181,14 +181,14 @@ export function JsonTextStackShell({ doc }: { doc: JsonSlideTextStackDocument })
         align={content.align ?? 'center'}
         className={cn(
           'relative h-full min-h-0',
-          justifyClasses[stack.justify],
           showShellBorderFrame ? 'z-30' : 'z-10',
         )}
       >
         <div
           {...stackSelectable}
           className={cn(
-            'flex flex-col',
+            'flex h-full w-full flex-col',
+            justifyClasses[stack.justify],
             alignClasses[stack.align],
             stack.gap ? gapClasses[stack.gap] : 'gap-8',
             stackSelectable.className,

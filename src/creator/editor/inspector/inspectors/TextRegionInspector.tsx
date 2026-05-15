@@ -124,9 +124,7 @@ export function TextRegionInspector({ selection, doc, patchNode }: NodeInspector
 
       <Section title={`Строки (${items.length}) — только просмотр`}>
         {items.length === 0 ? (
-          <p className="text-[11px] text-neutral-500">
-            Пусто. Добавление и удаление строк — через Raw JSON.
-          </p>
+          <p className="text-[11px] text-neutral-500">Пусто.</p>
         ) : (
           <ol className="space-y-1.5 text-xs text-neutral-300">
             {items.map((item, i) => (
@@ -142,9 +140,6 @@ export function TextRegionInspector({ selection, doc, patchNode }: NodeInspector
             ))}
           </ol>
         )}
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Сами тексты — двойной клик прямо на сцене.
-        </p>
       </Section>
     </>
   );

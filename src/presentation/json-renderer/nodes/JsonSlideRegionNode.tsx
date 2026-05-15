@@ -4,6 +4,7 @@ import { JsonQuoteNode } from './JsonQuoteNode';
 import { JsonTextRegionNode } from './JsonTextRegionNode';
 import { renderJsonLayout } from '../layouts/renderJsonLayout';
 import { useInspectorSelectable } from '../../../creator/inline-edit';
+import { cn } from '../../../ui/slides/cn';
 
 export interface JsonSlideRegionNodeProps {
   region: JsonSlideRegion;
@@ -53,7 +54,10 @@ export function JsonSlideRegionNode({ region, delay, editorPath }: JsonSlideRegi
     );
   }
   return (
-    <div className="flex h-full min-h-0 flex-col" {...layoutSelectable}>
+    <div
+      {...layoutSelectable}
+      className={cn('flex h-full min-h-0 flex-col', layoutSelectable.className)}
+    >
       {renderJsonLayout(region.layout, layoutPath)}
     </div>
   );

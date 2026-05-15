@@ -1,4 +1,4 @@
-import { useId, type ReactNode } from 'react';
+import { useId, type ComponentType, type ReactNode, type SVGProps } from 'react';
 import { Label } from '../../ui/label';
 import { RadioGroup, RadioGroupItem } from '../../ui/radio-group';
 
@@ -21,10 +21,10 @@ export function Section({ title, children }: { title: string; children: ReactNod
 
 export function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <label className="flex flex-col gap-1 text-xs text-neutral-300">
+    <div className="flex flex-col gap-1 text-xs text-neutral-300">
       <span className="text-[11px] font-medium text-neutral-400">{label}</span>
       {children}
-    </label>
+    </div>
   );
 }
 
@@ -68,5 +68,53 @@ export function RadioRow<T extends string>({ value, options, onChange }: RadioRo
         );
       })}
     </RadioGroup>
+  );
+}
+
+export type LucideLikeIcon = ComponentType<SVGProps<SVGSVGElement>>;
+
+interface IconToggleRowProps<T extends string> {
+  value: T;
+  options: readonly { value: T; icon: LucideLikeIcon; label: string }[];
+  onChange: (value: T) => void;
+}
+
+/**
+ * Сегментированный переключатель из icon-кнопок: выбор значения через клик
+ * по иконке без radio-кругляшков. `label` уходит в `title` / `aria-label`,
+ * активная кнопка подсвечена. Используется для align/justify и подобных
+ * enum-полей, где иконка читается лучше слова.
+ */
+export function IconToggleRow<T extends string>({
+  value,
+  options,
+  onChange,
+}: IconToggleRowProps<T>) {
+  return (
+    <div role="radiogroup" className="flex gap-1">
+      {options.map((opt) => {
+        const Icon = opt.icon;
+        const isActive = opt.value === value;
+        return (
+          <button
+            key={opt.value}
+            type="button"
+            role="radio"
+            aria-checked={isActive}
+            aria-label={opt.label}
+            title={opt.label}
+            onClick={() => onChange(opt.value)}
+            className={
+              'flex h-7 w-7 items-center justify-center rounded transition-colors ' +
+              (isActive
+                ? 'text-neutral-100'
+                : 'text-neutral-500 hover:text-neutral-200')
+            }
+          >
+            <Icon className="size-4" aria-hidden="true" />
+          </button>
+        );
+      })}
+    </div>
   );
 }

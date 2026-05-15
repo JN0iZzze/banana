@@ -64,7 +64,7 @@ export function NodeInspector({ selection, registry }: NodeInspectorEntryProps) 
   if (!doc) {
     return (
       <div className="rounded-md border border-neutral-800 bg-neutral-900/30 px-3 py-3 text-xs text-neutral-500">
-        Документ невалиден — поля узла недоступны. Чинится через Raw JSON.
+        Документ невалиден. Открой JSON.
       </div>
     );
   }

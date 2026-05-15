@@ -84,9 +84,6 @@ export function LayoutInspector({ selection, doc, patchNode }: NodeInspectorProp
               {layout.type}
             </span>
           </div>
-          <p className="mt-1 text-[11px] leading-4 text-neutral-500">
-            Смена типа ломает внутреннюю структуру — правится через Raw JSON.
-          </p>
         </Field>
         <Field label="Gap">
           <Select

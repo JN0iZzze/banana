@@ -74,16 +74,11 @@ export function QuoteInspector({ selection, doc, patchNode }: NodeInspectorProps
             className="w-full"
           />
         </Field>
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Те же поля можно править двойным кликом прямо на слайде.
-        </p>
       </Section>
 
       <Section title={`Параграфы (${paragraphs.length}) — только просмотр`}>
         {paragraphs.length === 0 ? (
-          <p className="text-[11px] text-neutral-500">
-            Пусто. Многоабзацная цитата правится через Raw JSON.
-          </p>
+          <p className="text-[11px] text-neutral-500">Пусто.</p>
         ) : (
           <ol className="space-y-1.5 text-xs text-neutral-300">
             {paragraphs.map((p, i) => (

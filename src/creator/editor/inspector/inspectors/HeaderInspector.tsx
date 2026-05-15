@@ -10,15 +10,16 @@
  * намеренно не дублируем, чтобы не плодить два места правки одного и того же.
  */
 
+import { AlignCenter, AlignLeft } from 'lucide-react';
 import type { JsonSlideHeader } from '../../../../presentation/jsonSlideTypes';
 import { Input } from '../../../ui/input';
-import { Field, RadioRow, Section } from '../inspectorPrimitives';
+import { Field, IconToggleRow, Section } from '../inspectorPrimitives';
 import type { NodeInspectorProps } from '../registry';
 import { getNodeByPath } from '../pathOps';
 
 const HEADER_ALIGN_OPTIONS = [
-  { value: 'left' as const, label: 'слева' },
-  { value: 'center' as const, label: 'по центру' },
+  { value: 'left' as const, icon: AlignLeft, label: 'слева' },
+  { value: 'center' as const, icon: AlignCenter, label: 'по центру' },
 ];
 
 export function HeaderInspector({ selection, doc, patchNode }: NodeInspectorProps) {
@@ -53,7 +54,7 @@ export function HeaderInspector({ selection, doc, patchNode }: NodeInspectorProp
         />
       </Field>
       <Field label="Выравнивание">
-        <RadioRow
+        <IconToggleRow
           value={align}
           options={HEADER_ALIGN_OPTIONS}
           onChange={(value) =>
@@ -64,9 +65,6 @@ export function HeaderInspector({ selection, doc, patchNode }: NodeInspectorProp
           }
         />
       </Field>
-      <p className="text-[11px] leading-4 text-neutral-500">
-        Title и Lead — двойной клик прямо на слайде.
-      </p>
     </Section>
   );
 }

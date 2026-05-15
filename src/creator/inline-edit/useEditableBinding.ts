@@ -117,16 +117,20 @@ export function useInspectorSelectable(
 
   return useMemo(() => {
     if (!selection || path == null) return {};
+    // ВАЖНО: не включаем поле `className` в возвращаемый объект, если узел не
+    // выбран. Иначе spread `<div className="..." {...selectable}>` перетрёт
+    // оригинальный className на `undefined` и сломает layout. Когда узел
+    // выбран — call-site должен мержить className явно через
+    // `cn(base, selectable.className)`, иначе оригинальный layout-class
+    // перетрётся outline-классом.
     const props: InspectorSelectableProps = {
       onClick: handleClick,
       'data-inspector-path': path,
       'data-inspector-kind': kind,
-      className: isSelected
-        ? 'outline outline-2 outline-offset-2 outline-sky-400/70 rounded-sm'
-        : undefined,
     };
     if (isSelected) {
       props['data-inspector-selected'] = 'true';
+      props.className = 'outline outline-2 outline-offset-2 outline-sky-400/70 rounded-sm';
     }
     return props;
   }, [selection, path, kind, isSelected, handleClick]);

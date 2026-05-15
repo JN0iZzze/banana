@@ -10,6 +10,14 @@
  * Тексты внутри items редактируются inline на сцене.
  */
 
+import {
+  AlignCenterHorizontal,
+  AlignCenterVertical,
+  AlignEndHorizontal,
+  AlignEndVertical,
+  AlignStartHorizontal,
+  AlignStartVertical,
+} from 'lucide-react';
 import type {
   JsonSlideTextStack,
   JsonSlideTextStackAlign,
@@ -25,7 +33,7 @@ import {
 } from '../../../ui/select';
 import {
   Field,
-  RadioRow,
+  IconToggleRow,
   Section,
   fromUiSelectValue,
   toUiSelectValue,
@@ -33,17 +41,17 @@ import {
 import { getNodeByPath } from '../pathOps';
 import type { NodeInspectorProps } from '../registry';
 
-const ALIGN_OPTIONS: { value: JsonSlideTextStackAlign; label: string }[] = [
-  { value: 'left', label: 'слева' },
-  { value: 'center', label: 'по центру' },
-  { value: 'right', label: 'справа' },
-];
+const ALIGN_OPTIONS = [
+  { value: 'left' as const, icon: AlignStartVertical, label: 'слева' },
+  { value: 'center' as const, icon: AlignCenterVertical, label: 'по центру' },
+  { value: 'right' as const, icon: AlignEndVertical, label: 'справа' },
+] satisfies readonly { value: JsonSlideTextStackAlign; icon: typeof AlignStartVertical; label: string }[];
 
-const JUSTIFY_OPTIONS: { value: JsonSlideTextStackJustify; label: string }[] = [
-  { value: 'start', label: 'сверху' },
-  { value: 'center', label: 'по центру' },
-  { value: 'end', label: 'снизу' },
-];
+const JUSTIFY_OPTIONS = [
+  { value: 'start' as const, icon: AlignStartHorizontal, label: 'сверху' },
+  { value: 'center' as const, icon: AlignCenterHorizontal, label: 'по центру' },
+  { value: 'end' as const, icon: AlignEndHorizontal, label: 'снизу' },
+] satisfies readonly { value: JsonSlideTextStackJustify; icon: typeof AlignStartHorizontal; label: string }[];
 
 const GAP_OPTIONS = [
   { value: '', label: '— по умолчанию —' },
@@ -84,14 +92,14 @@ export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps
     <>
       <Section title="Стек">
         <Field label="Выравнивание">
-          <RadioRow
+          <IconToggleRow
             value={stack.align}
             options={ALIGN_OPTIONS}
             onChange={(value) => setField('align', value)}
           />
         </Field>
         <Field label="Justify">
-          <RadioRow
+          <IconToggleRow
             value={stack.justify}
             options={JUSTIFY_OPTIONS}
             onChange={(value) => setField('justify', value)}
@@ -120,9 +128,6 @@ export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps
             </SelectContent>
           </Select>
         </Field>
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Тексты — двойной клик по строке прямо на сцене.
-        </p>
       </Section>
 
       <Section title={`Items (${stack.items.length}) — только просмотр`}>
@@ -141,9 +146,6 @@ export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps
             </li>
           ))}
         </ol>
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Добавление и порядок правим через Raw JSON.
-        </p>
       </Section>
     </>
   );

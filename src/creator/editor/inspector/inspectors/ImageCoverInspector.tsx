@@ -187,9 +187,6 @@ function HeadlineInspector({ selection, doc, patchNode }: NodeInspectorProps) {
             </SelectContent>
           </Select>
         </Field>
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Тексты блоков headline — двойной клик прямо на сцене.
-        </p>
       </Section>
 
       <Section title={`Блоки (${headline.blocks.length}) — только просмотр`}>
@@ -286,9 +283,6 @@ function RailItemInspector({ selection, doc, patchNode }: NodeInspectorProps) {
               </SelectContent>
             </Select>
           </Field>
-          <p className="text-[11px] leading-4 text-neutral-500">
-            Сами строки — двойной клик прямо на сцене.
-          </p>
         </Section>
 
         <Section title={`Строки (${item.lines.length}) — только просмотр`}>

@@ -211,9 +211,6 @@ export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps)
             </SelectContent>
           </Select>
         </Field>
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Тексты карточки — двойной клик по нужной строке прямо на сцене.
-        </p>
       </Section>
 
       <CardItemsSummary card={card} />
@@ -238,9 +235,6 @@ function CardItemsSummary({ card }: { card: JsonSlideCard }) {
             </li>
           ))}
         </ol>
-        <p className="text-[11px] leading-4 text-neutral-500">
-          Структуру слотов правим через Raw JSON.
-        </p>
       </Section>
     );
   }
@@ -249,7 +243,7 @@ function CardItemsSummary({ card }: { card: JsonSlideCard }) {
   return (
     <Section title={`Items (${items.length}) — только просмотр`}>
       {items.length === 0 ? (
-        <p className="text-[11px] text-neutral-500">Пусто. Добавление — через Raw JSON.</p>
+        <p className="text-[11px] text-neutral-500">Пусто.</p>
       ) : (
         <ol className="space-y-1.5 text-xs text-neutral-300">
           {items.map((item, i) => (
