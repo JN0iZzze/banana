@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { EditorProvider, useEditorStore } from '../editor/editorStore';
 import { SlideList } from '../editor/SlideList';
 import { InspectorPanel } from '../editor/inspector/InspectorPanel';
-import { AssetLibrary } from '../editor/assets/AssetLibrary';
+import { AssetLibraryDialog } from '../editor/assets/AssetLibraryDialog';
 import { SlidePreview } from '../preview/SlidePreview';
 import { Alert } from '../ui/alert';
 import { Badge } from '../ui/badge';
@@ -158,7 +158,6 @@ function EditorPageInner() {
         assetsOpen={assetsOpen}
         onToggleAssets={() => setAssetsOpen((v) => !v)}
       />
-      {assetsOpen ? <AssetLibrary onClose={() => setAssetsOpen(false)} /> : null}
       <div className="grid min-h-0 flex-1 grid-cols-[280px_1fr_360px]">
         <aside className="min-h-0 border-r border-neutral-800 bg-neutral-950/60">
           <SlideList onSelect={handleSelect} />
@@ -170,6 +169,7 @@ function EditorPageInner() {
           <InspectorPanel />
         </aside>
       </div>
+      <AssetLibraryDialog open={assetsOpen} onOpenChange={setAssetsOpen} />
       <Toaster position="bottom-right" richColors closeButton />
     </div>
   );

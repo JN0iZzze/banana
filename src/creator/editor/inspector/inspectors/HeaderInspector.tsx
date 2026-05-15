@@ -22,7 +22,9 @@ const HEADER_ALIGN_OPTIONS = [
   { value: 'center' as const, icon: AlignCenter, label: 'по центру' },
 ];
 
-export function HeaderInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+export function HeaderInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'header') return null;
+
   const header = getNodeByPath(doc, selection.path) as JsonSlideHeader | undefined;
 
   if (!header) {
@@ -44,10 +46,7 @@ export function HeaderInspector({ selection, doc, patchNode }: NodeInspectorProp
           value={header.meta}
           onChange={(e) => {
             const next = e.target.value;
-            patchNode(selection.path, (node) => ({
-              ...(node as JsonSlideHeader),
-              meta: next,
-            }));
+            actions.header.updateMeta(next);
           }}
           size="sm"
           className="w-full"
@@ -57,12 +56,7 @@ export function HeaderInspector({ selection, doc, patchNode }: NodeInspectorProp
         <IconToggleRow
           value={align}
           options={HEADER_ALIGN_OPTIONS}
-          onChange={(value) =>
-            patchNode(selection.path, (node) => ({
-              ...(node as JsonSlideHeader),
-              align: value,
-            }))
-          }
+          onChange={(value) => actions.header.updateAlign(value)}
         />
       </Field>
     </Section>

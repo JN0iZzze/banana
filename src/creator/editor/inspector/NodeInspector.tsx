@@ -1,10 +1,25 @@
 import { useCallback, useMemo } from 'react';
 import type { JsonSlideDocument } from '../../../presentation/jsonSlideTypes';
 import { useEditorStore } from '../editorStore';
+import {
+  createCardActions,
+  createHeaderActions,
+  createImageCoverBackgroundActions,
+  createImageCoverHeadlineActions,
+  createImageCoverRailItemActions,
+  createLayoutActions,
+  createQuoteActions,
+  createStackActions,
+  createTextRegionActions,
+} from '../mutations';
 import { Section } from './inspectorPrimitives';
-import { getNodeByPath, patchNodeByPath } from './pathOps';
+import { getNodeByPath } from './pathOps';
 import { defaultInspectorRegistry } from './registry.defaults';
-import type { InspectorRegistry, NodeInspectorProps } from './registry';
+import type {
+  InspectorRegistry,
+  NodeInspectorProps,
+  NodeKindActions,
+} from './registry';
 import type { InspectorSelection } from './selection';
 
 interface NodeInspectorEntryProps {
@@ -35,22 +50,18 @@ export function NodeInspector({ selection, registry }: NodeInspectorEntryProps) 
 
   const slideId = slide?.id ?? null;
 
-  const patchDoc = useCallback(
-    (mutator: (draft: JsonSlideDocument) => JsonSlideDocument) => {
-      if (!doc || !slideId) return;
-      const next = mutator(doc);
+  /**
+   * Единая точка коммита для action factories: получает уже клонированный
+   * с правкой документ и пушит его в стор. Используется при сборке kind-
+   * specific actions ниже — фабрики из `../mutations/nodeActions` работают
+   * только через этот callback и не знают про стор напрямую.
+   */
+  const commit = useCallback(
+    (next: JsonSlideDocument) => {
+      if (!slideId) return;
       updateSlideDocument(slideId, next);
     },
-    [doc, slideId, updateSlideDocument],
-  );
-
-  const patchNode = useCallback(
-    (path: string, mutator: (node: unknown) => unknown) => {
-      if (!doc || !slideId) return;
-      const next = patchNodeByPath(doc, path, mutator) as JsonSlideDocument;
-      updateSlideDocument(slideId, next);
-    },
-    [doc, slideId, updateSlideDocument],
+    [slideId, updateSlideDocument],
   );
 
   if (!slide) {
@@ -73,11 +84,66 @@ export function NodeInspector({ selection, registry }: NodeInspectorEntryProps) 
   const Component = activeRegistry.get(selection.kind);
 
   if (Component) {
-    const props: NodeInspectorProps = { selection, doc, patchNode, patchDoc };
+    const actions = buildNodeKindActions(selection, doc, commit);
+    const props: NodeInspectorProps = {
+      selection,
+      doc,
+      actions,
+    };
     return <Component {...props} />;
   }
 
   return <NodeInspectorFallback selection={selection} doc={doc} />;
+}
+
+/**
+ * Собирает kind-specific `NodeKindActions` для текущего `selection.kind`.
+ *
+ * Тег возвращаемого union'а гарантированно совпадает с `selection.kind`:
+ * registry-компонент делает narrow по `actions.kind` и обращается к нужному
+ * вложенному фасаду. Для `mediaGallery` / `mediaItem` фабрик пока нет —
+ * этим kind'ам action API не зарегистрирован (и сами компоненты тоже:
+ * туда уезжает `NodeInspectorFallback` через `if (Component)` выше).
+ */
+function buildNodeKindActions(
+  selection: Extract<InspectorSelection, { scope: 'node' }>,
+  doc: JsonSlideDocument,
+  commit: (next: JsonSlideDocument) => void,
+): NodeKindActions {
+  const ctx = { path: selection.path, doc, commit };
+  switch (selection.kind) {
+    case 'header':
+      return { kind: 'header', header: createHeaderActions(ctx) };
+    case 'card':
+      return { kind: 'card', card: createCardActions(ctx) };
+    case 'quote':
+      return { kind: 'quote', quote: createQuoteActions(ctx) };
+    case 'textRegion':
+      return { kind: 'textRegion', textRegion: createTextRegionActions(ctx) };
+    case 'layout':
+      return { kind: 'layout', layout: createLayoutActions(ctx) };
+    case 'stack':
+      return { kind: 'stack', stack: createStackActions(ctx) };
+    case 'imageCoverBackground':
+      return {
+        kind: 'imageCoverBackground',
+        imageCoverBackground: createImageCoverBackgroundActions(ctx),
+      };
+    case 'imageCoverHeadline':
+      return {
+        kind: 'imageCoverHeadline',
+        imageCoverHeadline: createImageCoverHeadlineActions(ctx),
+      };
+    case 'imageCoverRail':
+      return {
+        kind: 'imageCoverRail',
+        imageCoverRail: createImageCoverRailItemActions(ctx),
+      };
+    case 'mediaGallery':
+      return { kind: 'mediaGallery' };
+    case 'mediaItem':
+      return { kind: 'mediaItem' };
+  }
 }
 
 interface NodeInspectorFallbackProps {

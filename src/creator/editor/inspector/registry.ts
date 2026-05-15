@@ -11,7 +11,44 @@
  */
 import type React from 'react';
 import type { JsonSlideDocument } from '../../../presentation/jsonSlideTypes';
+import type {
+  CardActions,
+  HeaderActions,
+  ImageCoverBackgroundActions,
+  ImageCoverHeadlineActions,
+  ImageCoverRailItemActions,
+  LayoutActions,
+  QuoteActions,
+  StackActions,
+  TextRegionActions,
+} from '../mutations/actionTypes';
 import type { InspectorSelection, InspectorSelectionKind } from './selection';
+
+/**
+ * Discriminated union actions-фасада для kind-инспектора.
+ *
+ * Тег `kind` совпадает с `InspectorSelectionKind` — `NodeInspector`
+ * собирает экземпляр на основе текущего `selection.kind`, а компонент
+ * из реестра делает narrow по `actions.kind` и пользуется доменными
+ * операциями соответствующего интерфейса.
+ *
+ * Для `mediaGallery` / `mediaItem` action API пока не описан (волна 2):
+ * варианты присутствуют без полей, чтобы union покрывал весь
+ * `InspectorSelectionKind` и `NodeInspector` мог гарантированно
+ * передать `actions` для любого селекшена.
+ */
+export type NodeKindActions =
+  | { kind: 'header'; header: HeaderActions }
+  | { kind: 'card'; card: CardActions }
+  | { kind: 'quote'; quote: QuoteActions }
+  | { kind: 'textRegion'; textRegion: TextRegionActions }
+  | { kind: 'layout'; layout: LayoutActions }
+  | { kind: 'stack'; stack: StackActions }
+  | { kind: 'imageCoverBackground'; imageCoverBackground: ImageCoverBackgroundActions }
+  | { kind: 'imageCoverHeadline'; imageCoverHeadline: ImageCoverHeadlineActions }
+  | { kind: 'imageCoverRail'; imageCoverRail: ImageCoverRailItemActions }
+  | { kind: 'mediaGallery' }
+  | { kind: 'mediaItem' };
 
 /**
  * Пропсы, которые `NodeInspector` пробрасывает в kind-компонент из реестра.
@@ -22,20 +59,12 @@ export interface NodeInspectorProps {
   /** Текущий валидный документ слайда. */
   doc: JsonSlideDocument;
   /**
-   * Берёт node по path, применяет mutator, иммутабельно ставит обратно,
-   * пушит обновлённый документ в стор.
-   *
-   * @param path — абсолютный dot-path от корня `JsonSlideDocument`
-   *               (формат `EditableBinding.path`).
-   * @param mutator — получает текущий узел (или `undefined`), возвращает новый.
+   * Semantic action API для текущего kind. `actions.kind` гарантированно
+   * совпадает с `selection.kind` — компонент должен делать narrow по
+   * `actions.kind` и обращаться к соответствующему вложенному фасаду
+   * (`actions.header`, `actions.card`, …).
    */
-  patchNode: (path: string, mutator: (node: unknown) => unknown) => void;
-  /**
-   * Полный document-level patch на случай structural изменений (используется
-   * редко — например, когда правка затрагивает несколько узлов сразу или
-   * корневые поля документа).
-   */
-  patchDoc: (mutator: (draft: JsonSlideDocument) => JsonSlideDocument) => void;
+  actions: NodeKindActions;
 }
 
 /** React-компонент, рендерящий инспектор для конкретного `kind`. */

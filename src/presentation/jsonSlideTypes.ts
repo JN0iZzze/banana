@@ -610,10 +610,24 @@ export interface JsonSlideTextStackDocument {
 
 export type JsonSlideDocument = JsonSlideDefaultDocument | JsonSlideImageCoverDocument | JsonSlideTextStackDocument;
 
+/**
+ * Документы с wrapper-секциями (`frame` / `content` / `backdrop`): всё, кроме
+ * `imageCover`. Дискриминация идёт от `imageCover`, а не от `template ===
+ * 'default'`, потому что нормализованный `JsonSlideDefaultDocument` после
+ * `parseJsonSlideDocument()` приходит без явного `template`.
+ */
+export type JsonSlideWrapperDocument = JsonSlideDefaultDocument | JsonSlideTextStackDocument;
+
 export function isJsonSlideImageCoverDocument(
   doc: JsonSlideDocument,
 ): doc is JsonSlideImageCoverDocument {
   return doc.template === 'imageCover';
+}
+
+export function isJsonSlideWrapperDocument(
+  doc: JsonSlideDocument,
+): doc is JsonSlideWrapperDocument {
+  return !isJsonSlideImageCoverDocument(doc);
 }
 
 export function isJsonSlideTextStackDocument(

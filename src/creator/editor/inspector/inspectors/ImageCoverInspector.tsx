@@ -6,7 +6,9 @@
  *      (`cover.topRail.items.<i>` или `cover.bottomRail.items.<i>`).
  *
  * Внутри — ветка по `selection.kind`. Поля строго по типам в
- * `presentation/jsonSlideTypes.ts`. Все правки — через `patchNode`.
+ * `presentation/jsonSlideTypes.ts`. Все правки идут через semantic action API
+ * (`actions.imageCoverBackground` / `actions.imageCoverHeadline` /
+ * `actions.imageCoverRail`); прямого `patchNode` здесь больше нет.
  */
 
 import type {
@@ -50,7 +52,9 @@ const OVERLAY_OPTIONS = [
   { value: 'gradientBg80', label: 'gradientBg80' },
 ] as const;
 
-function BackgroundInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+function BackgroundInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'imageCoverBackground') return null;
+
   const bg = getNodeByPath(doc, selection.path) as JsonImageCoverBackground | undefined;
   if (!bg) {
     return <NotFound path={selection.path} what="Фон cover" />;
@@ -64,13 +68,7 @@ function BackgroundInspector({ selection, doc, patchNode }: NodeInspectorProps) 
           kind="image"
           placeholder="https://… или /local/path.jpg"
           onChange={(url, meta) => {
-            patchNode(selection.path, (node) => {
-              const next = { ...(node as JsonImageCoverBackground), src: url };
-              if (meta?.alt && (next.alt === undefined || next.alt === '')) {
-                next.alt = meta.alt;
-              }
-              return next;
-            });
+            actions.imageCoverBackground.updateSrc(url, meta);
           }}
         />
       </Field>
@@ -79,16 +77,8 @@ function BackgroundInspector({ selection, doc, patchNode }: NodeInspectorProps) 
           type="text"
           value={bg.alt ?? ''}
           onChange={(e) => {
-            const v = e.target.value;
-            patchNode(selection.path, (node) => {
-              const base = { ...(node as JsonImageCoverBackground) };
-              if (v === '') {
-                delete base.alt;
-              } else {
-                base.alt = v;
-              }
-              return base;
-            });
+            const value = e.target.value;
+            actions.imageCoverBackground.updateAlt(value === '' ? null : value);
           }}
           size="sm"
           className="w-full"
@@ -98,10 +88,9 @@ function BackgroundInspector({ selection, doc, patchNode }: NodeInspectorProps) 
         <Select
           value={bg.overlay}
           onValueChange={(value) =>
-            patchNode(selection.path, (node) => ({
-              ...(node as JsonImageCoverBackground),
-              overlay: value as JsonImageCoverBackground['overlay'],
-            }))
+            actions.imageCoverBackground.updateOverlay(
+              value as JsonImageCoverBackground['overlay'],
+            )
           }
         >
           <SelectTrigger className="w-full">
@@ -134,7 +123,9 @@ const HEADLINE_OFFSET_OPTIONS = [
   { value: 280, label: '280' },
 ] as const;
 
-function HeadlineInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+function HeadlineInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'imageCoverHeadline') return null;
+
   const headline = getNodeByPath(doc, selection.path) as JsonImageCoverHeadline | undefined;
   if (!headline) {
     return <NotFound path={selection.path} what="Headline cover" />;
@@ -147,10 +138,9 @@ function HeadlineInspector({ selection, doc, patchNode }: NodeInspectorProps) {
           <Select
             value={headline.stack}
             onValueChange={(value) =>
-              patchNode(selection.path, (node) => ({
-                ...(node as JsonImageCoverHeadline),
-                stack: value as JsonImageCoverHeadline['stack'],
-              }))
+              actions.imageCoverHeadline.updateStack(
+                value as JsonImageCoverHeadline['stack'],
+              )
             }
           >
             <SelectTrigger className="w-full">
@@ -169,10 +159,9 @@ function HeadlineInspector({ selection, doc, patchNode }: NodeInspectorProps) {
           <Select
             value={String(headline.offsetYPx)}
             onValueChange={(value) =>
-              patchNode(selection.path, (node) => ({
-                ...(node as JsonImageCoverHeadline),
-                offsetYPx: Number(value) as JsonImageCoverHeadline['offsetYPx'],
-              }))
+              actions.imageCoverHeadline.updateOffsetYPx(
+                Number(value) as 100 | 220 | 280,
+              )
             }
           >
             <SelectTrigger className="w-full">
@@ -229,7 +218,9 @@ const CLUSTER_GAP_OPTIONS = [
   { value: 'lg', label: 'lg' },
 ] as const;
 
-function RailItemInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+function RailItemInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'imageCoverRail') return null;
+
   const item = getNodeByPath(doc, selection.path) as JsonImageCoverRailItem | undefined;
   if (!item) {
     return <NotFound path={selection.path} what="Rail-элемент" />;
@@ -243,10 +234,9 @@ function RailItemInspector({ selection, doc, patchNode }: NodeInspectorProps) {
             <Select
               value={item.style ?? 'plain'}
               onValueChange={(value) =>
-                patchNode(selection.path, (node) => ({
-                  ...(node as Extract<JsonImageCoverRailItem, { kind: 'text' }>),
-                  style: value as 'plain' | 'label' | 'inverted',
-                }))
+                actions.imageCoverRail.updateTextStyle(
+                  value as 'plain' | 'label' | 'inverted',
+                )
               }
             >
               <SelectTrigger className="w-full">
@@ -265,10 +255,9 @@ function RailItemInspector({ selection, doc, patchNode }: NodeInspectorProps) {
             <Select
               value={item.textAlign ?? 'left'}
               onValueChange={(value) =>
-                patchNode(selection.path, (node) => ({
-                  ...(node as Extract<JsonImageCoverRailItem, { kind: 'text' }>),
-                  textAlign: value as 'left' | 'center' | 'right',
-                }))
+                actions.imageCoverRail.updateTextAlign(
+                  value as 'left' | 'center' | 'right',
+                )
               }
             >
               <SelectTrigger className="w-full">
@@ -310,10 +299,7 @@ function RailItemInspector({ selection, doc, patchNode }: NodeInspectorProps) {
           <Select
             value={item.gap}
             onValueChange={(value) =>
-              patchNode(selection.path, (node) => ({
-                ...(node as Extract<JsonImageCoverRailItem, { kind: 'cluster' }>),
-                gap: value as 'md' | 'lg',
-              }))
+              actions.imageCoverRail.updateClusterGap(value as 'md' | 'lg')
             }
           >
             <SelectTrigger className="w-full">

@@ -9,7 +9,8 @@
  *
  * Тексты `label / subtitle / text` редактируются inline на сцене, но в панели
  * оставлены — так удобнее править структурно (например, поменять label на
- * subtitle или очистить поле). Все правки идут через `patchNode`.
+ * subtitle или очистить поле). Правки идут через `actions.quote.*`; пустая
+ * строка трактуется как очистка поля и приводится к `null`.
  */
 
 import type { JsonSlideQuote } from '../../../../presentation/jsonSlideTypes';
@@ -19,7 +20,11 @@ import { Field, Section } from '../inspectorPrimitives';
 import { getNodeByPath } from '../pathOps';
 import type { NodeInspectorProps } from '../registry';
 
-export function QuoteInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+type QuoteTextField = 'label' | 'subtitle' | 'text';
+
+export function QuoteInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'quote') return null;
+
   const quote = getNodeByPath(doc, selection.path) as JsonSlideQuote | undefined;
 
   if (!quote) {
@@ -31,16 +36,11 @@ export function QuoteInspector({ selection, doc, patchNode }: NodeInspectorProps
     );
   }
 
-  const setField = <K extends keyof JsonSlideQuote>(key: K, value: JsonSlideQuote[K] | undefined) => {
-    patchNode(selection.path, (node) => {
-      const base = { ...(node as JsonSlideQuote) };
-      if (value === undefined || value === '') {
-        delete base[key];
-        return base;
-      }
-      base[key] = value;
-      return base;
-    });
+  const setField = (key: QuoteTextField, value: string) => {
+    const next = value === '' ? null : value;
+    if (key === 'label') actions.quote.updateLabel(next);
+    else if (key === 'subtitle') actions.quote.updateSubtitle(next);
+    else actions.quote.updateText(next);
   };
 
   const paragraphs = quote.paragraphs ?? [];

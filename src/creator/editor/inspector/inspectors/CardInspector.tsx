@@ -75,7 +75,10 @@ const JUSTIFY_OPTIONS = [
   { value: 'between', label: 'between' },
 ] as const;
 
-export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+export function CardInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'card') return null;
+  const { card: cardActions } = actions;
+
   const card = getNodeByPath(doc, selection.path) as JsonSlideCard | undefined;
 
   if (!card) {
@@ -87,25 +90,15 @@ export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps)
     );
   }
 
-  const setField = <K extends keyof JsonSlideCard>(key: K, value: JsonSlideCard[K] | undefined) => {
-    patchNode(selection.path, (node) => {
-      const base = { ...(node as JsonSlideCard) };
-      if (value === undefined) {
-        delete base[key];
-        return base;
-      }
-      base[key] = value;
-      return base;
-    });
-  };
-
   return (
     <>
       <Section title="Карточка">
         <Field label="Tone">
           <Select
             value={card.tone}
-            onValueChange={(value) => setField('tone', value as JsonSlideCard['tone'])}
+            onValueChange={(value) =>
+              cardActions.updateTone(value as JsonSlideCard['tone'])
+            }
           >
             <SelectTrigger className="w-full">
               <SelectValue />
@@ -124,9 +117,8 @@ export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps)
             value={toUiSelectValue(card.surface ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'surface',
-                v === '' ? undefined : (v as NonNullable<JsonSlideCard['surface']>),
+              cardActions.updateSurface(
+                v === '' ? null : (v as NonNullable<JsonSlideCard['surface']>),
               );
             }}
           >
@@ -147,9 +139,8 @@ export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps)
             value={toUiSelectValue(card.padding ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'padding',
-                v === '' ? undefined : (v as NonNullable<JsonSlideCard['padding']>),
+              cardActions.updatePadding(
+                v === '' ? null : (v as NonNullable<JsonSlideCard['padding']>),
               );
             }}
           >
@@ -170,9 +161,8 @@ export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps)
             value={toUiSelectValue(card.stackGap ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'stackGap',
-                v === '' ? undefined : (v as NonNullable<JsonSlideCard['stackGap']>),
+              cardActions.updateStackGap(
+                v === '' ? null : (v as NonNullable<JsonSlideCard['stackGap']>),
               );
             }}
           >
@@ -193,9 +183,8 @@ export function CardInspector({ selection, doc, patchNode }: NodeInspectorProps)
             value={toUiSelectValue(card.justify ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'justify',
-                v === '' ? undefined : (v as NonNullable<JsonSlideCard['justify']>),
+              cardActions.updateJustify(
+                v === '' ? null : (v as NonNullable<JsonSlideCard['justify']>),
               );
             }}
           >

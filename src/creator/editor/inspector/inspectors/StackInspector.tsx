@@ -61,7 +61,9 @@ const GAP_OPTIONS = [
   { value: 'lg', label: 'lg' },
 ] as const;
 
-export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+export function StackInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'stack') return null;
+
   const stack = getNodeByPath(doc, selection.path) as JsonSlideTextStack | undefined;
 
   if (!stack) {
@@ -73,21 +75,6 @@ export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps
     );
   }
 
-  const setField = <K extends keyof JsonSlideTextStack>(
-    key: K,
-    value: JsonSlideTextStack[K] | undefined,
-  ) => {
-    patchNode(selection.path, (node) => {
-      const base = { ...(node as JsonSlideTextStack) };
-      if (value === undefined) {
-        delete base[key];
-        return base;
-      }
-      base[key] = value;
-      return base;
-    });
-  };
-
   return (
     <>
       <Section title="Стек">
@@ -95,14 +82,14 @@ export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps
           <IconToggleRow
             value={stack.align}
             options={ALIGN_OPTIONS}
-            onChange={(value) => setField('align', value)}
+            onChange={(value) => actions.stack.updateAlign(value)}
           />
         </Field>
         <Field label="Justify">
           <IconToggleRow
             value={stack.justify}
             options={JUSTIFY_OPTIONS}
-            onChange={(value) => setField('justify', value)}
+            onChange={(value) => actions.stack.updateJustify(value)}
           />
         </Field>
         <Field label="Gap">
@@ -110,9 +97,8 @@ export function StackInspector({ selection, doc, patchNode }: NodeInspectorProps
             value={toUiSelectValue(stack.gap ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'gap',
-                v === '' ? undefined : (v as NonNullable<JsonSlideTextStack['gap']>),
+              actions.stack.updateGap(
+                v === '' ? null : (v as NonNullable<JsonSlideTextStack['gap']>),
               );
             }}
           >

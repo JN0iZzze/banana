@@ -40,7 +40,9 @@ const STACK_GAP_OPTIONS = [
   { value: 'lg', label: 'lg' },
 ] as const;
 
-export function TextRegionInspector({ selection, doc, patchNode }: NodeInspectorProps) {
+export function TextRegionInspector({ selection, doc, actions }: NodeInspectorProps) {
+  if (actions.kind !== 'textRegion') return null;
+
   const region = getNodeByPath(doc, selection.path) as JsonSlideTextRegionPayload | undefined;
 
   if (!region) {
@@ -52,21 +54,6 @@ export function TextRegionInspector({ selection, doc, patchNode }: NodeInspector
     );
   }
 
-  const setField = <K extends keyof JsonSlideTextRegionPayload>(
-    key: K,
-    value: JsonSlideTextRegionPayload[K] | undefined,
-  ) => {
-    patchNode(selection.path, (node) => {
-      const base = { ...(node as JsonSlideTextRegionPayload) };
-      if (value === undefined) {
-        delete base[key];
-        return base;
-      }
-      base[key] = value;
-      return base;
-    });
-  };
-
   const items = region.items ?? [];
 
   return (
@@ -77,10 +64,11 @@ export function TextRegionInspector({ selection, doc, patchNode }: NodeInspector
             value={toUiSelectValue(region.align ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'align',
-                v === '' ? undefined : (v as NonNullable<JsonSlideTextRegionPayload['align']>),
-              );
+              const next =
+                v === ''
+                  ? null
+                  : (v as NonNullable<JsonSlideTextRegionPayload['align']>);
+              actions.textRegion.updateAlign(next);
             }}
           >
             <SelectTrigger className="w-full">
@@ -100,12 +88,11 @@ export function TextRegionInspector({ selection, doc, patchNode }: NodeInspector
             value={toUiSelectValue(region.stackGap ?? '')}
             onValueChange={(raw) => {
               const v = fromUiSelectValue(raw);
-              setField(
-                'stackGap',
+              const next =
                 v === ''
-                  ? undefined
-                  : (v as NonNullable<JsonSlideTextRegionPayload['stackGap']>),
-              );
+                  ? null
+                  : (v as NonNullable<JsonSlideTextRegionPayload['stackGap']>);
+              actions.textRegion.updateStackGap(next);
             }}
           >
             <SelectTrigger className="w-full">

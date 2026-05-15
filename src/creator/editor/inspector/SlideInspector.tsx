@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CreatorSlide } from '../../domain/types';
 import type {
   JsonSlideBackdrop,
@@ -7,11 +7,11 @@ import type {
   JsonSlideContentAlign,
   JsonSlideContentDensity,
   JsonSlideContentWidth,
-  JsonSlideDocument,
   JsonSlideFrame,
   JsonSlideFrameAlign,
   JsonSlideFramePadding,
 } from '../../../presentation/jsonSlideTypes';
+import { isJsonSlideWrapperDocument } from '../../../presentation/jsonSlideTypes';
 import type { SlideTheme } from '../../../presentation/types';
 import { useEditorStore } from '../editorStore';
 import { Alert } from '../../ui/alert';
@@ -39,6 +39,11 @@ import {
   fromUiSelectValue,
   toUiSelectValue,
 } from './inspectorPrimitives';
+import {
+  createSlideActions,
+  patchOptionalField,
+  type SlideActions,
+} from '../mutations';
 
 const THEME_OPTIONS: { value: SlideTheme | ''; label: string }[] = [
   { value: '', label: '— не задано —' },
@@ -59,6 +64,10 @@ interface SlideInspectorProps {
  * Все узловые секции (header / card / quote / textRegion / layout / imageCover…)
  * рендерит `NodeInspector` через реестр. Здесь template-routing'а нет — это
  * был legacy слой, удалённый в Этапе 7.
+ *
+ * Все правки идут через `SlideActions` (см. `mutations/slideActions.ts`):
+ * прямых вызовов `store.updateSlideMeta` / `store.updateSlideDocument` в этом
+ * файле нет.
  */
 export function SlideInspector({ slide }: SlideInspectorProps) {
   const store = useEditorStore();
@@ -75,72 +84,34 @@ export function SlideInspector({ slide }: SlideInspectorProps) {
     setNotesDraft(slide.speakerNotes ?? '');
   }, [slide.id, slide.speakerNotes]);
 
+  // --- Document-level fields (only when validation is ok) -------------------
+  const doc = slide.validation.status === 'valid' ? slide.validation.doc : null;
+
+  // Actions собираем только при валидном документе. Title / speakerNotes
+  // тоже пробрасываются через эти actions — отдельная meta-only фабрика
+  // не нужна, доступ к doc для meta-операций просто не используется.
+  const actions = useMemo<SlideActions | null>(() => {
+    if (!doc) return null;
+    return createSlideActions({ slideId: slide.id, doc, store });
+  }, [slide.id, doc, store]);
+
   const commitTitle = useCallback(() => {
     const next = titleDraft.trim();
     const current = slide.title ?? '';
     if (next === current) return;
-    void store.updateSlideMeta(slide.id, { title: next.length > 0 ? next : null });
-  }, [titleDraft, slide.id, slide.title, store]);
+    if (!actions) return;
+    actions.updateTitle(next.length > 0 ? next : null);
+  }, [actions, titleDraft, slide.title]);
 
   const commitNotes = useCallback(() => {
     const next = notesDraft;
     const current = slide.speakerNotes ?? '';
     if (next === current) return;
-    void store.updateSlideMeta(slide.id, {
-      speakerNotes: next.length > 0 ? next : null,
-    });
-  }, [notesDraft, slide.id, slide.speakerNotes, store]);
-
-  // --- Document-level fields (only when validation is ok) -------------------
-  const doc = slide.validation.status === 'valid' ? slide.validation.doc : null;
-
-  const patchDoc = useCallback(
-    (mutator: (draft: JsonSlideDocument) => JsonSlideDocument) => {
-      if (!doc) return;
-      const next = mutator(doc);
-      store.updateSlideDocument(slide.id, next);
-    },
-    [doc, slide.id, store],
-  );
+    if (!actions) return;
+    actions.updateSpeakerNotes(next.length > 0 ? next : null);
+  }, [actions, notesDraft, slide.speakerNotes]);
 
   const theme = doc?.theme ?? '';
-
-  // Только default / textStack имеют frame / content / backdrop. ImageCover — нет.
-
-  const patchWrapper = useCallback(
-    (
-      key: 'frame' | 'content' | 'backdrop',
-      mutator: (current: object) => object,
-    ) => {
-      patchDoc((draft) => {
-        if (draft.template !== 'default' && draft.template !== 'textStack') return draft;
-        const next = { ...draft } as Record<string, unknown>;
-        const current = (next[key] as object | undefined) ?? {};
-        const updated = mutator({ ...current });
-        if (Object.keys(updated).length === 0) {
-          delete next[key];
-        } else {
-          next[key] = updated;
-        }
-        return next as unknown as JsonSlideDocument;
-      });
-    },
-    [patchDoc],
-  );
-
-  const setOptional = <T extends object, K extends keyof T>(
-    obj: T,
-    key: K,
-    value: T[K] | undefined,
-  ): T => {
-    const next = { ...obj };
-    if (value === undefined) {
-      delete next[key];
-    } else {
-      next[key] = value;
-    }
-    return next;
-  };
 
   return (
     <div className="flex flex-col gap-4 text-sm">
@@ -174,7 +145,7 @@ export function SlideInspector({ slide }: SlideInspectorProps) {
         </Field>
       </Section>
 
-      {!doc ? (
+      {!doc || !actions ? (
         <Alert variant="destructive" className="p-3">
           Документ невалиден. Открой JSON.
         </Alert>
@@ -186,15 +157,7 @@ export function SlideInspector({ slide }: SlideInspectorProps) {
                 value={toUiSelectValue(theme)}
                 onValueChange={(raw) => {
                   const value = fromUiSelectValue(raw);
-                  patchDoc((draft) => {
-                    const next = { ...draft } as JsonSlideDocument;
-                    if (value === '') {
-                      delete (next as { theme?: SlideTheme }).theme;
-                    } else {
-                      (next as { theme?: SlideTheme }).theme = value as SlideTheme;
-                    }
-                    return next;
-                  });
+                  actions.updateTheme(value === '' ? null : (value as SlideTheme));
                 }}
               >
                 <SelectTrigger className="w-full">
@@ -211,28 +174,19 @@ export function SlideInspector({ slide }: SlideInspectorProps) {
             </Field>
           </Section>
 
-          {doc.template === 'default' || doc.template === 'textStack' ? (
+          {isJsonSlideWrapperDocument(doc) ? (
             <>
               <FrameSection
                 frame={doc.frame ?? {}}
-                onChange={(mutator) =>
-                  patchWrapper('frame', (curr) => mutator(curr as JsonSlideFrame))
-                }
-                setOptional={setOptional}
+                onChange={(mutator) => actions.updateFrame(mutator)}
               />
               <ContentSection
                 content={doc.content ?? {}}
-                onChange={(mutator) =>
-                  patchWrapper('content', (curr) => mutator(curr as JsonSlideContent))
-                }
-                setOptional={setOptional}
+                onChange={(mutator) => actions.updateContent(mutator)}
               />
               <BackdropSection
                 backdrop={doc.backdrop ?? {}}
-                onChange={(mutator) =>
-                  patchWrapper('backdrop', (curr) => mutator(curr as JsonSlideBackdrop))
-                }
-                setOptional={setOptional}
+                onChange={(mutator) => actions.updateBackdrop(mutator)}
               />
             </>
           ) : null}
@@ -258,11 +212,9 @@ const FRAME_PADDING_OPTIONS = [
 function FrameSection({
   frame,
   onChange,
-  setOptional,
 }: {
   frame: JsonSlideFrame;
   onChange: (mutator: (current: JsonSlideFrame) => JsonSlideFrame) => void;
-  setOptional: <T extends object, K extends keyof T>(o: T, k: K, v: T[K] | undefined) => T;
 }) {
   return (
     <Section title="Frame">
@@ -270,7 +222,9 @@ function FrameSection({
         <IconToggleRow
           value={frame.align ?? 'center'}
           options={FRAME_ALIGN_OPTIONS}
-          onChange={(value) => onChange((curr) => setOptional(curr, 'align', value))}
+          onChange={(value) =>
+            onChange((curr) => patchOptionalField(curr, 'align', value))
+          }
         />
       </Field>
       <Field label="Padding">
@@ -279,7 +233,7 @@ function FrameSection({
           onValueChange={(raw) => {
             const v = fromUiSelectValue(raw);
             onChange((curr) =>
-              setOptional(
+              patchOptionalField(
                 curr,
                 'padding',
                 v === '' ? undefined : (v as JsonSlideFramePadding),
@@ -326,11 +280,9 @@ const CONTENT_ALIGN_OPTIONS = [
 function ContentSection({
   content,
   onChange,
-  setOptional,
 }: {
   content: JsonSlideContent;
   onChange: (mutator: (current: JsonSlideContent) => JsonSlideContent) => void;
-  setOptional: <T extends object, K extends keyof T>(o: T, k: K, v: T[K] | undefined) => T;
 }) {
   return (
     <Section title="Content">
@@ -340,7 +292,7 @@ function ContentSection({
           onValueChange={(raw) => {
             const v = fromUiSelectValue(raw);
             onChange((curr) =>
-              setOptional(
+              patchOptionalField(
                 curr,
                 'width',
                 v === '' ? undefined : (v as JsonSlideContentWidth),
@@ -366,7 +318,7 @@ function ContentSection({
           onValueChange={(raw) => {
             const v = fromUiSelectValue(raw);
             onChange((curr) =>
-              setOptional(
+              patchOptionalField(
                 curr,
                 'density',
                 v === '' ? undefined : (v as JsonSlideContentDensity),
@@ -390,7 +342,9 @@ function ContentSection({
         <IconToggleRow
           value={content.align ?? 'left'}
           options={CONTENT_ALIGN_OPTIONS}
-          onChange={(value) => onChange((curr) => setOptional(curr, 'align', value))}
+          onChange={(value) =>
+            onChange((curr) => patchOptionalField(curr, 'align', value))
+          }
         />
       </Field>
     </Section>
@@ -407,11 +361,9 @@ const BACKDROP_VARIANT_OPTIONS: { value: JsonSlideBackdropVariant; label: string
 function BackdropSection({
   backdrop,
   onChange,
-  setOptional,
 }: {
   backdrop: JsonSlideBackdrop;
   onChange: (mutator: (current: JsonSlideBackdrop) => JsonSlideBackdrop) => void;
-  setOptional: <T extends object, K extends keyof T>(o: T, k: K, v: T[K] | undefined) => T;
 }) {
   return (
     <Section title="Backdrop">
@@ -420,7 +372,7 @@ function BackdropSection({
           value={backdrop.variant ?? 'none'}
           onValueChange={(value) =>
             onChange((curr) =>
-              setOptional(curr, 'variant', value as JsonSlideBackdropVariant),
+              patchOptionalField(curr, 'variant', value as JsonSlideBackdropVariant),
             )
           }
         >
@@ -440,7 +392,9 @@ function BackdropSection({
         <Switch
           checked={backdrop.borderFrame === true}
           onCheckedChange={(checked) =>
-            onChange((curr) => setOptional(curr, 'borderFrame', checked ? true : undefined))
+            onChange((curr) =>
+              patchOptionalField(curr, 'borderFrame', checked ? true : undefined),
+            )
           }
         />
       </Field>
@@ -448,7 +402,9 @@ function BackdropSection({
         <Switch
           checked={backdrop.dimmed === true}
           onCheckedChange={(checked) =>
-            onChange((curr) => setOptional(curr, 'dimmed', checked ? true : undefined))
+            onChange((curr) =>
+              patchOptionalField(curr, 'dimmed', checked ? true : undefined),
+            )
           }
         />
       </Field>
