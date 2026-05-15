@@ -59,10 +59,12 @@ export function SlideTypeDialog({ open, onOpenChange, onCreated }: SlideTypeDial
         onOpenChange(next);
       }}
     >
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="border-neutral-800 bg-neutral-950 text-neutral-100 shadow-black/40 sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Новый слайд</DialogTitle>
-          <DialogDescription>Выберите стартовый формат — контент потом отредактируете на сцене.</DialogDescription>
+          <DialogTitle className="text-neutral-100">Новый слайд</DialogTitle>
+          <DialogDescription className="text-neutral-400">
+            Выберите стартовый формат — контент потом отредактируете на сцене.
+          </DialogDescription>
         </DialogHeader>
 
         <RadioGroup
@@ -78,7 +80,11 @@ export function SlideTypeDialog({ open, onOpenChange, onCreated }: SlideTypeDial
                 htmlFor={id}
                 className="flex cursor-pointer items-start gap-3 rounded-md border border-neutral-800 p-3 transition hover:border-neutral-700 has-[[data-state=checked]]:border-sky-600 has-[[data-state=checked]]:bg-sky-950/30"
               >
-                <RadioGroupItem id={id} value={preset.id} className="mt-0.5" />
+                <RadioGroupItem
+                  id={id}
+                  value={preset.id}
+                  className="mt-0.5 border-neutral-700 bg-neutral-950 text-sky-400"
+                />
                 <span className="flex flex-col gap-0.5">
                   <span className="text-sm font-medium text-neutral-100">{preset.title}</span>
                   <span className="text-xs font-normal text-neutral-400">{preset.description}</span>
@@ -94,6 +100,7 @@ export function SlideTypeDialog({ open, onOpenChange, onCreated }: SlideTypeDial
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isCreating}
+            className="border-neutral-700 bg-neutral-900 text-neutral-100 hover:bg-neutral-800 hover:text-neutral-100"
           >
             Отмена
           </Button>

@@ -130,7 +130,7 @@ export function CreatorPresentPage() {
   }
 
   return (
-    <div className="relative">
+    <div className="relative h-full w-full">
       <PresentationShell deck={deckDefinition} />
 
       <button

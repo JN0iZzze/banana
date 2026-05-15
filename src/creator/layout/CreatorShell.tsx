@@ -7,9 +7,19 @@ interface CreatorShellProps {
 
 export function CreatorShell({ children }: CreatorShellProps) {
   const location = useLocation();
-  // Editor занимает весь экран трёхколоночным layout'ом, остальным страницам
+  // Editor занимает весь экран трёхколоночным layout'ом; режим презентации —
+  // fullscreen без header'а и без центрирующей обёртки. Остальным страницам
   // оставляем центрированный контейнер.
   const isEditor = /^\/creator\/decks\/[^/]+(\/slides\/[^/]+)?$/.test(location.pathname);
+  const isPresent = /^\/creator\/decks\/[^/]+\/present$/.test(location.pathname);
+
+  if (isPresent) {
+    return (
+      <div className="h-dvh w-dvw overflow-hidden bg-neutral-950 text-neutral-100">
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-neutral-950 text-neutral-100">

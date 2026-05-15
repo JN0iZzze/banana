@@ -187,9 +187,6 @@ function EditorPageFallbackChrome({ children }: { children: React.ReactNode }) {
         >
           <ArrowLeft className="size-4" />
         </Link>
-        <Link to="/" className="shrink-0 text-sm text-neutral-400 hover:text-neutral-100">
-          К презентациям
-        </Link>
       </header>
       <div className="min-h-0 flex-1 overflow-y-auto px-6 py-8">{children}</div>
     </div>
@@ -294,9 +291,6 @@ function EditorHeader({ assetsOpen, onToggleAssets }: EditorHeaderProps) {
         >
           <Eye />
           Просмотр
-        </Button>
-        <Button variant="outline" size="sm" className="text-neutral-400" asChild>
-          <Link to="/">К презентациям</Link>
         </Button>
       </div>
     </header>
