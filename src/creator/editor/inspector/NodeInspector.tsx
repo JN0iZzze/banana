@@ -1,5 +1,8 @@
-import { useCallback, useMemo } from 'react';
-import type { JsonSlideDocument } from '../../../presentation/jsonSlideTypes';
+import { useCallback, useMemo, type ReactNode } from 'react';
+import type {
+  JsonSlideDocument,
+  JsonSlideLayout,
+} from '../../../presentation/jsonSlideTypes';
 import { useEditorStore } from '../editorStore';
 import {
   createCardActions,
@@ -14,6 +17,8 @@ import {
 } from '../mutations';
 import { Section } from './inspectorPrimitives';
 import { getNodeByPath } from './pathOps';
+import { collectAncestorInspectorContexts } from './inspectorContext';
+import { LayoutInspectorSections } from './inspectors/LayoutInspector';
 import { defaultInspectorRegistry } from './registry.defaults';
 import type {
   InspectorRegistry,
@@ -83,17 +88,91 @@ export function NodeInspector({ selection, registry }: NodeInspectorEntryProps) 
   const activeRegistry = registry ?? defaultInspectorRegistry;
   const Component = activeRegistry.get(selection.kind);
 
-  if (Component) {
-    const actions = buildNodeKindActions(selection, doc, commit);
-    const props: NodeInspectorProps = {
-      selection,
-      doc,
-      actions,
-    };
-    return <Component {...props} />;
+  const primary: ReactNode = Component ? (
+    <Component
+      {...({
+        selection,
+        doc,
+        actions: buildNodeKindActions(selection, doc, commit),
+      } satisfies NodeInspectorProps)}
+    />
+  ) : (
+    <NodeInspectorFallback selection={selection} doc={doc} />
+  );
+
+  // Ancestor layout-контексты выбранного узла (ближайший → внешний).
+  // Сам selection.path сюда не входит — его рисует primary inspector,
+  // поэтому дубля «layout, выбранный напрямую» не будет.
+  const ancestorContexts = collectAncestorInspectorContexts(
+    selection.path,
+    doc,
+  );
+
+  if (ancestorContexts.length === 0) {
+    // Простой случай (нет родительских контекстов) — без иерархических
+    // подписей, чтобы не плодить визуальный шум.
+    return primary;
   }
 
-  return <NodeInspectorFallback selection={selection} doc={doc} />;
+  return (
+    <div className="flex flex-col gap-4">
+      <ContextGroup caption="Текущий блок">{primary}</ContextGroup>
+      {ancestorContexts.map((ctx, i) => {
+        const layoutNode = getNodeByPath(doc, ctx.path) as
+          | JsonSlideLayout
+          | undefined;
+        if (!layoutNode) return null;
+        const layoutActions = createLayoutActions({
+          path: ctx.path,
+          doc,
+          commit,
+        });
+        const caption = i === 0 ? 'Родительский layout' : 'Внешний layout';
+        return (
+          <ContextGroup
+            key={ctx.path}
+            caption={`${caption} · ${layoutNode.type}`}
+            muted
+          >
+            <LayoutInspectorSections
+              layout={layoutNode}
+              actions={layoutActions}
+            />
+          </ContextGroup>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Контейнер одного уровня контекстной иерархии инспектора. Primary
+ * рисуется обычным весом; parent-context (`muted`) — компактнее и с
+ * левым акцентом, чтобы было видно «это настройки родителя, не блока».
+ */
+function ContextGroup({
+  caption,
+  muted,
+  children,
+}: {
+  caption: string;
+  muted?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={
+        muted
+          ? 'flex flex-col gap-3 border-l-2 border-neutral-800 pl-3'
+          : 'flex flex-col gap-3'
+      }
+    >
+      <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
+        {caption}
+      </span>
+      {children}
+    </div>
+  );
 }
 
 /**

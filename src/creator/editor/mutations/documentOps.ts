@@ -43,6 +43,45 @@ export function getNodeByPath(doc: unknown, path: string): unknown {
 }
 
 /**
+ * Возвращает path родительского узла, отсекая последний dot-сегмент.
+ *
+ * Чисто строковая операция над canonical dot-path — НИЧЕГО не знает про
+ * "kinds" и не читает документ. Для top-level сегмента (например, `layout`,
+ * `header`) родителя нет: корень — это сам документ, который инспектор
+ * обрабатывает отдельно (slide-level), поэтому возвращается `null`, а не
+ * пустая строка (пустой path — не user-facing значение).
+ *
+ * @example getParentPath('layout.left.card') // → 'layout.left'
+ * @example getParentPath('layout')           // → null
+ */
+export function getParentPath(path: string): string | null {
+  const idx = path.lastIndexOf('.');
+  if (idx === -1) return null;
+  return path.slice(0, idx);
+}
+
+/**
+ * Все собственные родительские paths, от ближайшего к самому внешнему.
+ * Сам `path` и корень документа в результат не входят.
+ *
+ * @example getAncestorPaths('layout.left.layout.items.0.region.card')
+ *          // → ['layout.left.layout.items.0.region',
+ *          //    'layout.left.layout.items.0',
+ *          //    'layout.left.layout',
+ *          //    'layout.left',
+ *          //    'layout']
+ */
+export function getAncestorPaths(path: string): string[] {
+  const out: string[] = [];
+  let cur = getParentPath(path);
+  while (cur !== null) {
+    out.push(cur);
+    cur = getParentPath(cur);
+  }
+  return out;
+}
+
+/**
  * Иммутабельно применяет `mutator` к узлу по абсолютному dot-path.
  *
  * Делает clone-on-path: исходный документ НЕ мутируется, возвращается новый

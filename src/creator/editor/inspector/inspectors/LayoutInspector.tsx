@@ -14,9 +14,15 @@
  *   - `SplitGeometrySection` — связанные `leftSpan`/`rightSpan` с жёстким
  *     инвариантом суммы `12`.
  *
+ * `LayoutInspectorSections` — переиспользуемый стек этих секций: он не
+ * знает про path/selection и рендерится одинаково и как primary inspector
+ * выбранного layout, и как parent-context секция внутри `NodeInspector`
+ * (план `contextual_layout_inspector`). `LayoutInspector` — лишь тонкая
+ * оболочка primary selection: резолвит layout по path и делегирует.
+ *
  * Точки роста (`equalColumns` / `asymmetricColumns` / `stackLayout`)
  * подключаются такой же variant-specific секцией. UI вызывает доменные
- * операции через `actions.layout`; инварианты защищает action-слой
+ * операции через `LayoutActions`; инварианты защищает action-слой
  * (`createLayoutActions`), а не этот компонент.
  */
 
@@ -67,11 +73,26 @@ export function LayoutInspector({ selection, doc, actions }: NodeInspectorProps)
     );
   }
 
+  return <LayoutInspectorSections layout={layout} actions={actions.layout} />;
+}
+
+/**
+ * Переиспользуемый стек layout-секций. Не привязан к selection/path —
+ * получает уже резолвнутый `layout` и `LayoutActions`, поэтому одинаково
+ * работает и как primary inspector, и как parent-context секция.
+ */
+export function LayoutInspectorSections({
+  layout,
+  actions,
+}: {
+  layout: JsonSlideLayout;
+  actions: LayoutActions;
+}) {
   return (
     <>
-      <BaseLayoutSection layout={layout} actions={actions.layout} />
-      <GridGeometrySection layout={layout} actions={actions.layout} />
-      <SplitGeometrySection layout={layout} actions={actions.layout} />
+      <BaseLayoutSection layout={layout} actions={actions} />
+      <GridGeometrySection layout={layout} actions={actions} />
+      <SplitGeometrySection layout={layout} actions={actions} />
     </>
   );
 }
