@@ -63,7 +63,7 @@ export const mainJsonSlides = {
     raw: rawPlatformsEcosystem,
     source: 'slide-platforms-ecosystem.json',
     notes:
-      'JSON: bentoGrid 4×3, slide-platforms-ecosystem.json; два доминантных 2×2 сверху (Nano Banana Pro accent + GPT Image 2) и четыре 1×1 снизу (Midjourney, Reve AI, Qwen Image, Wan Image 2.7); leadingIcon + watermarkIcon через registry.',
+      'JSON: bentoGrid 4×3, slide-platforms-ecosystem.json; два доминанта 1×2 в col 1-2 (Nano Banana Pro accent + GPT Image 2) и 8 малых 1×1 (cols 3-4 rows 1-2 + row 3 cols 1-4); leadingIcon + watermarkIcon через registry.',
   }),
   higgsfield: defineJsonSlide({
     id: M.higgsfield,

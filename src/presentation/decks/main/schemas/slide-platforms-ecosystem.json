@@ -4,7 +4,7 @@
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
     "meta": "Что использовать в 2026",
-    "title": "Модели генерации изображений",
+    "title": "2026",
     "lead": "Два центра тяжести и фланг специализированных моделей вокруг них"
   },
   "layout": {
@@ -16,7 +16,7 @@
       {
         "colStart": 1,
         "rowStart": 1,
-        "colSpan": 2,
+        "colSpan": 1,
         "rowSpan": 2,
         "card": {
           "tone": "accent",
@@ -24,15 +24,15 @@
           "watermarkIcon": "gemini",
           "justify": "end",
           "items": [
-            { "variant": "h2", "text": "Nano Banana Pro (2)" },
+            { "variant": "h2", "text": "Nano Banana" },
             { "variant": "bodyLg", "text": "Главный сдвиг в генерации и редактировании" }
           ]
         }
       },
       {
-        "colStart": 3,
+        "colStart": 2,
         "rowStart": 1,
-        "colSpan": 2,
+        "colSpan": 1,
         "rowSpan": 2,
         "card": {
           "tone": "standard",
@@ -41,13 +41,13 @@
           "justify": "end",
           "items": [
             { "variant": "h2", "text": "GPT Image 2" },
-            { "variant": "bodyLg", "text": "Обновлённый флагман OpenAI: рендер текста, точное следование промпту" }
+            { "variant": "bodyLg", "text": "Флагман OpenAI: рендер текста и точное следование промпту" }
           ]
         }
       },
       {
-        "colStart": 1,
-        "rowStart": 3,
+        "colStart": 3,
+        "rowStart": 1,
         "colSpan": 1,
         "rowSpan": 1,
         "card": {
@@ -62,8 +62,8 @@
         }
       },
       {
-        "colStart": 2,
-        "rowStart": 3,
+        "colStart": 4,
+        "rowStart": 1,
         "colSpan": 1,
         "rowSpan": 1,
         "card": {
@@ -73,13 +73,13 @@
           "justify": "end",
           "items": [
             { "variant": "h2", "text": "Reve AI" },
-            { "variant": "body", "text": "Сильная типографика и креатив" }
+            { "variant": "body", "text": "Креатив и стиль" }
           ]
         }
       },
       {
         "colStart": 3,
-        "rowStart": 3,
+        "rowStart": 2,
         "colSpan": 1,
         "rowSpan": 1,
         "card": {
@@ -95,7 +95,7 @@
       },
       {
         "colStart": 4,
-        "rowStart": 3,
+        "rowStart": 2,
         "colSpan": 1,
         "rowSpan": 1,
         "card": {
@@ -106,6 +106,70 @@
           "items": [
             { "variant": "h2", "text": "Wan Image 2.7" },
             { "variant": "body", "text": "Свежий релиз с упором на детализацию" }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "palette",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Recraft V4" },
+            { "variant": "body", "text": "Векторные иллюстрации и типографика" }
+          ]
+        }
+      },
+      {
+        "colStart": 2,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "byte-dance",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Seedream 4.5" },
+            { "variant": "body", "text": "Типографика и 4K" }
+          ]
+        }
+      },
+      {
+        "colStart": 3,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "grok",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Grok Imagine" },
+            { "variant": "body", "text": "Новый игрок" }
+          ]
+        }
+      },
+      {
+        "colStart": 4,
+        "rowStart": 3,
+        "colSpan": 1,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "video",
+          "justify": "end",
+          "items": [
+            { "variant": "h2", "text": "Kling 3.0 · Seedance 2.0" },
+            { "variant": "body", "text": "Видео-модели с мультисценой" }
           ]
         }
       }

@@ -28,6 +28,7 @@ export const mainForkDeck: DeckDefinition = {
       notes: 'Из 20Feb Early2025: тема cinema как spotlight-demo; три компактные панели в ряд, водяной PastGen; без изображений.',
     },
     base.platformsEcosystem,
+    m.flouxCapabilities,
     m.attentionModels2026,
     base.nanoBananaProCover,
     base.nanoBananaUseCases,
