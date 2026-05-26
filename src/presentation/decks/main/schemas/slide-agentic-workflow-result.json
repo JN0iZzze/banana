@@ -2,7 +2,7 @@
   "frame": { "padding": "compact", "align": "center" },
   "backdrop": { "variant": "spotlight", "borderFrame": true },
   "content": { "width": "wide", "density": "compact" },
-  "header": { "meta": "Результат агента" },
+  "header": { "meta": "Очень странные дела" },
   "layout": {
     "type": "splitLayout",
     "gap": "md",
