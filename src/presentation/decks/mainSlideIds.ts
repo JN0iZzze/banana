@@ -1,11 +1,4 @@
-/** IDs for JSON and demo slides in the main deck (`/`), aligned with `decks/main/schemas/`. */
-export const DEMO_JSON_SLIDE_IDS = {
-  asymmetric: 'demo-json-grid-asymmetric',
-  equal: 'demo-json-grid-equal',
-  bento: 'demo-json-grid-bento',
-  heroJourneyBento: 'demo-hero-journey-bento',
-} as const;
-
+/** Stable IDs for main deck JSON slides (`/`), aligned with `decks/main/schemas/`. */
 export const MIGRATED_JSON_SLIDE_IDS = {
   platformsEcosystem: 'platforms-ecosystem-bento',
   attentionModels2026: 'attention-models-2026',

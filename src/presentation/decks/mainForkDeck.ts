@@ -2,30 +2,24 @@ import type { DeckDefinition } from '../types';
 import { ReferenceCountsSlide } from '../slides/ReferenceCountsSlide';
 import { PhotorealismSlide } from '../slides/PhotorealismSlide';
 import { PhotorealismSlideCopy } from '../slides/PhotorealismSlideCopy';
-import { LeoFluxVsGptSlide } from '../slides/LeoFluxVsGptSlide';
 import { CompositionSlide } from '../slides/CompositionSlide';
-import { SpeakerChannelGridSlide } from '../slides/SpeakerChannelGridSlide';
 import { GamepadStyleTransferSlide } from '../slides/GamepadStyleTransferSlide';
-import { ToolsGrowthSlide } from '../slides/ToolsGrowthSlide';
 import { Early2025Slide } from '../slides/Early2025Slide';
 import { CombGripSlide } from '../slides/CombGripSlide';
 import { StructuredPromptsSlide } from '../slides/StructuredPromptsSlide';
 import { JsonPromptingDefinitionSlide } from '../slides/JsonPromptingDefinitionSlide';
 import { ThankYouSlide } from '../slides/ThankYouSlide';
-import { mainJsonSlides as m } from './main/jsonSlides';
+import { mainJsonSlides as base } from './main/jsonSlides';
+import { mainForkJsonSlides as m } from './mainFork/jsonSlides';
 
-export const mainDeck: DeckDefinition = {
-  id: 'main',
-  title: 'GEN AI 2026',
+export const mainForkDeck: DeckDefinition = {
+  id: 'main-fork',
+  title: 'Workshop Floux.pro',
   slides: [
-    m.aboutMe,
-    {
-      id: 'tools-growth',
-      title: 'Популярные ИИ-модели',
-      theme: 'signal',
-      component: ToolsGrowthSlide,
-      notes: 'Горизонтальные бары: рост числа заметных инструментов по годам (анимация framer-motion).',
-    },
+    m.workshopIntro,
+    base.aboutMe,
+    base.flouxDemo,
+    base.nodeBasedSystems,
     {
       id: 'early-2025-pastgen',
       title: 'Начало 2025',
@@ -33,17 +27,13 @@ export const mainDeck: DeckDefinition = {
       component: Early2025Slide,
       notes: 'Из 20Feb Early2025: тема cinema как spotlight-demo; три компактные панели в ряд, водяной PastGen; без изображений.',
     },
-    m.platformsEcosystem,
-    m.higgsfield,
-    m.nodeBasedSystems,
-    m.flouxDemo,
+    base.platformsEcosystem,
     m.attentionModels2026,
-    m.nanoBananaProCover,
-    m.nanoBananaUseCases,
-    m.midjourneyVsNanoBanana,
-    m.agenticWorkflow,
-    m.nanoBananaVersions,
-    m.agenticWorkflowResult,
+    base.nanoBananaProCover,
+    base.nanoBananaUseCases,
+    base.midjourneyVsNanoBanana,
+    base.nanoBananaVersions,
+    base.agenticWorkflowResult,
     {
       id: 'comb-grip',
       title: 'Держаться за гребень',
@@ -52,21 +42,17 @@ export const mainDeck: DeckDefinition = {
       notes: 'Из 20Feb CombGrip: фон comb-surf, заголовок и роли «чуть чуть»; тема cinema, spotlight.',
       preloadAssets: ['/images/comb-surf.jpg'],
     },
-    m.promptStructure,
-    m.promptOrderFlex,
-    m.promptOrderPairImages,
-    m.proContradictions,
-    // Идея для следующего слайда: пример про отсутствие противоречий (девушка заказывает кофе).
-    m.editingPromptStructure,
-    m.editingPromptPrinciples,
-    m.styleCopyPromptPrinciples,
-    m.styleCopyPromptPrinciplesCopy4,
-    m.styleCopyPromptPrinciplesCopy2,
-    m.styleCopyPromptPrinciplesCopy3,
-    // Фотореалистичность
-    // Мокапы
-    // Точечное редактирование
-    m.multiReferenceCover,
+    base.promptStructure,
+    base.promptOrderFlex,
+    base.promptOrderPairImages,
+    base.proContradictions,
+    base.editingPromptStructure,
+    base.editingPromptPrinciples,
+    base.styleCopyPromptPrinciples,
+    base.styleCopyPromptPrinciplesCopy4,
+    base.styleCopyPromptPrinciplesCopy2,
+    base.styleCopyPromptPrinciplesCopy3,
+    base.multiReferenceCover,
     {
       id: 'reference-counts',
       title: 'Сколько референсов допускают модели',
@@ -74,19 +60,8 @@ export const mainDeck: DeckDefinition = {
       component: ReferenceCountsSlide,
       notes: 'Из 20Feb ReferenceCounts: таблица лимитов; без сетки иконок слева.',
     },
-    m.referenceRoles,
-    m.leoWideShot,
-    {
-      id: 'leo-flux-vs-gpt',
-      title: 'Сравнение',
-      theme: 'editorial',
-      component: LeoFluxVsGptSlide,
-      notes:
-        'Как PromptOrderPairImagesSlide: spotlight, 3+9, SlideImagePair; два горизонтальных кадра 16∶9 — flux2.png, gpt_images.png.',
-      preloadAssets: ['/images/leo/flux2.png', '/images/leo/gpt_images.png'],
-    },
-    // В Нано Банана мультиреференсность работает несколько иначе чем в других нейросетях
-    // Как именно использовать референс (как стиль, композицию, ракурс)
+    base.referenceRoles,
+    base.leoWideShot,
     {
       id: 'photorealism-clothing',
       title: 'Перенос одежды',
@@ -109,8 +84,8 @@ export const mainDeck: DeckDefinition = {
         '/images/composition/out.png',
       ],
     },
-    m.referenceAnalysis,
-    m.anglesLighting,
+    base.referenceAnalysis,
+    base.anglesLighting,
     {
       id: 'gamepad-style-transfer',
       title: 'Перенос стиля',
@@ -128,36 +103,20 @@ export const mainDeck: DeckDefinition = {
       notes: 'Как editing: сетка 3+9; слева промпт, справа колонка из двух референсов + результат.',
       preloadAssets: ['/images/fashion/person.png', '/images/fashion/ref.png', '/images/fashion/out.png'],
     },
-    m.lessObviousUseCases,
+    base.lessObviousUseCases,
     m.photorealismModelPicks,
-    m.photorealismSectionTitle,
-    m.grokImagineBento,
-    m.recraftV4Bento,
-    m.midjorneyBento,
-    m.nanoBananaConnection,
-    m.lessObviousSectionTitle,
-    m.texturingModelingCover,
-    m.textureWorkflow,
-    m.threeDTwoRefsTwoOuts,
-    m.workflowComparison,
-    m.threeDWorkflowLink,
-    {
-      id: 'speaker-channel-grid',
-      title: 'Макс Кукушкин',
-      theme: 'editorial',
-      component: SpeakerChannelGridSlide,
-      notes:
-        'Из 20Feb SpeakerChannelSlide (левая колонка: аватар, имя, роль, t.me) + Grid4Slide (2×2 /images/max/001–003 + 004.mp4).',
-      preloadAssets: [
-        '/images/max-tg.jpg',
-        '/images/max/001.jpg',
-        '/images/max/002.jpg',
-        '/images/max/003.jpg',
-        '/images/max/004.mp4',
-      ],
-    },
-    // Пример на практике
-    m.jsonPromptingCover,
+    base.photorealismSectionTitle,
+    base.grokImagineBento,
+    base.recraftV4Bento,
+    base.midjorneyBento,
+    base.nanoBananaConnection,
+    base.lessObviousSectionTitle,
+    base.texturingModelingCover,
+    base.textureWorkflow,
+    base.threeDTwoRefsTwoOuts,
+    base.workflowComparison,
+    base.threeDWorkflowLink,
+    base.jsonPromptingCover,
     {
       id: 'json-prompting-definition',
       title: 'Что такое JSON-промптинг',
@@ -173,9 +132,9 @@ export const mainDeck: DeckDefinition = {
       component: StructuredPromptsSlide,
       notes: 'Из 20Feb StructuredPrompts: псевдо-окно редактора с примером JSON; переиспользуемый SlideCodeWindow.',
     },
-    m.jsonImagesTriptych,
-    m.compositionPhotoLink,
-    m.otherExamplesFlouxProjects,
+    base.jsonImagesTriptych,
+    base.compositionPhotoLink,
+    base.otherExamplesFlouxProjects,
     {
       id: 'thank-you',
       title: 'Спасибо!',

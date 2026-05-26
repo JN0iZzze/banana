@@ -1,9 +1,5 @@
 import { defineJsonSlide } from '../defineJsonSlide';
-import { DEMO_JSON_SLIDE_IDS, MIGRATED_JSON_SLIDE_IDS } from '../mainSlideIds';
-import rawAsymmetric from './schemas/demo-grid-asymmetric.json';
-import rawBento from './schemas/demo-grid-bento.json';
-import rawEqual from './schemas/demo-grid-equal.json';
-import rawHeroJourneyBento from './schemas/slide-demo-hero-journey-bento.json';
+import { MIGRATED_JSON_SLIDE_IDS } from '../mainSlideIds';
 import rawPromptStructure from './schemas/slide-prompt-structure.json';
 import rawAboutMe from './schemas/slide-about-me.json';
 import rawAttentionModels from './schemas/slide-attention-models-2026.json';
@@ -49,20 +45,9 @@ import rawOtherExamplesFlouxProjects from './schemas/slide-other-examples-floux-
 import rawPromptOrderFlex from './schemas/slide-prompt-order-flex.json';
 import rawNanoBananaVersions from './schemas/slide-nano-banana-versions.json';
 
-const D = DEMO_JSON_SLIDE_IDS;
 const M = MIGRATED_JSON_SLIDE_IDS;
 
 export const mainJsonSlides = {
-  heroJourneyBento: defineJsonSlide({
-    id: D.heroJourneyBento,
-    title: 'Демо: путь героя (bento)',
-    theme: 'editorial',
-    raw: rawHeroJourneyBento,
-    source: 'slide-demo-hero-journey-bento.json',
-    hidden: true,
-    notes:
-      'JSON: bentoGrid 4×3 с разными span, slide-demo-hero-journey-bento.json; этапы мономифа Кэмпбелла сгруппированы в крупные, высокие, мини- и широкие ячейки.',
-  }),
   aboutMe: defineJsonSlide({
     id: M.aboutMe,
     title: 'Евсеичев Антон',
@@ -71,40 +56,14 @@ export const mainJsonSlides = {
     source: 'slide-about-me.json',
     notes: 'Из 20Feb AboutMe: имя, роли, Floux.pro founder; без изображений.',
   }),
-  asymmetric: defineJsonSlide({
-    id: D.asymmetric,
-    title: 'JSON renderer: неравные колонки',
-    theme: 'editorial',
-    raw: rawAsymmetric,
-    source: 'demo-grid-asymmetric.json',
-    hidden: true,
-    notes: 'MVP schema-driven slide: layout asymmetricColumns (7+5), данные в demo-grid-asymmetric.json.',
-  }),
-  equal: defineJsonSlide({
-    id: D.equal,
-    title: 'JSON renderer: три равные колонки',
-    theme: 'signal',
-    raw: rawEqual,
-    source: 'demo-grid-equal.json',
-    hidden: true,
-    notes: 'MVP schema-driven slide: layout equalColumns (4+4+4), данные в demo-grid-equal.json.',
-  }),
-  bento: defineJsonSlide({
-    id: D.bento,
-    title: 'JSON renderer: bento-сетка',
-    theme: 'editorial',
-    raw: rawBento,
-    source: 'demo-grid-bento.json',
-    hidden: true,
-    notes: 'MVP schema-driven slide: layout bentoGrid 4×3, данные в demo-grid-bento.json.',
-  }),
   platformsEcosystem: defineJsonSlide({
     id: M.platformsEcosystem,
-    title: 'Платформы и модели',
+    title: 'Модели генерации',
     theme: 'editorial',
     raw: rawPlatformsEcosystem,
     source: 'slide-platforms-ecosystem.json',
-    notes: 'JSON: bentoGrid 4×3, slide-platforms-ecosystem.json; leadingIcon + watermarkIcon через registry.',
+    notes:
+      'JSON: bentoGrid 4×3, slide-platforms-ecosystem.json; два доминантных 2×2 сверху (Nano Banana Pro accent + GPT Image 2) и четыре 1×1 снизу (Midjourney, Reve AI, Qwen Image, Wan Image 2.7); leadingIcon + watermarkIcon через registry.',
   }),
   higgsfield: defineJsonSlide({
     id: M.higgsfield,

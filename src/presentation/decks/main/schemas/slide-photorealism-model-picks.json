@@ -35,7 +35,7 @@
           "tone": "standard",
           "watermarkIcon": "openai",
           "justify": "end",
-          "items": [{ "variant": "h2", "text": "GPT Images 1.5" }]
+          "items": [{ "variant": "h2", "text": "GPT Image 2" }]
         }
       },
       {

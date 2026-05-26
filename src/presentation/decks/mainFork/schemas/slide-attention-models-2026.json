@@ -3,9 +3,9 @@
   "backdrop": { "variant": "grid" },
   "content": { "width": "wide", "density": "compact", "align": "left" },
   "header": {
-    "meta": "Что использовать в 2026",
-    "title": "Модели генерации изображений",
-    "lead": "Два центра тяжести и фланг специализированных моделей вокруг них"
+    "meta": "Актуальные модели 2026",
+    "title": "Что актуально сейчас",
+    "lead": "Краткая карта моделей, которые уже полезны в ежедневной работе"
   },
   "layout": {
     "type": "bentoGrid",
@@ -22,10 +22,13 @@
           "tone": "accent",
           "leadingIcon": "gemini",
           "watermarkIcon": "gemini",
-          "justify": "end",
+          "justify": "between",
           "items": [
-            { "variant": "h2", "text": "Nano Banana Pro (2)" },
-            { "variant": "bodyLg", "text": "Главный сдвиг в генерации и редактировании" }
+            { "variant": "h2", "text": "Nano Banana (Pro / v2 / Flash)" },
+            {
+              "variant": "bodyLg",
+              "text": "Редактирование, точечные правки и сохранение идентичности"
+            }
           ]
         }
       },
@@ -35,13 +38,16 @@
         "colSpan": 2,
         "rowSpan": 2,
         "card": {
-          "tone": "standard",
+          "tone": "accent",
           "leadingIcon": "openai",
           "watermarkIcon": "openai",
-          "justify": "end",
+          "justify": "between",
           "items": [
             { "variant": "h2", "text": "GPT Image 2" },
-            { "variant": "bodyLg", "text": "Обновлённый флагман OpenAI: рендер текста, точное следование промпту" }
+            {
+              "variant": "bodyLg",
+              "text": "Типографика, инфографика, мокапы"
+            }
           ]
         }
       },
@@ -53,11 +59,12 @@
         "card": {
           "tone": "standard",
           "padding": "compact",
-          "leadingIcon": "midjourney",
+          "leadingIcon": "byte-dance",
+          "watermarkIcon": "byte-dance",
           "justify": "end",
           "items": [
-            { "variant": "h2", "text": "Midjourney v8" },
-            { "variant": "body", "text": "Эстетика и Omni Ref" }
+            { "variant": "h3", "text": "Seedream (4.5 / 5 Lite)" },
+            { "variant": "body", "text": "Типографика, высокое разрешение" }
           ]
         }
       },
@@ -69,11 +76,12 @@
         "card": {
           "tone": "standard",
           "padding": "compact",
-          "leadingIcon": "sparkles",
+          "leadingIcon": "midjourney",
+          "watermarkIcon": "midjourney",
           "justify": "end",
           "items": [
-            { "variant": "h2", "text": "Reve AI" },
-            { "variant": "body", "text": "Сильная типографика и креатив" }
+            { "variant": "h3", "text": "Midjourney v7(v8)" },
+            { "variant": "body", "text": "Стилизация, эстетика и сильная работа с Omni Ref." }
           ]
         }
       },
@@ -85,11 +93,12 @@
         "card": {
           "tone": "standard",
           "padding": "compact",
-          "leadingIcon": "image",
+          "leadingIcon": "flux",
+          "watermarkIcon": "flux",
           "justify": "end",
           "items": [
-            { "variant": "h2", "text": "Qwen Image" },
-            { "variant": "body", "text": "Open-source флагман от Alibaba" }
+            { "variant": "h3", "text": "Recraft V4" },
+            { "variant": "body", "text": "Стильные продуктовые иллюстрации и типографика." }
           ]
         }
       },
@@ -101,11 +110,12 @@
         "card": {
           "tone": "standard",
           "padding": "compact",
-          "leadingIcon": "layers",
+          "leadingIcon": "grok",
+          "watermarkIcon": "grok",
           "justify": "end",
           "items": [
-            { "variant": "h2", "text": "Wan Image 2.7" },
-            { "variant": "body", "text": "Свежий релиз с упором на детализацию" }
+            { "variant": "h3", "text": "Grok Imagine" },
+            { "variant": "body", "text": "Быстрые вариации и сильная стилизация." }
           ]
         }
       }

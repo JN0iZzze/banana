@@ -44,7 +44,7 @@
         "watermarkIcon": "openai",
         "justify": "between",
         "items": [
-          { "variant": "h2", "text": "GPT Image 1.5" },
+          { "variant": "h2", "text": "GPT Image 2" },
           { "variant": "body", "text": "Текст в кадре, инструктивность и повседневные рабочие задачи." }
         ]
       },

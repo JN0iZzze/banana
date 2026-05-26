@@ -1,0 +1,99 @@
+{
+  "theme": "editorial",
+  "frame": { "align": "top", "padding": "compact" },
+  "backdrop": { "variant": "grid" },
+  "content": { "width": "wide", "density": "compact", "align": "left" },
+  "header": {
+    "meta": "Фотореализм · модели",
+    "title": "Редактирование и перенос стиля",
+    "lead": "Короткий ориентир: какую модель тянуть первой под тип задачи"
+  },
+  "layout": {
+    "type": "bentoGrid",
+    "columns": 12,
+    "rows": 3,
+    "gap": "md",
+    "items": [
+      {
+        "colStart": 1,
+        "rowStart": 1,
+        "colSpan": 6,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "leadingIcon": "gemini",
+          "watermarkIcon": "gemini",
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "Nano Banana Pro (v2)" },
+            {
+              "variant": "bodyLg",
+              "text": "Редактирование, последовательные правки и точное удержание сцены."
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 7,
+        "rowStart": 1,
+        "colSpan": 6,
+        "rowSpan": 2,
+        "card": {
+          "tone": "accent",
+          "leadingIcon": "openai",
+          "watermarkIcon": "openai",
+          "justify": "between",
+          "items": [
+            { "variant": "h2", "text": "GPT Image 2.0" },
+            {
+              "variant": "bodyLg",
+              "text": "Текст в кадре, инструктивность и повседневные рабочие задачи."
+            }
+          ]
+        }
+      },
+      {
+        "colStart": 1,
+        "rowStart": 3,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "byte-dance",
+          "watermarkIcon": "byte-dance",
+          "justify": "end",
+          "items": [{ "variant": "h3", "text": "Seedream 4.5 (5 Lite)" }]
+        }
+      },
+      {
+        "colStart": 5,
+        "rowStart": 3,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "volcengine",
+          "watermarkIcon": "volcengine",
+          "justify": "end",
+          "items": [{ "variant": "h3", "text": "Wan 2.7" }]
+        }
+      },
+      {
+        "colStart": 9,
+        "rowStart": 3,
+        "colSpan": 4,
+        "rowSpan": 1,
+        "card": {
+          "tone": "standard",
+          "padding": "compact",
+          "leadingIcon": "flux",
+          "watermarkIcon": "flux",
+          "justify": "end",
+          "items": [{ "variant": "h3", "text": "Flux 2" }]
+        }
+      }
+    ]
+  }
+}

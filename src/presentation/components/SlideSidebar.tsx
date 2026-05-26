@@ -1,3 +1,5 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Search, X } from 'lucide-react';
 import type { SlideDefinition } from '../types';
 import { cn } from '../../ui/slides/cn';
 
@@ -18,6 +20,25 @@ export function SlideSidebar({
   onClose,
   onSelect,
 }: SlideSidebarProps) {
+  const [query, setQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setQuery('');
+    }
+  }, [isOpen]);
+
+  const filteredSlides = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) {
+      return slides.map((slide, index) => ({ slide, index }));
+    }
+    return slides
+      .map((slide, index) => ({ slide, index }))
+      .filter(({ slide }) => slide.title.toLowerCase().includes(normalized));
+  }, [slides, query]);
+
   return (
     <>
       <div
@@ -35,37 +56,67 @@ export function SlideSidebar({
           isOpen ? 'translate-x-0' : '-translate-x-full',
         )}
       >
-        <div className="mb-8 space-y-2">
+        <div className="mb-6 space-y-2">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/45">Deck</p>
           <h2 className="font-display text-3xl leading-tight">{deckTitle}</h2>
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 overflow-y-auto pr-2">
-          {slides.map((slide, index) => {
-            const isActive = index === currentSlideIndex;
+        <div className="mb-5 flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2.5 focus-within:border-white/25 focus-within:bg-white/10">
+          <Search className="h-4 w-4 shrink-0 text-white/45" aria-hidden="true" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Поиск по слайдам"
+            className="flex-1 bg-transparent text-sm text-white placeholder:text-white/35 focus:outline-none"
+            aria-label="Поиск по слайдам"
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('');
+                searchInputRef.current?.focus();
+              }}
+              className="rounded-full p-1 text-white/45 transition-colors hover:bg-white/10 hover:text-white"
+              aria-label="Очистить поиск"
+            >
+              <X className="h-3.5 w-3.5" aria-hidden="true" />
+            </button>
+          )}
+        </div>
 
-            return (
-              <button
-                key={slide.id}
-                type="button"
-                onClick={() => {
-                  onSelect(index);
-                  onClose();
-                }}
-                className={cn(
-                  'rounded-[1.5rem] border px-5 py-4 text-left transition-all duration-200',
-                  isActive
-                    ? 'border-white/15 bg-white text-[#0f0f10] shadow-[0_18px_40px_rgba(255,255,255,0.18)]'
-                    : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white',
-                )}
-              >
-                <div className="text-xs font-semibold uppercase tracking-[0.3em] opacity-55">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
-                <div className="mt-2 text-lg font-medium tracking-[-0.02em]">{slide.title}</div>
-              </button>
-            );
-          })}
+        <div className="flex flex-1 flex-col gap-2 overflow-y-auto pr-2">
+          {filteredSlides.length === 0 ? (
+            <p className="px-1 py-4 text-sm text-white/45">Ничего не нашлось.</p>
+          ) : (
+            filteredSlides.map(({ slide, index }) => {
+              const isActive = index === currentSlideIndex;
+
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => {
+                    onSelect(index);
+                    onClose();
+                  }}
+                  className={cn(
+                    'rounded-[1.5rem] border px-5 py-4 text-left transition-all duration-200',
+                    isActive
+                      ? 'border-white/15 bg-white text-[#0f0f10] shadow-[0_18px_40px_rgba(255,255,255,0.18)]'
+                      : 'border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white',
+                  )}
+                >
+                  <div className="text-xs font-semibold uppercase tracking-[0.3em] opacity-55">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <div className="mt-2 text-lg font-medium tracking-[-0.02em]">{slide.title}</div>
+                </button>
+              );
+            })
+          )}
         </div>
       </aside>
     </>
